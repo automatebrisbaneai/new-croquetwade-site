@@ -414,6 +414,30 @@
     .footer-copy { font-size: 0.875rem; color: var(--n500); }
     .footer-loc  { font-size: 0.875rem; color: var(--n400); }
 
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-eyebrow, .hero-headline, .hero-sub,
+    .hero-stats, .hero-cta, .hero-character {
+      animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation-delay: calc(var(--i, 0) * 100ms);
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .sys-card.reveal { transition-delay: calc(var(--i, 0) * 60ms); }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-eyebrow, .hero-headline, .hero-sub,
+      .hero-stats, .hero-cta, .hero-character { animation: none; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
     /* ─── RESPONSIVE ─── */
     @media (max-width: 1024px) {
       .hero-stats { grid-template-columns: repeat(2, 1fr); }
@@ -464,10 +488,10 @@
   <section class="hero">
     <div class="hero-inner">
       <div class="hero-text">
-        <span class="hero-eyebrow">CAQ Growth Consultancy</span>
-        <h1 class="hero-headline">Growth systems for Queensland croquet.</h1>
-        <p class="hero-sub">Eight connected systems that take someone from "I've never heard of croquet" to "I've just renewed my membership" — with as little volunteer effort as possible.</p>
-        <div class="hero-stats">
+        <span class="hero-eyebrow" style="--i:0">CAQ Growth Consultancy</span>
+        <h1 class="hero-headline" style="--i:1">Growth systems for Queensland croquet.</h1>
+        <p class="hero-sub" style="--i:2">Eight connected systems that take someone from "I've never heard of croquet" to "I've just renewed my membership" — with as little volunteer effort as possible.</p>
+        <div class="hero-stats" style="--i:3">
           <div class="stat">
             <div class="stat-num">41</div>
             <div class="stat-lbl">Clubs connected</div>
@@ -481,16 +505,16 @@
             <div class="stat-lbl">Pipeline stages</div>
           </div>
           <div class="stat">
-            <div class="stat-num">8</div>
+            <div class="stat-num">9</div>
             <div class="stat-lbl">Systems built</div>
           </div>
         </div>
-        <a href="mailto:me@croquetwade.com" class="hero-cta">
+        <a href="mailto:me@croquetwade.com" class="hero-cta" style="--i:4">
           Get in touch
           <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
         </a>
       </div>
-      <div class="hero-character">
+      <div class="hero-character" style="--i:5">
         <img src="images/wade-welcome.png" alt="Wade Hart" loading="eager">
       </div>
     </div>
@@ -499,7 +523,7 @@
   <!-- ABOUT -->
   <section class="about">
     <div class="container">
-      <div class="about-inner">
+      <div class="about-inner reveal">
         <div class="about-character">
           <img src="images/wade-talking.png" alt="" loading="lazy">
         </div>
@@ -518,49 +542,49 @@
   <!-- SYSTEMS -->
   <section class="systems" id="systems">
     <div class="container">
-      <div class="systems-header">
+      <div class="systems-header reveal">
         <div class="section-label">The Work</div>
-        <h2 class="section-title">Eight systems, one pipeline.</h2>
+        <h2 class="section-title">Nine systems, one pipeline.</h2>
         <p class="section-sub">Every system connects to the next. Discovery leads to sign-up. Sign-up leads to nurture. Nurture leads to membership.</p>
       </div>
       <div class="systems-grid">
 
-        <div class="sys-card">
+        <div class="sys-card reveal" style="--i:0">
           <div class="sys-char"><img src="images/wade-laptop.png" alt="" loading="lazy"></div>
           <div class="sys-name">MyCroquet</div>
           <div class="sys-meta">41 clubs · full audit trail · passwordless</div>
           <p class="sys-desc">Membership portal that replaces handwritten forms. Club secretaries enter data once — it flows through the system. Zero double-entry, every change logged.</p>
         </div>
 
-        <div class="sys-card">
+        <div class="sys-card reveal" style="--i:1">
           <div class="sys-char"><img src="images/wade-beckoning.png" alt="" loading="lazy"></div>
           <div class="sys-name">Come &amp; Try</div>
           <div class="sys-meta">shared pipeline · committee-wide visibility</div>
           <p class="sys-desc">Unified sign-up for every club in Queensland. Small regional clubs get parity with large city ones. Warm leads land where any committee member can follow up.</p>
         </div>
 
-        <div class="sys-card">
+        <div class="sys-card reveal" style="--i:2">
           <div class="sys-char"><img src="images/wade-map.png" alt="" loading="lazy"></div>
           <div class="sys-name">Club Finder</div>
           <div class="sys-meta">deployed · postcode lookup</div>
           <p class="sys-desc">Type a postcode, get your nearest club and Come &amp; Try times. Removes the discovery barrier — no more searching twenty different club websites.</p>
         </div>
 
-        <div class="sys-card">
+        <div class="sys-card reveal" style="--i:3">
           <div class="sys-char"><img src="images/wade-letter.png" alt="" loading="lazy"></div>
           <div class="sys-name">Automated Nurture</div>
           <div class="sys-meta">28 days · zero volunteer effort</div>
           <p class="sys-desc">28-day email series after Come &amp; Try sign-up. Keeps croquet present in the gap between visits — the window where people drift away.</p>
         </div>
 
-        <div class="sys-card">
+        <div class="sys-card reveal" style="--i:4">
           <div class="sys-char"><img src="images/wade-phone.png" alt="" loading="lazy"></div>
           <div class="sys-name">Shared Messaging</div>
           <div class="sys-meta">committee accountability · 3-week visibility</div>
           <p class="sys-desc">Club contact goes to one system, not one person's inbox. Any committee member can see who enquired and follow up — solves the "person on holiday" problem.</p>
         </div>
 
-        <div class="sys-card">
+        <div class="sys-card reveal" style="--i:5">
           <div class="sys-char"><img src="images/wade-newspaper.png" alt="" loading="lazy"></div>
           <div class="sys-name">News Site</div>
           <div class="sys-meta">write once · 2,000+ members reached</div>
@@ -568,19 +592,27 @@
           <a href="https://news.croquetqld.org" class="sys-link" target="_blank" rel="noopener">news.croquetqld.org →</a>
         </div>
 
-        <div class="sys-card">
+        <div class="sys-card reveal" style="--i:6">
           <div class="sys-char"><img src="images/wade-paintbrush.png" alt="" loading="lazy"></div>
           <div class="sys-name">Visual Identity</div>
           <div class="sys-meta">QLD Maroon · lawn green · Inter</div>
           <p class="sys-desc">One colour palette, one typeface, one illustration style across all CAQ materials — so a Come &amp; Try poster, an email, and a website all look like the same organisation.</p>
         </div>
 
-        <div class="sys-card">
+        <div class="sys-card reveal" style="--i:7">
           <div class="sys-char"><img src="images/wade-building.png" alt="" loading="lazy"></div>
           <div class="sys-name">Club Websites</div>
           <div class="sys-meta">government grant · every club</div>
           <p class="sys-desc">Every Queensland club gets a well-designed website on their own domain, thanks to the Queensland Government marketing grant. No club left behind.</p>
           <a href="https://websites.croquetwade.com" class="sys-link" target="_blank" rel="noopener">websites.croquetwade.com →</a>
+        </div>
+
+        <div class="sys-card reveal" style="--i:8">
+          <div class="sys-char"><img src="images/wade-mallet.png" alt="" loading="lazy"></div>
+          <div class="sys-name">Bamford AI</div>
+          <div class="sys-meta">golf croquet · AI opponent · 3 difficulty levels</div>
+          <p class="sys-desc">A fully playable golf croquet game with an AI built on real player data. Named after Reg Bamford — 7-time world champion. The AI evolved its own strategy: own your position, force the dilemma.</p>
+          <a href="https://croquetwade.com/games/bamford3/" class="sys-link" target="_blank" rel="noopener">Play Bamford AI →</a>
         </div>
 
       </div>
@@ -590,12 +622,12 @@
   <!-- FRAMEWORK -->
   <section class="framework" id="framework">
     <div class="container">
-      <div class="fw-header">
+      <div class="fw-header reveal">
         <div class="section-label">Strategic Framework</div>
         <h2 class="section-title">4 ideals. 6 aims. One direction.</h2>
         <p class="section-sub" style="max-width:600px;">The aims form a cascade — strong admin enables external promotion, which brings people to the door, which feeds member growth, which strengthens clubs, which develops play, which opens room for innovation.</p>
       </div>
-      <div class="fw-inner">
+      <div class="fw-inner reveal">
         <div>
           <div class="fw-col-title">Four Ideals</div>
           <ul class="fw-list">
@@ -626,7 +658,7 @@
   <!-- CONTACT -->
   <section class="contact" id="contact">
     <div class="container">
-      <div class="contact-inner">
+      <div class="contact-inner reveal">
         <div>
           <div class="section-label contact-label">Contact</div>
           <h2 class="section-title">Let's talk about croquet growth.</h2>
@@ -653,6 +685,7 @@
   </footer>
 
   <script>
+    // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', e => {
         const id = a.getAttribute('href').slice(1);
@@ -660,6 +693,19 @@
         if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
       });
     });
+
+    // Section reveals
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
   </script>
 
 </body>
