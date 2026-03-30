@@ -421,7 +421,7 @@
     }
     @keyframes heroFloat {
       0%, 100% { transform: translateY(0px); }
-      50%       { transform: translateY(-10px); }
+      50%       { transform: translateY(-14px); }
     }
     .hero-eyebrow, .hero-headline, .hero-sub,
     .hero-stats, .hero-cta, .hero-character {
@@ -429,8 +429,8 @@
       animation-delay: calc(var(--i, 0) * 100ms);
     }
     .hero-character img {
-      animation: heroFloat 3.5s ease-in-out infinite;
-      animation-delay: 0.7s;
+      animation: heroFloat 2.8s ease-in-out infinite;
+      cursor: pointer;
     }
     .reveal {
       opacity: 0;
@@ -720,10 +720,11 @@
             heroImg.src = waveFrames[0];
             waving = false;
           }
-        }, 350);
+        }, 320);
       }
-      setTimeout(doWave, 1800);
-      setInterval(doWave, 6000);
+      doWave();
+      setInterval(doWave, 5000);
+      heroImg.addEventListener('click', doWave);
     }
 
     // Section reveals
