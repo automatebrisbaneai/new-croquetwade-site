@@ -443,7 +443,6 @@
     @media (prefers-reduced-motion: reduce) {
       .hero-eyebrow, .hero-headline, .hero-sub,
       .hero-stats, .hero-cta, .hero-character { animation: none; }
-      .hero-character img { animation: none; }
       .reveal { opacity: 1; transform: none; transition: none; }
     }
 
@@ -703,29 +702,27 @@
       });
     });
 
-    // Hero character wave
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      const heroImg = document.querySelector('.hero-character img');
-      const waveFrames = ['images/wade-welcome.png', 'images/wade-waving.png'];
-      let waving = false;
-      function doWave() {
-        if (waving) return;
-        waving = true;
-        let tick = 0;
-        const iv = setInterval(() => {
-          heroImg.src = waveFrames[tick % 2 === 0 ? 1 : 0];
-          tick++;
-          if (tick >= 6) {
-            clearInterval(iv);
-            heroImg.src = waveFrames[0];
-            waving = false;
-          }
-        }, 320);
-      }
-      doWave();
-      setInterval(doWave, 5000);
-      heroImg.addEventListener('click', doWave);
+    // Hero character wave (runs regardless of reduce-motion preference)
+    const heroImg = document.querySelector('.hero-character img');
+    const waveFrames = ['images/wade-welcome.png', 'images/wade-waving.png'];
+    let waving = false;
+    function doWave() {
+      if (waving) return;
+      waving = true;
+      let tick = 0;
+      const iv = setInterval(() => {
+        heroImg.src = waveFrames[tick % 2 === 0 ? 1 : 0];
+        tick++;
+        if (tick >= 6) {
+          clearInterval(iv);
+          heroImg.src = waveFrames[0];
+          waving = false;
+        }
+      }, 320);
     }
+    doWave();
+    setInterval(doWave, 5000);
+    heroImg.addEventListener('click', doWave);
 
     // Section reveals
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
