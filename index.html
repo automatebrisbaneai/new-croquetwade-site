@@ -419,10 +419,18 @@
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+    @keyframes heroFloat {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-10px); }
+    }
     .hero-eyebrow, .hero-headline, .hero-sub,
     .hero-stats, .hero-cta, .hero-character {
       animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
       animation-delay: calc(var(--i, 0) * 100ms);
+    }
+    .hero-character img {
+      animation: heroFloat 3.5s ease-in-out infinite;
+      animation-delay: 0.7s;
     }
     .reveal {
       opacity: 0;
@@ -435,6 +443,7 @@
     @media (prefers-reduced-motion: reduce) {
       .hero-eyebrow, .hero-headline, .hero-sub,
       .hero-stats, .hero-cta, .hero-character { animation: none; }
+      .hero-character img { animation: none; }
       .reveal { opacity: 1; transform: none; transition: none; }
     }
 
@@ -693,6 +702,29 @@
         if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
       });
     });
+
+    // Hero character wave
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const heroImg = document.querySelector('.hero-character img');
+      const waveFrames = ['images/wade-welcome.png', 'images/wade-waving.png'];
+      let waving = false;
+      function doWave() {
+        if (waving) return;
+        waving = true;
+        let tick = 0;
+        const iv = setInterval(() => {
+          heroImg.src = waveFrames[tick % 2 === 0 ? 1 : 0];
+          tick++;
+          if (tick >= 6) {
+            clearInterval(iv);
+            heroImg.src = waveFrames[0];
+            waving = false;
+          }
+        }, 350);
+      }
+      setTimeout(doWave, 1800);
+      setInterval(doWave, 6000);
+    }
 
     // Section reveals
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
