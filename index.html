@@ -904,6 +904,83 @@
     }
 
     /* ─────────────────────────────────────
+       SECTION 5.5: COMING SOON
+    ───────────────────────────────────── */
+    .section-coming-soon {
+      padding: clamp(2.5rem, 5vw, 3.5rem) 0;
+      background: var(--n100);
+      border-top: var(--border);
+      border-bottom: var(--border);
+    }
+    .coming-soon-header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+      flex-wrap: wrap;
+    }
+    .coming-soon-eyebrow {
+      font-size: var(--text-xxs);
+      font-weight: var(--weight-medium);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .coming-soon-headline {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      line-height: var(--lh-snug);
+    }
+    .coming-soon-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1px;
+      background: var(--n200);
+      border: var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .coming-soon-item {
+      background: var(--white);
+      padding: 1.25rem 1rem;
+    }
+    .coming-soon-item-title {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      line-height: var(--lh-snug);
+      margin-bottom: var(--space-sm);
+    }
+    .coming-soon-item-desc {
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+    }
+    @media (max-width: 1024px) {
+      .coming-soon-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .coming-soon-item:last-child {
+        grid-column: span 2;
+      }
+    }
+    @media (max-width: 640px) {
+      .coming-soon-grid {
+        grid-template-columns: 1fr;
+      }
+      .coming-soon-item:last-child {
+        grid-column: span 1;
+      }
+      .coming-soon-header {
+        flex-direction: column;
+        gap: var(--space-xs);
+      }
+    }
+
+    /* ─────────────────────────────────────
        SECTION 6: THE INTERCONNECTION
     ───────────────────────────────────── */
     .section-interconnect {
@@ -1677,6 +1754,38 @@
         </div>
         <div class="bamford-right reveal">
           <img src="images/wade-mallet.png" alt="Wade Hart holding a croquet mallet" class="wade-character" style="max-height:260px;" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 5.5: COMING SOON ── -->
+  <section class="section-coming-soon" aria-label="Coming soon features">
+    <div class="container">
+      <div class="coming-soon-header">
+        <span class="coming-soon-eyebrow">Coming Soon</span>
+        <h2 class="coming-soon-headline">And we're not done.</h2>
+      </div>
+      <div class="coming-soon-grid">
+        <div class="coming-soon-item reveal-body">
+          <div class="coming-soon-item-title">Coaching &amp; Referee Portals</div>
+          <p class="coming-soon-item-desc">Training tracking, exams, coaching materials. Built on MyCroquet.</p>
+        </div>
+        <div class="coming-soon-item reveal-body">
+          <div class="coming-soon-item-title">Tournament Draw Generator</div>
+          <p class="coming-soon-item-desc">Generate draws on the fly from player data. Oxford Croquet methodology.</p>
+        </div>
+        <div class="coming-soon-item reveal-body">
+          <div class="coming-soon-item-title">Calendar with Signups &amp; Payments</div>
+          <p class="coming-soon-item-desc">Clubs post competitions and gala days. Members sign up and pay online.</p>
+        </div>
+        <div class="coming-soon-item reveal-body">
+          <div class="coming-soon-item-title">Meeting Agenda &amp; Minutes</div>
+          <p class="coming-soon-item-desc">Create agendas, record audio, get notes automatically. Speaker diarisation.</p>
+        </div>
+        <div class="coming-soon-item reveal-body">
+          <div class="coming-soon-item-title">Automatic Bookkeeping</div>
+          <p class="coming-soon-item-desc">Photo a receipt, it lands in the books. No data entry.</p>
         </div>
       </div>
     </div>
