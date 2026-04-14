@@ -8,7 +8,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <noscript><style>.reveal,.reveal-body{opacity:1!important;transform:none!important}.pipeline-node-wrap{opacity:1!important;transform:none!important}</style></noscript>
   <style>
+    /* JS-disabled fallback: reveal everything immediately */
+    @media (scripting: none) {
+      .reveal, .reveal-body {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      .pipeline-node-wrap {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -603,6 +615,20 @@
       overflow: visible;
     }
 
+    @media (max-width: 640px) {
+      .content-loop-svg {
+        min-height: 420px;
+      }
+      .loop-diagram-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        justify-content: flex-start;
+      }
+      .content-loop-svg {
+        min-width: 480px;
+      }
+    }
+
     /* Expandable list */
     .expand-list {
       border: var(--border);
@@ -621,12 +647,20 @@
       padding: var(--space-md) var(--space-lg);
       background: none;
       border: none;
+      border-left: 3px solid transparent;
       cursor: pointer;
       text-align: left;
-      transition: background var(--dur-instant) var(--ease-out-soft);
+      transition: background var(--dur-instant) var(--ease-out-soft), border-color var(--dur-fast) var(--ease-out-soft);
       min-height: 44px;
     }
-    .expand-trigger:hover { background: var(--n50); }
+    .expand-trigger:hover {
+      background: var(--n50);
+      border-left-color: var(--maroon);
+    }
+    .expand-trigger[aria-expanded="true"] {
+      border-left-color: var(--maroon);
+      background: var(--n50);
+    }
     .expand-trigger:focus-visible {
       outline: 2px solid var(--maroon);
       outline-offset: -2px;
@@ -1123,6 +1157,14 @@
     .footer-text {
       font-size: var(--text-xs);
       color: var(--text-tertiary);
+    }
+
+    @media (max-width: 480px) {
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-xs);
+      }
     }
 
     /* ─────────────────────────────────────
