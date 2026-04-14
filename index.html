@@ -1204,6 +1204,22 @@
       color: var(--text-tertiary);
       margin-top: var(--space-md);
     }
+    .contact-substack-link {
+      color: var(--text-tertiary);
+      text-decoration: underline;
+      text-decoration-color: transparent;
+      text-underline-offset: 2px;
+      transition: color 0.15s var(--ease-out-soft), text-decoration-color 0.15s var(--ease-out-soft);
+    }
+    .contact-substack-link:hover {
+      color: var(--text-secondary);
+      text-decoration-color: var(--text-secondary);
+    }
+    .contact-substack-link:focus-visible {
+      outline: 2px solid var(--maroon);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
     .contact-right {
       display: flex;
       justify-content: center;
@@ -2099,7 +2115,7 @@
           <h2 class="section-headline reveal" id="contact-heading">Built for croquet. Ready to talk.</h2>
           <p class="section-body reveal-body" style="margin-bottom:var(--space-xl); max-width:45ch; line-height:var(--lh-relaxed);">I've built this for Queensland croquet and I'm not stopping. If your club needs digital support, your association wants to modernise, or you just want to see how it all fits together, let's talk.</p>
           <a href="mailto:me@croquetwade.com" class="btn reveal-body">Get in touch</a>
-          <p class="contact-byline reveal-body">Wade Hart, CroquetWade</p>
+          <p class="contact-byline reveal-body">Wade Hart, CroquetWade &nbsp;&middot;&nbsp; <a href="https://croquetwade.substack.com" class="contact-substack-link" target="_blank" rel="noopener noreferrer">Read the Substack</a></p>
         </div>
         <div class="contact-right reveal">
           <img src="images/wade-beckoning.png" alt="Wade Hart beckoning with an open hand" class="wade-character" style="max-height:400px;" loading="lazy">
