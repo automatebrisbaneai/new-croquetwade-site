@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/site.css">
+  <style>
+    /* Blog-specific styles */
+    .blog-nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .blog-nav-back:hover { color: var(--maroon); }
+
+    .blog-header {
+      padding: clamp(3rem, 6vw, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+      border-bottom: var(--border);
+      background: var(--white);
+    }
+
+    .blog-hero-img {
+      width: 100%;
+      max-height: 480px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-2xl);
+      border: var(--border);
+    }
+
+    .blog-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-title {
+      font-size: var(--text-section);
+      font-weight: var(--weight-semi);
+      line-height: var(--lh-tight);
+      letter-spacing: var(--ls-tight);
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+      max-width: 42ch;
+    }
+
+    .blog-subtitle {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      line-height: var(--lh-snug);
+      max-width: 52ch;
+      margin-bottom: 0;
+    }
+
+    /* Reading column */
+    .blog-body {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) clamp(2rem, 5vw, 4rem);
+    }
+
+    .blog-body p {
+      font-size: var(--text-base);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body h2 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-top: var(--space-3xl);
+      margin-bottom: var(--space-md);
+      line-height: var(--lh-tight);
+    }
+
+    .blog-body h3 {
+      font-size: 1.125rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-2xl);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-body h4, .blog-body h5, .blog-body h6 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-xl);
+      margin-bottom: var(--space-xs);
+    }
+
+    .blog-body a {
+      color: var(--maroon);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .blog-body a:hover { color: var(--maroon-light); }
+
+    .blog-body img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-md);
+      margin: var(--space-2xl) 0;
+      border: var(--border);
+    }
+
+    .blog-body blockquote {
+      border-left: 3px solid var(--maroon);
+      padding-left: var(--space-lg);
+      margin: var(--space-2xl) 0;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .blog-body ul, .blog-body ol {
+      padding-left: var(--space-xl);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body li {
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+    }
+
+    .blog-body hr {
+      border: none;
+      border-top: var(--border);
+      margin: var(--space-3xl) 0;
+    }
+
+    .blog-body pre {
+      background: var(--n100);
+      border: var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-md);
+      overflow-x: auto;
+      font-size: 0.875rem;
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body code {
+      font-size: 0.875em;
+      background: var(--n100);
+      padding: 0.125em 0.375em;
+      border-radius: 3px;
+      color: var(--text-primary);
+    }
+
+    .blog-footer-link {
+      display: block;
+      max-width: 680px;
+      margin: 0 auto var(--space-5xl);
+      padding: var(--space-xl) var(--container-pad);
+      border-top: var(--border);
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+    }
+
+    .blog-footer-link a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-footer-link a:hover { text-decoration: underline; }
+
+    /* Listing page */
+    .blog-listing {
+      padding: clamp(3rem, 6vw, 5rem) 0;
+    }
+
+    .blog-listing-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-2xl);
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) 0;
+    }
+
+    @media (min-width: 640px) {
+      .blog-listing-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .blog-card {
+      display: flex;
+      flex-direction: column;
+      border: var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--white);
+      transition: box-shadow var(--dur-fast) var(--ease-out), border-color var(--dur-fast);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .blog-card:hover {
+      border-color: var(--n300);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .blog-card-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      background: var(--n100);
+    }
+
+    .blog-card-thumb-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--n100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .blog-card-body {
+      padding: var(--space-lg);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-card-date {
+      font-size: var(--text-xxs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-title {
+      font-size: 1.0625rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      line-height: var(--lh-snug);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-dek {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      flex: 1;
+    }
+
+    .blog-listing-empty {
+      text-align: center;
+      padding: var(--space-5xl) var(--container-pad);
+      color: var(--text-tertiary);
+    }
+
+    /* Subscribe CTA — article bottom */
+    .subscribe-cta {
+      max-width: 680px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-2xl) var(--container-pad);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+    }
+
+    .subscribe-cta h3 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-tight);
+    }
+
+    .subscribe-cta p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin-bottom: var(--space-md);
+    }
+
+    .subscribe-cta iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* Subscribe hero — listing page */
+    .subscribe-hero {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-2xl) var(--container-pad) 0;
+    }
+
+    .subscribe-hero-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-xl);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+      padding: var(--space-2xl) var(--container-pad);
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-inner {
+        flex-direction: column;
+      }
+    }
+
+    .subscribe-hero-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .subscribe-hero-text h2 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-xs);
+    }
+
+    .subscribe-hero-text p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin: 0;
+    }
+
+    .subscribe-hero-embed {
+      flex: 0 0 320px;
+      min-width: 0;
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-embed {
+        flex: none;
+        width: 100%;
+      }
+    }
+
+    .subscribe-hero-embed iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* RSS link in listing footer */
+    .blog-listing-footer {
+      max-width: 800px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-md) var(--container-pad) var(--space-5xl);
+      border-top: var(--border);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-listing-footer a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-listing-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+  <title>The problem Not-For-Profits have is in the name — CroquetWade</title>
+  <meta name="description" content="The problem Not-For-Profits have is in the name">
+    <link rel="alternate" type="application/rss+xml" title="CroquetWade — Writing" href="/blog/rss.xml">
+</head>
+<body>
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">CroquetWade</a>
+      <ul class="nav-links">
+        <li><a href="/#systems">Systems</a></li>
+        <li><a href="/#framework">Framework</a></li>
+        <li><a href="/blog/">Writing</a></li>
+        <li><a href="/#contact">Get in Touch</a></li>
+      </ul>
+      <button class="nav-mobile-toggle" aria-expanded="false" aria-controls="nav-dropdown" aria-label="Toggle navigation">Menu</button>
+    </div>
+    <div class="nav-dropdown" id="nav-dropdown" role="menu">
+      <a href="/#systems" role="menuitem">Systems</a>
+      <a href="/#framework" role="menuitem">Framework</a>
+      <a href="/blog/" role="menuitem">Writing</a>
+      <a href="/#contact" role="menuitem">Get in Touch</a>
+    </div>
+  </nav>
+
+  <header class="blog-header">
+    <div class="container">
+      <a href="/blog/" class="blog-nav-back">&#8592; All writing</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="blog-body">
+      <div class="blog-meta">
+        <span>19 March 2026</span>
+      </div>
+      <h1 class="blog-title">The problem Not-For-Profits have is in the name</h1>
+      
+      <hr style="margin: var(--space-2xl) 0; border: none; border-top: var(--border);">
+      <div class="blog-body-content">
+        <p>In any functioning business, thousands of micro-decisions are made every week without a single meeting being called. The people making these calls are simply looking at what’s in front of them and making the natural choice. Someone can go from working in one business to another because business decisions are orientated by the profit motive.</p>
+<p><img alt="" src="/blog/images/the-problem-not-for-profits-have-is-in-the-name/1.jpeg" /></p>
+<p>Harvard economist Michael Jensen calls the profit motive a “<a href="https://www.hbs.edu/ris/Publication%20Files/00-058_f2896ba9-f272-40ca-aa8d-a7645f43a3a9.pdf">single-valued objective function</a>.” When everyone in an organisation is playing a game where success is measured by the same underlying metric, it is easier to cooperate. Profit is like gravity because we are familiar with it as a basic principle. It is the underlying current that keeps even the most politically fractured, messy companies moving forward. It even kept the Soviet Union running past its use-by date through the <a href="https://explaininghistory.org/2023/03/28/using-blat-or-connections-to-survive-in-stalinist-russia/">black market economy system known as blat.</a></p>
+<p><img alt="" src="/blog/images/the-problem-not-for-profits-have-is-in-the-name/2.jpeg" /></p>
+<p>Now, think what happens when the profit motive removed.</p>
+<p>When volunteer organisations and not-for-profits are formed, the profit motive is stripped out and nothing is put in its place to serve that singular aligning role. We keep the org charts, the committees, and the monthly meetings, operating under the assumption that the machinery will just keep running on good intentions of those operating it.</p>
+<p>Instead, the profit motive vacuum is filled by fragmentation.</p>
+<p><img alt="" src="/blog/images/the-problem-not-for-profits-have-is-in-the-name/3.jpeg" /></p>
+<p>Without a singular, universally agreed-upon ideal, aim or goal, every volunteer naturally drifts toward their own personal definition of what matters most to them. This is where the trouble starts.</p>
+<p>These are all rational, well-intentioned people who care deeply about the game or their club. And yet, they end up pulling the organisation apart.</p>
+<p>The dysfunction is not a personality issue; it’s an architectural one.</p>
+<p><img alt="A plan of a building with a circular floor plan" src="/blog/images/the-problem-not-for-profits-have-is-in-the-name/4.jpeg" title="A plan of a building with a circular floor plan" /></p>
+<p>Photo by <a href="https://unsplash.com/@amsterdamcityarchives">Amsterdam City Archives</a> on <a href="https://unsplash.com">Unsplash</a></p>
+<p>Without a shared bearing on a direction, every discussion and decision devolves into a proxy war over what the fundamental purpose of the club is. <a href="https://dtleadership.my/wp-content/uploads/2019/05/Drucker-2006-The-Effective-Executive-The-Definitive-Guide-to-Getting-the-Right-Things-Done.pdf">As Peter Drucker famously observed</a>, without a bottom line, non-profits will inevitably substitute busyness for actual results.</p>
+<p>The framework I proposed uses the IDEALS to mimic the assistance that businesses get by default from the profit motive. For croquet they are:</p>
+<ol>
+<li><strong>Enjoy Croquet,</strong></li>
+<li><strong>Keep It Simple,</strong></li>
+<li><strong>Hit Our Aims, and</strong></li>
+<li><strong>Co-operate for Croquet.</strong></li>
+</ol>
+<p>While all four have their own purposes, one of them specifically does the heavy lifting of the profit motive: <strong>Hit Our Aims</strong>.</p>
+<p><img alt="" src="/blog/images/the-problem-not-for-profits-have-is-in-the-name/5.png" /></p>
+<p>“Hit our aims” is the single question every committee member should be able to hold up against any decision: <em>Does this specific action move us toward the destination we all agreed on?</em></p>
+<p>But there is a catch. This surrogate profit motive only functions if your aims are actually sharp enough to settle an argument. A broad mandate like “be a great club” is practically useless because factions simply project their own desires onto vague language and you are back in year 8 doing definitional debating.</p>
+<p>To work, an aim must be definitive and universally agreed. Noosa Croquet Club provides a perfect, pragmatic example of this. They decided their club exists for one measurable reason: so people renew their membership.</p>
+<p>It is beautifully blunt. Do new people join, and do existing members stay? Every operational decision is suddenly in service to that single metric.</p>
+<p>When Noosa’s president explained how they operated I saw is as perfect structural replacement for profit. Under the Noosa model, competitive players require high-quality lawns because that is what guarantees their renewal. Social players require a welcoming atmosphere because that is what guarantees theirs.</p>
+<p><img alt="" src="/blog/images/the-problem-not-for-profits-have-is-in-the-name/6.jpeg" /></p>
+<p>The competition and the social sections are no longer adversaries. They are two parts of the same team, utilising different methods to get the same outcome. Minor disputes over things can now be filtered through a dispassionate lens: <em>Does this help us attract or retain members?</em></p>
+<p>If “Hit Our Aims” provides the destination, the remaining three IDEALS ensure the club survives the journey. <strong>Enjoy Croquet</strong> ensures that the pursuit of goals doesn’t stop the volunteers burning out. <strong>Keep It Simple</strong> prevents bureaucratic bloat, prioritising time on the lawns over time in meetings. And <strong>Co-operate for Croquet</strong> establishes the baseline for resolving the inevitable disagreements without them calcifying into grudges.</p>
+<p>A commercial enterprise gets all of these aligning forces from a single result on a financial statement. A volunteer organisation needs to build and agree to them for its purpose.</p>
+<p>The next time you find itself locked in a forty-five-minute debate over a matter, step back. You are arguing from a place of unaligned priorities and are cage fighting instead of discussing.</p>
+<p>The fix is sitting down, stripping away the assumptions, and agreeing on exactly what your organisation is trying to achieve in language sharp enough to point to the direction you want everyone to go.</p>
+<p><img alt="" src="/blog/images/the-problem-not-for-profits-have-is-in-the-name/7.jpeg" /></p>
+      </div>
+    </div>
+    <aside class="subscribe-cta">
+      <h3>Keep reading</h3>
+      <p>Have my posts delivered to your inbox so you can read them there.</p>
+      <iframe src="https://croquetwade.substack.com/embed"
+              width="100%" height="150" frameborder="0" scrolling="no"
+              title="Subscribe to CroquetWade"></iframe>
+    </aside>
+    <div class="blog-footer-link">Originally published on <a href="https://croquetwade.substack.com/p/the-problem-not-for-profits-have" target="_blank" rel="noopener noreferrer">Substack</a>.</div>
+  </main>
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-text">2026 CroquetWade</span>
+        <span class="footer-text">Brisbane, Queensland</span>
+      </div>
+    </div>
+  </footer>
+  <script>
+    // Mobile nav toggle
+    const toggle = document.querySelector('.nav-mobile-toggle');
+    const dropdown = document.querySelector('.nav-dropdown');
+    if (toggle && dropdown) {
+      toggle.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!expanded));
+        dropdown.classList.toggle('open');
+      });
+    }
+  </script>
+</body>
+</html>

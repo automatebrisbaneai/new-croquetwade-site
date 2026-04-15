@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/site.css">
+  <style>
+    /* Blog-specific styles */
+    .blog-nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .blog-nav-back:hover { color: var(--maroon); }
+
+    .blog-header {
+      padding: clamp(3rem, 6vw, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+      border-bottom: var(--border);
+      background: var(--white);
+    }
+
+    .blog-hero-img {
+      width: 100%;
+      max-height: 480px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-2xl);
+      border: var(--border);
+    }
+
+    .blog-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-title {
+      font-size: var(--text-section);
+      font-weight: var(--weight-semi);
+      line-height: var(--lh-tight);
+      letter-spacing: var(--ls-tight);
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+      max-width: 42ch;
+    }
+
+    .blog-subtitle {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      line-height: var(--lh-snug);
+      max-width: 52ch;
+      margin-bottom: 0;
+    }
+
+    /* Reading column */
+    .blog-body {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) clamp(2rem, 5vw, 4rem);
+    }
+
+    .blog-body p {
+      font-size: var(--text-base);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body h2 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-top: var(--space-3xl);
+      margin-bottom: var(--space-md);
+      line-height: var(--lh-tight);
+    }
+
+    .blog-body h3 {
+      font-size: 1.125rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-2xl);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-body h4, .blog-body h5, .blog-body h6 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-xl);
+      margin-bottom: var(--space-xs);
+    }
+
+    .blog-body a {
+      color: var(--maroon);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .blog-body a:hover { color: var(--maroon-light); }
+
+    .blog-body img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-md);
+      margin: var(--space-2xl) 0;
+      border: var(--border);
+    }
+
+    .blog-body blockquote {
+      border-left: 3px solid var(--maroon);
+      padding-left: var(--space-lg);
+      margin: var(--space-2xl) 0;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .blog-body ul, .blog-body ol {
+      padding-left: var(--space-xl);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body li {
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+    }
+
+    .blog-body hr {
+      border: none;
+      border-top: var(--border);
+      margin: var(--space-3xl) 0;
+    }
+
+    .blog-body pre {
+      background: var(--n100);
+      border: var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-md);
+      overflow-x: auto;
+      font-size: 0.875rem;
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body code {
+      font-size: 0.875em;
+      background: var(--n100);
+      padding: 0.125em 0.375em;
+      border-radius: 3px;
+      color: var(--text-primary);
+    }
+
+    .blog-footer-link {
+      display: block;
+      max-width: 680px;
+      margin: 0 auto var(--space-5xl);
+      padding: var(--space-xl) var(--container-pad);
+      border-top: var(--border);
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+    }
+
+    .blog-footer-link a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-footer-link a:hover { text-decoration: underline; }
+
+    /* Listing page */
+    .blog-listing {
+      padding: clamp(3rem, 6vw, 5rem) 0;
+    }
+
+    .blog-listing-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-2xl);
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) 0;
+    }
+
+    @media (min-width: 640px) {
+      .blog-listing-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .blog-card {
+      display: flex;
+      flex-direction: column;
+      border: var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--white);
+      transition: box-shadow var(--dur-fast) var(--ease-out), border-color var(--dur-fast);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .blog-card:hover {
+      border-color: var(--n300);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .blog-card-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      background: var(--n100);
+    }
+
+    .blog-card-thumb-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--n100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .blog-card-body {
+      padding: var(--space-lg);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-card-date {
+      font-size: var(--text-xxs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-title {
+      font-size: 1.0625rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      line-height: var(--lh-snug);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-dek {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      flex: 1;
+    }
+
+    .blog-listing-empty {
+      text-align: center;
+      padding: var(--space-5xl) var(--container-pad);
+      color: var(--text-tertiary);
+    }
+
+    /* Subscribe CTA — article bottom */
+    .subscribe-cta {
+      max-width: 680px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-2xl) var(--container-pad);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+    }
+
+    .subscribe-cta h3 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-tight);
+    }
+
+    .subscribe-cta p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin-bottom: var(--space-md);
+    }
+
+    .subscribe-cta iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* Subscribe hero — listing page */
+    .subscribe-hero {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-2xl) var(--container-pad) 0;
+    }
+
+    .subscribe-hero-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-xl);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+      padding: var(--space-2xl) var(--container-pad);
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-inner {
+        flex-direction: column;
+      }
+    }
+
+    .subscribe-hero-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .subscribe-hero-text h2 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-xs);
+    }
+
+    .subscribe-hero-text p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin: 0;
+    }
+
+    .subscribe-hero-embed {
+      flex: 0 0 320px;
+      min-width: 0;
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-embed {
+        flex: none;
+        width: 100%;
+      }
+    }
+
+    .subscribe-hero-embed iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* RSS link in listing footer */
+    .blog-listing-footer {
+      max-width: 800px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-md) var(--container-pad) var(--space-5xl);
+      border-top: var(--border);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-listing-footer a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-listing-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+  <title>Nobody Wants to Be Treasurer — CroquetWade</title>
+  <meta name="description" content="Nobody Wants to Be Treasurer">
+    <link rel="alternate" type="application/rss+xml" title="CroquetWade — Writing" href="/blog/rss.xml">
+</head>
+<body>
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">CroquetWade</a>
+      <ul class="nav-links">
+        <li><a href="/#systems">Systems</a></li>
+        <li><a href="/#framework">Framework</a></li>
+        <li><a href="/blog/">Writing</a></li>
+        <li><a href="/#contact">Get in Touch</a></li>
+      </ul>
+      <button class="nav-mobile-toggle" aria-expanded="false" aria-controls="nav-dropdown" aria-label="Toggle navigation">Menu</button>
+    </div>
+    <div class="nav-dropdown" id="nav-dropdown" role="menu">
+      <a href="/#systems" role="menuitem">Systems</a>
+      <a href="/#framework" role="menuitem">Framework</a>
+      <a href="/blog/" role="menuitem">Writing</a>
+      <a href="/#contact" role="menuitem">Get in Touch</a>
+    </div>
+  </nav>
+
+  <header class="blog-header">
+    <div class="container">
+      <a href="/blog/" class="blog-nav-back">&#8592; All writing</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="blog-body">
+      <div class="blog-meta">
+        <span>8 February 2026</span>
+      </div>
+      <h1 class="blog-title">Nobody Wants to Be Treasurer</h1>
+      
+      <hr style="margin: var(--space-2xl) 0; border: none; border-top: var(--border);">
+      <div class="blog-body-content">
+        <h2>The treasurer’s job</h2>
+<p>Most clubs describe the treasurer role something like this: maintain the books, issue invoices, reconcile the accounts, prepare financial reports for committee meetings, manage the bank account, handle petty cash, chase up unpaid fees.</p>
+<p>That’s a lot of tasks. But the treasurer doesn’t have to personally do all of them. Take any single task on that list and there are options for how it gets handled.</p>
+<p>To see what I mean, step sideways to the grounds coordinator for a moment. One of their tasks is mowing the lawn surrounds. The grounds coordinator could do it themselves. They could find another member who enjoys mowing. They could decide some areas don’t need mowing as often and reduce the frequency. They could get a robotic mower. They could pay a contractor, or negotiate with council to include it in the lease.</p>
+<p>Five options for one task: do it yourself, find someone else, stop doing it, automate it, or outsource it.</p>
+<p><img alt="Every task has options. The job is making sure it's covered. Photo: Pexels" src="/blog/images/nobody-wants-to-be-treasurer/1.jpeg" title="Every task has options. The job is making sure it's covered. Photo: Pexels" /></p>
+<p>Every task has options. The job is making sure it’s covered. Photo: Pexels</p>
+<p>Now go back to the treasurer’s list and apply the same thinking. The treasurer might do the bank reconciliation themselves because they’re good with numbers. They might ask someone else to chase unpaid fees because that person knows everyone. They might pay a bookkeeper to prepare the financial reports because life’s too short. Each task gets its own answer. The treasurer doesn’t have to pick the same option for all of them.</p>
+<p>So what’s the treasurer’s actual job? Making sure the club’s finances are handled. How they’re handled is a series of decisions about individual tasks, and each decision has options.</p>
+<hr />
+<h2>The same thing, everywhere you look</h2>
+<p>The secretary doesn’t have to take the minutes at every meeting. Someone else could do it on a rotating basis. The club could record meetings and use a transcription tool. The secretary makes sure the minutes exist. The method is flexible.</p>
+<p>The Come and Try coordinator doesn’t have to be at every session. They need to make sure someone welcoming is there when visitors arrive. Maybe they do it most weeks. Maybe they set up a roster. Maybe they send a message the day before and ask who’s available.</p>
+<p>Every position at a croquet club, when you pull it apart, is the same thing: a collection of tasks that need to be coordinated. The person in the role makes sure the tasks are handled. They don’t have to handle all of them personally.</p>
+<hr />
+<h2>Why this matters right now</h2>
+<p>Clubs across Queensland can’t fill positions. At AGMs the chair reads out the list of roles and the room goes quiet. The same three people divide the unclaimed positions between themselves. The usual explanation is that people don’t want to volunteer. But most members are happy to help. They’ll set up chairs, put the kettle on, show a visitor where to stand. What they won’t agree to is taking on a role that reads like a job description.</p>
+<p>And that’s what most position descriptions are. A list of tasks one person must do, indefinitely, with no clear boundary. A retired person who joined a croquet club to enjoy their Tuesday afternoons reads a list like the treasurer one above and thinks: <em>absolutely not</em>.</p>
+<p><img alt="The room goes quiet. Not because people don't care, but because the ask is too big. Photo: Pexels" src="/blog/images/nobody-wants-to-be-treasurer/2.jpeg" title="The room goes quiet. Not because people don't care, but because the ask is too big. Photo: Pexels" /></p>
+<p>The room goes quiet. Not because people don’t care, but because the ask is too big. Photo: Pexels</p>
+<p>But “can you handle the petty cash?” is a different ask entirely. That’s one task. It’s small, it’s defined, and it ends when someone else takes it over. People say yes to that. Volunteer management consultant Tobi Johnson makes the same point in <a href="https://tobijohnson.com/volunteer-roles/">Are Your Volunteer Roles Too Big?</a>: when volunteers balk at a big job, the answer is to redesign the role, break it into smaller tasks, assess which ones can be shared or simplified, and build new position descriptions around what’s left. The act of redesigning, she writes, converts what looks like a people problem into a process problem.</p>
+<hr />
+<h2>The two asks</h2>
+<p>Think about the difference.</p>
+<p><em>“We need a treasurer. You’ll need to maintain the books, issue invoices, reconcile accounts, prepare financial reports, manage the bank account, and handle petty cash.”</em></p>
+<p>Or:</p>
+<p><em>“We need someone to make sure the club’s finances are handled. Here are the tasks involved. Some you might do yourself, some you might hand to someone else, some we might not need at all. Your job is to make sure it’s covered, not to do it all.”</em></p>
+<p>The actual work might end up being identical. But the second ask changes who’s willing to take the role on, because the weight feels different. You’re not signing up to do everything. You’re signing up to make sure everything gets done. And once you’re in the role, you can break the big job into small asks. Small asks get answered. The workload spreads across the club instead of sitting on one person.</p>
+<p><img alt="Same work, different weight. Reframing the ask changes who says yes. Photo: Pexels" src="/blog/images/nobody-wants-to-be-treasurer/3.jpeg" title="Same work, different weight. Reframing the ask changes who says yes. Photo: Pexels" /></p>
+<p>Same work, different weight. Reframing the ask changes who says yes. Photo: Pexels</p>
+<hr />
+<h2>A club that’s already doing this</h2>
+<p>Noosa Croquet Club restructured their governance late last year. Their secretary, Brian, separated the committee of nine into coordinators and decision-makers, then created twelve support roles sitting outside the committee. Tournament manager, social committee, assistant treasurer, various operational positions. The support role holders aren’t committee members. They attend meetings to give updates, but they don’t participate in every decision.</p>
+<p>Brian reviewed all the role descriptions and reframed them as guidance rather than instructions. The descriptions clarify what’s expected without locking people into rigid task lists. The committee coordinates. The support roles execute. And because each support role is a defined, bounded piece of work, people actually put their hand up for them.</p>
+<p><img alt="Define the handoff and people step up. Photo: Pexels" src="/blog/images/nobody-wants-to-be-treasurer/4.jpeg" title="Define the handoff and people step up. Photo: Pexels" /></p>
+<p>Define the handoff and people step up. Photo: Pexels</p>
+<p>When Richard, the tournament coordinator, needed help running a four-day Regional Championship, he put out a message and had volunteers for grounds, catering, and IT almost immediately. He didn’t ask anyone to take on a massive role. He asked for specific help with specific things and got volunteers.</p>
+<hr />
+<h2>Most of this doesn’t need a committee</h2>
+<p>There’s a secondary point worth making. Clubs default to putting everything through committee. The grounds need attention? Committee agenda item. The social calendar needs planning? Committee agenda item. Someone needs to buy milk? You get the idea.</p>
+<p>Most of the operational work at a club doesn’t need committee approval. It needs someone to coordinate it. Someone who knows what needs to happen, has the freedom to work out how, and can ask for help when they need it. The committee sets the direction. The coordinators make things happen. <a href="https://volunteeringaustralia.org/wp-content/uploads/VRP_The-great-volunteer-resignation-An-evidence-based-strategy-for-retaining-volunteers.pdf">Volunteering Australia’s meta-analysis on volunteer turnover</a> found that autonomy and burnout are among the strongest predictors of whether volunteers stay or leave. Volunteers who have freedom in how they carry out their work stay longer. Volunteers who feel overloaded quit. Coordination framing gives people both: freedom in how they handle each task, and a natural boundary around what’s theirs to handle.</p>
+<hr />
+<h2>One position, pulled apart</h2>
+<p>If you want to test this at your club, pick one role. Ideally one that’s either vacant or held by someone struggling under the weight of it.</p>
+<p>Write down every task that sits inside that position. Then, for each task, run through the five options: who does this now? Could someone else? Could we stop doing it? Could we automate it? Could we outsource it?</p>
+<p>You’ll find tasks that are critically important. You’ll find tasks nobody’s doing because they fell between roles. You’ll find tasks that have been done the same way for years because nobody questioned whether they’re still needed. And you’ll find tasks that a member would happily take on individually but would never have volunteered for as part of the whole role.</p>
+<p>Then rewrite the position description as a coordination role. <em>“This person makes sure the following things are handled. How they’re handled is up to them.”</em></p>
+<p><img alt="Pull it apart, see what's there, then rebuild it as a coordination role. Photo: Pexels" src="/blog/images/nobody-wants-to-be-treasurer/5.jpeg" title="Pull it apart, see what's there, then rebuild it as a coordination role. Photo: Pexels" /></p>
+<p>Pull it apart, see what’s there, then rebuild it as a coordination role. Photo: Pexels</p>
+      </div>
+    </div>
+    <aside class="subscribe-cta">
+      <h3>Keep reading</h3>
+      <p>Have my posts delivered to your inbox so you can read them there.</p>
+      <iframe src="https://croquetwade.substack.com/embed"
+              width="100%" height="150" frameborder="0" scrolling="no"
+              title="Subscribe to CroquetWade"></iframe>
+    </aside>
+    <div class="blog-footer-link">Originally published on <a href="https://croquetwade.substack.com/p/nobody-wants-to-be-treasurer" target="_blank" rel="noopener noreferrer">Substack</a>.</div>
+  </main>
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-text">2026 CroquetWade</span>
+        <span class="footer-text">Brisbane, Queensland</span>
+      </div>
+    </div>
+  </footer>
+  <script>
+    // Mobile nav toggle
+    const toggle = document.querySelector('.nav-mobile-toggle');
+    const dropdown = document.querySelector('.nav-dropdown');
+    if (toggle && dropdown) {
+      toggle.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!expanded));
+        dropdown.classList.toggle('open');
+      });
+    }
+  </script>
+</body>
+</html>

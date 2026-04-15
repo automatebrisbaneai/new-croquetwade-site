@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/site.css">
+  <style>
+    /* Blog-specific styles */
+    .blog-nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .blog-nav-back:hover { color: var(--maroon); }
+
+    .blog-header {
+      padding: clamp(3rem, 6vw, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+      border-bottom: var(--border);
+      background: var(--white);
+    }
+
+    .blog-hero-img {
+      width: 100%;
+      max-height: 480px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-2xl);
+      border: var(--border);
+    }
+
+    .blog-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-title {
+      font-size: var(--text-section);
+      font-weight: var(--weight-semi);
+      line-height: var(--lh-tight);
+      letter-spacing: var(--ls-tight);
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+      max-width: 42ch;
+    }
+
+    .blog-subtitle {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      line-height: var(--lh-snug);
+      max-width: 52ch;
+      margin-bottom: 0;
+    }
+
+    /* Reading column */
+    .blog-body {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) clamp(2rem, 5vw, 4rem);
+    }
+
+    .blog-body p {
+      font-size: var(--text-base);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body h2 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-top: var(--space-3xl);
+      margin-bottom: var(--space-md);
+      line-height: var(--lh-tight);
+    }
+
+    .blog-body h3 {
+      font-size: 1.125rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-2xl);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-body h4, .blog-body h5, .blog-body h6 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-xl);
+      margin-bottom: var(--space-xs);
+    }
+
+    .blog-body a {
+      color: var(--maroon);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .blog-body a:hover { color: var(--maroon-light); }
+
+    .blog-body img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-md);
+      margin: var(--space-2xl) 0;
+      border: var(--border);
+    }
+
+    .blog-body blockquote {
+      border-left: 3px solid var(--maroon);
+      padding-left: var(--space-lg);
+      margin: var(--space-2xl) 0;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .blog-body ul, .blog-body ol {
+      padding-left: var(--space-xl);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body li {
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+    }
+
+    .blog-body hr {
+      border: none;
+      border-top: var(--border);
+      margin: var(--space-3xl) 0;
+    }
+
+    .blog-body pre {
+      background: var(--n100);
+      border: var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-md);
+      overflow-x: auto;
+      font-size: 0.875rem;
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body code {
+      font-size: 0.875em;
+      background: var(--n100);
+      padding: 0.125em 0.375em;
+      border-radius: 3px;
+      color: var(--text-primary);
+    }
+
+    .blog-footer-link {
+      display: block;
+      max-width: 680px;
+      margin: 0 auto var(--space-5xl);
+      padding: var(--space-xl) var(--container-pad);
+      border-top: var(--border);
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+    }
+
+    .blog-footer-link a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-footer-link a:hover { text-decoration: underline; }
+
+    /* Listing page */
+    .blog-listing {
+      padding: clamp(3rem, 6vw, 5rem) 0;
+    }
+
+    .blog-listing-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-2xl);
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) 0;
+    }
+
+    @media (min-width: 640px) {
+      .blog-listing-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .blog-card {
+      display: flex;
+      flex-direction: column;
+      border: var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--white);
+      transition: box-shadow var(--dur-fast) var(--ease-out), border-color var(--dur-fast);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .blog-card:hover {
+      border-color: var(--n300);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .blog-card-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      background: var(--n100);
+    }
+
+    .blog-card-thumb-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--n100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .blog-card-body {
+      padding: var(--space-lg);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-card-date {
+      font-size: var(--text-xxs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-title {
+      font-size: 1.0625rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      line-height: var(--lh-snug);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-dek {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      flex: 1;
+    }
+
+    .blog-listing-empty {
+      text-align: center;
+      padding: var(--space-5xl) var(--container-pad);
+      color: var(--text-tertiary);
+    }
+
+    /* Subscribe CTA — article bottom */
+    .subscribe-cta {
+      max-width: 680px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-2xl) var(--container-pad);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+    }
+
+    .subscribe-cta h3 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-tight);
+    }
+
+    .subscribe-cta p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin-bottom: var(--space-md);
+    }
+
+    .subscribe-cta iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* Subscribe hero — listing page */
+    .subscribe-hero {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-2xl) var(--container-pad) 0;
+    }
+
+    .subscribe-hero-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-xl);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+      padding: var(--space-2xl) var(--container-pad);
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-inner {
+        flex-direction: column;
+      }
+    }
+
+    .subscribe-hero-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .subscribe-hero-text h2 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-xs);
+    }
+
+    .subscribe-hero-text p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin: 0;
+    }
+
+    .subscribe-hero-embed {
+      flex: 0 0 320px;
+      min-width: 0;
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-embed {
+        flex: none;
+        width: 100%;
+      }
+    }
+
+    .subscribe-hero-embed iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* RSS link in listing footer */
+    .blog-listing-footer {
+      max-width: 800px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-md) var(--container-pad) var(--space-5xl);
+      border-top: var(--border);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-listing-footer a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-listing-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+  <title>The Value In A New Member — CroquetWade</title>
+  <meta name="description" content="The Value In A New Member">
+    <link rel="alternate" type="application/rss+xml" title="CroquetWade — Writing" href="/blog/rss.xml">
+</head>
+<body>
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">CroquetWade</a>
+      <ul class="nav-links">
+        <li><a href="/#systems">Systems</a></li>
+        <li><a href="/#framework">Framework</a></li>
+        <li><a href="/blog/">Writing</a></li>
+        <li><a href="/#contact">Get in Touch</a></li>
+      </ul>
+      <button class="nav-mobile-toggle" aria-expanded="false" aria-controls="nav-dropdown" aria-label="Toggle navigation">Menu</button>
+    </div>
+    <div class="nav-dropdown" id="nav-dropdown" role="menu">
+      <a href="/#systems" role="menuitem">Systems</a>
+      <a href="/#framework" role="menuitem">Framework</a>
+      <a href="/blog/" role="menuitem">Writing</a>
+      <a href="/#contact" role="menuitem">Get in Touch</a>
+    </div>
+  </nav>
+
+  <header class="blog-header">
+    <div class="container">
+      <a href="/blog/" class="blog-nav-back">&#8592; All writing</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="blog-body">
+      <div class="blog-meta">
+        <span>27 February 2026</span>
+      </div>
+      <h1 class="blog-title">The Value In A New Member</h1>
+      
+      <hr style="margin: var(--space-2xl) 0; border: none; border-top: var(--border);">
+      <div class="blog-body-content">
+        <hr />
+<p>Queensland croquet needs more members. They are extremely valuable economically.</p>
+<p>Every new member is three things at once:</p>
+<ol>
+<li>paying customer,</li>
+<li>an unpaid worker, and</li>
+<li>a public health investment.</li>
+</ol>
+<p>To croquet our members are both our customer and our employee. And we have the government who pay for the delivery of health benefits to our members..</p>
+<p>A croquet club stacks 3 very valuable economic activities together.</p>
+<p>Once we ourselves understand the value and need for membership to be a primary priority croquet can begin to focus on improving the wiltering game and prevent it from a future we dread to think about.</p>
+<hr />
+<h2>The subsistence line</h2>
+<p>Most Queensland croquet clubs have about 30 members.</p>
+<p>At 30 members, every available volunteer hour goes to keeping the club running. Lawns need mowing. The clubhouse needs maintaining. Sessions need coordinating. Equipment needs replacing. Someone has to buy the milk for tea and coffee.</p>
+<p>Once all the must-do chores are done there’s nobody left over. No excess capacity. The club can maintain itself, but even that’s a struggle. It can’t grow, improve, or try anything new. There are no spare hands because every pair of hands is already full.</p>
+<p><img alt="" src="/blog/images/the-value-in-a-new-member/1.png" /></p>
+<p>This is subsistence. The club exists to keep itself existing. All energy goes to maintenance. Nothing goes to growth. And because nothing goes to growth, the club stays at 30 members, which means nothing goes to growth. The loop closes. Everyone gets old and nothing changes.</p>
+<p>Gregory and Howard called it <a href="https://ssir.org/articles/entry/the_nonprofit_starvation_cycle">the Starvation Cycle</a> in the <em>Stanford Social Innovation Review</em>: organisations feel immense pressure to direct every resource to front-line delivery, which starves them of the capacity to grow. For a croquet club, front-line delivery is keeping the lawns playable and the sessions running. Growth would mean marketing, onboarding new players, running Come &amp; Try programs. There’s nobody spare to do any of that because everyone is already busy keeping the lights on.</p>
+<p>Australian research on small voluntary organisations calls the same dynamic the <a href="https://volunteeringhub.org.au/wp-content/uploads/2021/02/Making%20an%20Impact:%20Enhancing%20the%20effectiveness%20of%20unfunded%20and%20small%20voluntary%20organisations%20and%20groups.pdf">liability of smallness</a>. All-volunteer groups lack the internal surplus to access external resources, plan for succession, or step back from daily firefighting to think strategically. A broken mower or a sick treasurer consumes 100% of a small club’s capacity. And there is always something like this, one problem to the next.</p>
+<p>The financial version of this trap is just as tight. A club’s fixed costs don’t shrink when members leave. Insurance, water bills, lawn care, equipment maintenance: the bill is the same whether the club has 40 members or 20. The per-member burden goes up, which makes raising the fees at the AGM the only way to survive, which pushes more people out, which raises the burden again. Nobody notices at first. It just gets a little harder to balance the books each year…then the numbers stop working.</p>
+<p>Most Queensland croquet clubs sit on council land. The lease exists because the club exists. A council looking at four lawns used by 25 people three mornings a week sees underutilised public space. The conversation at lease renewal is very different when the club has 50 active members gathering five days a week compared to 15 members playing Tuesday and Thursday mornings. Nobody at council openly says they’re thinking about repurposing our croquet courts which sit on prime land near centres of cities and towns. Until a consultant’s plan comes through turning the club into a dog park.</p>
+<hr />
+<h2>The maths at the margin</h2>
+<p>Queensland has about 40 clubs. If we all co-operate and find five hundred new members across the state that would average out at about 12. per club. So for ease lets say 10.</p>
+<p><img alt="" src="/blog/images/the-value-in-a-new-member/2.png" /></p>
+<p>A 30-member croquet club probably has eight to ten people doing all the operational work right now. That sounds adequate until you realise those eight people are in their 70s and 80s. <a href="https://changeourgame.vic.gov.au/__data/assets/pdf_file/0020/2270225/OWSR_The-volunteer-capacity-of-community-sports-clubs-to-support-women-and-girls-in-sport-Oct-2023.pdf">Victorian research on volunteer capacity</a> repeats the message: the same few people do all the work. In a croquet club, they’ve been at it for a decade or more. Our clubs are rapidly aging out. Croquet’s membership drop off looks to be approaching 10% per annum. We aren’t replacing our numbers.</p>
+<p>If the average age of a club’s helpers is 75, in five years they’re 80. A club which has eight operational volunteers now but no growth has three or four people left doing the work by 2031. Too few people to believe things can get better. From here this club will likely find no more volunteers and the club finishes.</p>
+<p><a href="https://wagingnonviolence.org/2012/01/you-only-need-10-percent-the-science-behind-tipping-points/">Researchers at Rensselaer Polytechnic Institute</a> found that an idea will not spread without a critical mass of support. A club that only has a few committed people is mathematically doomed. They will wallow so badly that even the belief that things can improve won’t be able to spread. Without intervention this club is waiting to die.</p>
+<p><a href="https://www.science.org/doi/10.1126/science.aas8827">Centola and colleagues</a>, in experiments published in <em>Science</em>, found the threshold of 25%. When a committed group reaches 25% of a community, it triggers a cascade that flips the group’s behaviour. Below 25%, efforts to change are rejected by the majority’s current culture and the status quo is maintained.</p>
+<p>In a 30-member club, 25% is eight active volunteers. In my experience most clubs hover around there. 6 to 9 people in their 70s and 80s doing everything, including activities they’re no longer fully capable of.</p>
+<p>Our clubs are sitting on the edge. Every retirement pushes the committed group further below 25%. Below that threshold, the research says change can’t take hold. The club just drifts.</p>
+<p>But if we can get 10 new members in who share the attitude of the original eight, the committed group climbs above 25%. That’s when the culture flips. Above 25%, the club becomes positive, attractive, self-reinforcing. People want to join a club that believes in itself.</p>
+<p>That’s what the club membership meetings are for. I want to find the people in our existing membership who are ready to be part of that core group and get them fired up. We don’t need everyone. We need 25%.</p>
+<p><img alt="" src="/blog/images/the-value-in-a-new-member/3.png" /></p>
+<h2>The money numbers in clubland.</h2>
+<p>Here’s the value of 10 new members on one club.</p>
+<p>First, the fees. Queensland croquet memberships range widely: $400 a year at some clubs, $800 or more at others. Ten new members is $4,000 to $8,000 in annual revenue. But annual fees understate what a member is worth. Because that member is around for longer than a year.</p>
+<p>No data exists on croquet membership patterns, but croquet shares a demographic profile with golf and lawn bowls. Queensland golf clubs like <a href="https://www.headlandgolfclub.com.au/wp-content/uploads/2017/08/Headland-Golf-Strategic-Plan.pdf">Headland</a> report average membership tenures of 10 to 12 years. Bowls clubs use the same benchmark. Over a decade, those ten new croquet members will provide each of their clubs $40,000 to $80,000 more revenue.</p>
+<p>Second, the labour. In most sports, <a href="https://www.ausport.gov.au/clearinghouse/evidence/volunteers-in-sport/benefits/community">the ASC’s Clearinghouse</a> puts the volunteer-to-member ratio at about 11.7%. But that national figure is dragged down by junior-heavy sports like soccer and netball, where parents treat clubs as drop-off services and hundreds of under-18 members skew the average percentage downward. Croquet is different. Our membership base is almost entirely over 55, and <a href="https://www.clearinghouseforsport.gov.au/research/ausplay/results/participation-report/older-australians-aged-55">AusPlay data on older Australians</a> shows that this demographic takes on non-playing roles at much higher rates. <a href="https://bowls.com.au/volunteers-pivotal-to-the-return-of-sport/">Bowls Australia</a>, the closest parallel, reports volunteer ratios of 25% to 30% volunteerism.</p>
+<p>Using bowl’s rate, of ten new members, about three will actively contribute. Three people who mow, greet, coordinate, or sit on a subcommittee. At a conservative $30 per hour <a href="https://www.galaxydigital.com/blog/how-to-measure-volunteer-program-roi">replacement wage</a>, five hours a week each, that’s $23,400 a year of labour who’s benefit isn’t usually accounted for anywhere.</p>
+<p>So 10 new members contribute to their clubs up to $80,000 in revenue and $235,000 in volunteering over the next ten years.</p>
+<p><img alt="" src="/blog/images/the-value-in-a-new-member/4.png" /></p>
+<p>Third, the compounding. The <a href="https://www.ausport.gov.au/clearinghouse/evidence/volunteers-in-sport/benefits/community">ASC notes</a> that one volunteer creates the capacity for 8.5 players. Three new volunteers from those ten members increases the possible capacity for the club by 25 players. Each new thing the club can now do (a Come &amp; Try session, a social event, a tidied-up entrance) makes it a place more people want to join.</p>
+<p>So more people join. Another three volunteers sign up in that group and the club goes from an aging eight core people to a mixed fourteen, and suddenly it’s doing things that were impossible eighteen months ago with a really enthusiastic core of members. The club has momentum with self fulfilling and self sustaining growth.</p>
+<p>Our clubs’ growth will be compounding. The same mechanics as interest on savings. The first bits of growth are the hardest and looks the least impressive. But it is the dedication to the unglamourous beginning that croquet needs.</p>
+<hr />
+<h2>The dress without a party</h2>
+<p><img alt="" src="/blog/images/the-value-in-a-new-member/5.png" /></p>
+<p>Here’s what I hear at planning sessions across Queensland.</p>
+<p>Interstate competitiveness. Under-30 development pathways. Schools programs. Lighting for evening play. Outer-suburb expansion. State centres. High-performance coaching. Liverstreaming.</p>
+<p>All good ideas. Every one of them assumes a base of members and volunteers that Croquet Queensland don’t have. Every one of them is an outcome. Membership is the strategy writ to get there.</p>
+<p>Lighting is the one that comes up most often, so let’s use it. A club installs lights so members can play in the evening and attract working-age players who can’t make daytime sessions. Sensible in theory. But the club currently has 25 members and can barely fill its existing sessions. The lights go in. Nobody books the evening slots because many of the current members don’t drive at night and nobody organises any play.</p>
+<p>The same logic applies to every aspirational project. Schools programs need clubs with enough people to host groups of children. Interstate teams need clubs producing competitive players &amp; coaches. New sporting facilities in outer suburbs will be build for sports that are growing . A state centre requires affiliate fees to maintain.</p>
+<p>Grow members until lights become obvious. Lawns fill up, evening demand appears, and lights are the natural next step. You grow the sport until its obvious croquet is such a great game and new areas need courts. The infrastructure follows the membership. It is hard to make a compelling game wide case when major clubs operate at a fraction of their capacity.</p>
+<p><a href="https://journals.sagepub.com/doi/10.1177/0899764013509892">Research on community sports club capacity</a> confirms the order. People come first. Money, infrastructure, and planning all depend on having people.</p>
+<p>Every item on every wishlist depends on membership. Until there are members, all of those things are at best a distraction and at worst the latest reason why croquet membership isn’t growing.</p>
+<p>That’s a hard thing to say to someone who’s spent two years championing a schools program or a lighting proposal. Their goal is valid. The sequencing is wrong. We will get the new courts, the lights, the upgrades. We get them when we have the members. At the moment croquet barely deserves the current clubhouses and lawns they are used so little.</p>
+<p><img alt="" src="/blog/images/the-value-in-a-new-member/6.png" /></p>
+<h2>What 500 members means</h2>
+<p>Five hundred new members is more than 30% growth statewide. I think it’s doable if we all work as one singular movement. It will only happen together because we need all our limited resources for this to work.</p>
+<p>The fee revenue from the 500 member increase in numbers will be $200,000 to $400,000 a year across the game. Probably more when you add competition fees, social levies, and the other ways members spend at their clubs. A board that sees a new member as a single annual transaction is thinking about one year. If the average player stays for ten years (and the golf and bowls data says they will), their lifetime value is $4,000 to $8,000.</p>
+<p>Five hundred new members over a decade is $2 million to $4 million in total revenue flowing into 40 clubs. We badly need that.</p>
+<p>The money matters, but that those 500 people are also potential ‘employees’/volunteers. This is even more impactful.</p>
+<p>At croquet’s demographic volunteer rates, 500 new members means roughly 125 to 150 new active contributors spread across 40 clubs. At clubs where eight or nine exhausted people do everything, those new members can begin to reinforce our clubs before the current group ages or burns out.</p>
+<p>The volunteer hours keep the grass mowed and the clubhouse painted. The <a href="https://www.volunteering.com.au/resources-tools/cost-of-volunteering-calculator/">ABS replacement cost</a> for volunteer work $40.37 per hour. Those 125 to 150 new volunteers, each contributing four hours a week across 48 playing weeks, represent close to $1 million a year in labour value to our clubs.</p>
+<p>Over the same ten-year membership horizon, that’s $10 million to $12 million in new volunteer capacity. $2 million to $4 million in fees funds the clubs but the bigger benefit is the volunteer labour which will keep our clubs running.</p>
+<p><img alt="" src="/blog/images/the-value-in-a-new-member/7.png" /></p>
+<p>Then there’s the value that’s a little bit more intrinsic, but it helps provide the government grants. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11135211/">Health economic modelling by Deakin University</a> estimates that one person going from inactive to active saves the healthcare system $300 a year in direct medical costs. For older adults, the savings are higher. <a href="https://sport.vic.gov.au/__data/assets/pdf_file/0003/2392068/The-Value-of-Community-Sport-and-Active-Recreation-Infrastructure.pdf">KPMG’s assessment of community sport infrastructure in Victoria</a> valued falls prevention benefits at $33 million and mental health and social isolation benefits at $848 million statewide. Croquet members are exactly this demographic. Five hundred new members staying active and connected at the very small $300 baseline is $150,000 a year in avoided healthcare costs. Factor in falls prevention and reduced social isolation for a population averaging their late 60s and 70s, and the real figure is multiples of that.</p>
+<p>Our clubs are running underfunded public health facilities. We need to make more a point of this to governments. Our game has to grow large enough to be impossible to ignore when we take these arguments to them.</p>
+<hr />
+<h2>The funding gap</h2>
+<p>Bowls Australia, which serves the exact same demographic, received over $2.6 million from the Australian Sports Commission in 2024–25, roughly $16 per registered member. The ASC officially classifies Croquet Australia as <a href="https://www.sportaus.gov.au/__data/assets/pdf_file/0005/1170086/NSO-Investment-Summary-November-2024_v2.pdf">“Unfunded”</a>. Zero recurrent federal money for participation growth, high performance, or national administration goes to croquet.</p>
+<p>Because there is no federal safety net CAQ is the only aid to clubs with the vast majority of the burden of maintaining the game falls on club volunteers and member fees.</p>
+<p>Croquet can’t grant-write its way out of a subsistence trap. This has been tried and it hasn’t worked. It can’t illuminate ground and escape subsistence membership. Croquet must grow its way out. Five hundred new members bring fees, volunteer hours, and the critical mass to finally make the case for the recurrent funding that croquet will deserve.</p>
+<p>Lights make sense when lawns are full and there’s demand for evening play. Youth programs are great when clubs have people to run them. Interstate competitiveness improves because clubs are producing more players &amp; coaches. The wishlist items happen when there is excess volunteer hours to achieve them.</p>
+<p><img alt="" src="/blog/images/the-value-in-a-new-member/8.png" /></p>
+<hr />
+<h2>Noosa is already doing this</h2>
+<p>Noosa Croquet Club has one goal: get more people to take out memberships. Everything they do serves that goal.</p>
+<p><em>[This section is deliberately left at 2 sentences long.]</em></p>
+<hr />
+<h2>It is critical croquet singularly focuses membership growth.</h2>
+<p>What does it look like for Croquet Association Queensland to treat membership growth as the single priority?</p>
+<p>Every decision this committee makes before the end of its tenure should be evaluated against one question: does this help clubs cross the subsistence line?</p>
+<p>Every initiative that doesn’t directly serve that goal needs its importance considered.</p>
+<p>New members bring more benefit to the gam than it costs to market to them. Investing in growing the membership is only way to save the game.</p>
+<p>We don’t need to be single minded forever. Just until the base exists to support everything else that croquet would love to do.</p>
+<p>The Come &amp; Try pipeline is being used and providing encouraging results. The East Brisbane pilot proved what a modest spend can do.</p>
+<p>A thousand letterbox flyers cost $135 and brought six enquiries, $22.50 per lead. Ten more people came through word of mouth. Of the sixteen who started Come &amp; Try, six have joined. Membership went from 27 to 33 in 6 weeks.</p>
+<p>The lifetime value of those first six new members over their likely membership will be, $48,000. Total marketing spend was $135.</p>
+<p>The tools exist for us to get the members and they work. Web advertising started today. The question is whether the organisation is wanting to point all our minimal resources in the same direction at the same time to use them to maximum benefit.</p>
+<p>Five hundred members would be a thirty percent growth. $2-4 million in lifetime fees. A hundred and fifty new volunteers. Close to a million dollars a year in labour value. A hundred and fifty thousand dollars in healthcare savings the government would otherwise have to fund. Dozens of clubs crossing the line from survival to growth.</p>
+<p>The membership drive is a game critical project. Historically critical. It offers a juncture to choose where to go and to secure the future of the sport in an era where <a href="https://croquetwade.substack.com/p/the-fourth-place">society may need places like croquet clubs more than ever in the game’s history.</a></p>
+      </div>
+    </div>
+    <aside class="subscribe-cta">
+      <h3>Keep reading</h3>
+      <p>Have my posts delivered to your inbox so you can read them there.</p>
+      <iframe src="https://croquetwade.substack.com/embed"
+              width="100%" height="150" frameborder="0" scrolling="no"
+              title="Subscribe to CroquetWade"></iframe>
+    </aside>
+    <div class="blog-footer-link">Originally published on <a href="https://croquetwade.substack.com/p/the-value-in-a-new-member" target="_blank" rel="noopener noreferrer">Substack</a>.</div>
+  </main>
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-text">2026 CroquetWade</span>
+        <span class="footer-text">Brisbane, Queensland</span>
+      </div>
+    </div>
+  </footer>
+  <script>
+    // Mobile nav toggle
+    const toggle = document.querySelector('.nav-mobile-toggle');
+    const dropdown = document.querySelector('.nav-dropdown');
+    if (toggle && dropdown) {
+      toggle.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!expanded));
+        dropdown.classList.toggle('open');
+      });
+    }
+  </script>
+</body>
+</html>

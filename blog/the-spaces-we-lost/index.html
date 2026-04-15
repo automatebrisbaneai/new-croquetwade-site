@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/site.css">
+  <style>
+    /* Blog-specific styles */
+    .blog-nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .blog-nav-back:hover { color: var(--maroon); }
+
+    .blog-header {
+      padding: clamp(3rem, 6vw, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+      border-bottom: var(--border);
+      background: var(--white);
+    }
+
+    .blog-hero-img {
+      width: 100%;
+      max-height: 480px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-2xl);
+      border: var(--border);
+    }
+
+    .blog-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-title {
+      font-size: var(--text-section);
+      font-weight: var(--weight-semi);
+      line-height: var(--lh-tight);
+      letter-spacing: var(--ls-tight);
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+      max-width: 42ch;
+    }
+
+    .blog-subtitle {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      line-height: var(--lh-snug);
+      max-width: 52ch;
+      margin-bottom: 0;
+    }
+
+    /* Reading column */
+    .blog-body {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) clamp(2rem, 5vw, 4rem);
+    }
+
+    .blog-body p {
+      font-size: var(--text-base);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body h2 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-top: var(--space-3xl);
+      margin-bottom: var(--space-md);
+      line-height: var(--lh-tight);
+    }
+
+    .blog-body h3 {
+      font-size: 1.125rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-2xl);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-body h4, .blog-body h5, .blog-body h6 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-xl);
+      margin-bottom: var(--space-xs);
+    }
+
+    .blog-body a {
+      color: var(--maroon);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .blog-body a:hover { color: var(--maroon-light); }
+
+    .blog-body img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-md);
+      margin: var(--space-2xl) 0;
+      border: var(--border);
+    }
+
+    .blog-body blockquote {
+      border-left: 3px solid var(--maroon);
+      padding-left: var(--space-lg);
+      margin: var(--space-2xl) 0;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .blog-body ul, .blog-body ol {
+      padding-left: var(--space-xl);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body li {
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+    }
+
+    .blog-body hr {
+      border: none;
+      border-top: var(--border);
+      margin: var(--space-3xl) 0;
+    }
+
+    .blog-body pre {
+      background: var(--n100);
+      border: var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-md);
+      overflow-x: auto;
+      font-size: 0.875rem;
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body code {
+      font-size: 0.875em;
+      background: var(--n100);
+      padding: 0.125em 0.375em;
+      border-radius: 3px;
+      color: var(--text-primary);
+    }
+
+    .blog-footer-link {
+      display: block;
+      max-width: 680px;
+      margin: 0 auto var(--space-5xl);
+      padding: var(--space-xl) var(--container-pad);
+      border-top: var(--border);
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+    }
+
+    .blog-footer-link a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-footer-link a:hover { text-decoration: underline; }
+
+    /* Listing page */
+    .blog-listing {
+      padding: clamp(3rem, 6vw, 5rem) 0;
+    }
+
+    .blog-listing-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-2xl);
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) 0;
+    }
+
+    @media (min-width: 640px) {
+      .blog-listing-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .blog-card {
+      display: flex;
+      flex-direction: column;
+      border: var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--white);
+      transition: box-shadow var(--dur-fast) var(--ease-out), border-color var(--dur-fast);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .blog-card:hover {
+      border-color: var(--n300);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .blog-card-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      background: var(--n100);
+    }
+
+    .blog-card-thumb-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--n100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .blog-card-body {
+      padding: var(--space-lg);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-card-date {
+      font-size: var(--text-xxs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-title {
+      font-size: 1.0625rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      line-height: var(--lh-snug);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-dek {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      flex: 1;
+    }
+
+    .blog-listing-empty {
+      text-align: center;
+      padding: var(--space-5xl) var(--container-pad);
+      color: var(--text-tertiary);
+    }
+
+    /* Subscribe CTA — article bottom */
+    .subscribe-cta {
+      max-width: 680px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-2xl) var(--container-pad);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+    }
+
+    .subscribe-cta h3 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-tight);
+    }
+
+    .subscribe-cta p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin-bottom: var(--space-md);
+    }
+
+    .subscribe-cta iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* Subscribe hero — listing page */
+    .subscribe-hero {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-2xl) var(--container-pad) 0;
+    }
+
+    .subscribe-hero-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-xl);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+      padding: var(--space-2xl) var(--container-pad);
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-inner {
+        flex-direction: column;
+      }
+    }
+
+    .subscribe-hero-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .subscribe-hero-text h2 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-xs);
+    }
+
+    .subscribe-hero-text p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin: 0;
+    }
+
+    .subscribe-hero-embed {
+      flex: 0 0 320px;
+      min-width: 0;
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-embed {
+        flex: none;
+        width: 100%;
+      }
+    }
+
+    .subscribe-hero-embed iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* RSS link in listing footer */
+    .blog-listing-footer {
+      max-width: 800px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-md) var(--container-pad) var(--space-5xl);
+      border-top: var(--border);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-listing-footer a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-listing-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+  <title>The spaces we lost — CroquetWade</title>
+  <meta name="description" content="The spaces we lost">
+    <link rel="alternate" type="application/rss+xml" title="CroquetWade — Writing" href="/blog/rss.xml">
+</head>
+<body>
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">CroquetWade</a>
+      <ul class="nav-links">
+        <li><a href="/#systems">Systems</a></li>
+        <li><a href="/#framework">Framework</a></li>
+        <li><a href="/blog/">Writing</a></li>
+        <li><a href="/#contact">Get in Touch</a></li>
+      </ul>
+      <button class="nav-mobile-toggle" aria-expanded="false" aria-controls="nav-dropdown" aria-label="Toggle navigation">Menu</button>
+    </div>
+    <div class="nav-dropdown" id="nav-dropdown" role="menu">
+      <a href="/#systems" role="menuitem">Systems</a>
+      <a href="/#framework" role="menuitem">Framework</a>
+      <a href="/blog/" role="menuitem">Writing</a>
+      <a href="/#contact" role="menuitem">Get in Touch</a>
+    </div>
+  </nav>
+
+  <header class="blog-header">
+    <div class="container">
+      <a href="/blog/" class="blog-nav-back">&#8592; All writing</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="blog-body">
+      <div class="blog-meta">
+        <span>16 February 2026</span>
+      </div>
+      <h1 class="blog-title">The spaces we lost</h1>
+      
+      <hr style="margin: var(--space-2xl) 0; border: none; border-top: var(--border);">
+      <div class="blog-body-content">
+        <h2>The spaces we lost</h2>
+<p>In 1980, Sydney had 210 bowling clubs. By 2022, that number was <a href="https://www.unsw.edu.au/newsroom/news/2022/11/bowling-clubs-are-disappearing--leaving-a-void-in-communities">128, with 51 closures in the past decade alone</a>. Professor Robert Freestone, who led the UNSW study, put it plainly: <em>“As more disappear, we lose not only a significant part of our cultural landscape, but also another space that is important to many people.”</em></p>
+<p><img alt="" src="/blog/images/the-spaces-we-lost/1.png" /></p>
+<p>RSLs are closing across Queensland and NSW. <a href="https://www.abc.net.au/news/2023-04-23/community-halls-on-the-decline/102191374">Community halls are disappearing from regional towns</a>. Country towns that once had an RSL, a bowls club, a community hall, and a church now have only a few. The places where people used to gather without spending money are disappearing.</p>
+<p>Ray Oldenburg coined the term “Third Place” in his 1989 book <em><a href="https://www.pps.org/article/roldenburg">The Great Good Place</a></em>. Home is first. Work is second. Third Places are the informal public gathering spots beyond both: cafes, pubs, sporting clubs, the places where people go to be around other people. Oldenburg argued these spaces are essential to civic life and community health.</p>
+<p>But Oldenburg himself noted a problem. Third Places have become <a href="https://courier.unesco.org/en/articles/third-places-true-citizen-spaces">overwhelmingly commercial</a>. You pay to be there. The cafe requires a purchase. The pub expects a tab. Shopping centres are designed to extract money, not build community. The Third Place, as a concept, has been captured by commerce.</p>
+<p>Which raises the question: <strong>where are the places you can go and not spend money?</strong></p>
+<p>Fourth Places. Non-commercial spaces like croquet. They’re the spaces Oldenburg was really writing about, the ones that predate the commercial version: community halls, church groups, clubs where the activity was the point and nobody was selling anything.</p>
+<p>Many of them are gone.</p>
+<p><img alt="Photo: Pexels" src="/blog/images/the-spaces-we-lost/2.jpeg" title="Photo: Pexels" /></p>
+<hr />
+<h2>Bowling alone</h2>
+<p>Robert Putnam documented the decline in his landmark 2000 book <em><a href="https://www.beyondintractability.org/bksum/putnam-bowling">Bowling Alone</a></em>. Civic participation, community group membership, informal social gathering, all of it fell sharply from the late 1960s onward. The causes were multiple: television, suburban sprawl, longer working hours, generational change. Society ended up with fewer places to be together and fewer reasons to be there.</p>
+<p>In Australia, the <a href="https://www.aihw.gov.au/mental-health/topic-areas/social-isolation-and-loneliness">Australian Institute of Health and Welfare</a> reports that 15% of Australians experienced loneliness in 2023. The Queensland Government’s own <a href="https://www.qgso.qld.gov.au/issues/13256/social-isolation-loneliness-survey-report-qld-social-survey-2024.pdf">2024 Social Isolation and Loneliness Survey</a> found that 62.5% of Queensland adults feel lonely at least some of the time. Beyond Blue’s research found loneliness is <a href="https://www.abc.net.au/news/2025-10-10/beyond-blue-survey-loneliness-deeper-impact-financial-hardship/105870174">more strongly associated with anxiety, depression and suicidal thoughts than financial stress</a>. Beyond Blue’s chief executive described loneliness as an “epidemic” and pointed to a “declining sense of community” across Australia.</p>
+<p>Researchers at <a href="https://www.curtin.edu.au/news/media-release/pandemic-increases-loneliness-among-australians-with-adverse-health-outcomes-costing-up-to-2-7-billion-per-year/">Curtin University estimated the health cost of loneliness at $2.7 billion annually</a>, with the <a href="https://treasury.gov.au/sites/default/files/2023-03/c2023-379612-ending_loneliness_together.pdf">Treasury’s Ending Loneliness Together submission</a> putting the per-person cost at roughly $1,565 per year. Lonely Australians aged 65 and over average roughly four more visits to the GP. A <a href="https://journals.sagepub.com/doi/10.1177/1745691614568352">meta-analysis by Holt-Lunstad and colleagues</a> found that social isolation increases premature death risk by 29%. One in five older Australians in retirement villages report loneliness. For those in residential aged care, the figure is between 35% and 61%.</p>
+<p>These numbers describe people who don’t have a place to go.</p>
+<p>Queensland’s population aged 65 and over is growing at 3.7% annually, nearly triple the rate of the rest of the population. By 2046, one in five people in Greater Brisbane will be over 65. The demand for places where older Australians can connect, stay active, and belong is growing faster than the supply. Actually, the supply is shrinking.</p>
+<hr />
+<h2>Croquet clubs are Fourth Places</h2>
+<p>A croquet club charges membership fees. Beyond that, there’s no expectation to spend money.</p>
+<p><em>“This is the cheapest sport after walking,”</em> Sandy from McIlwraith put it.</p>
+<p>A croquet club is the definition of a Fourth Place. A non-commercial space where people are allowed to just be.</p>
+<p>Croquet clubs aren’t the only ones left. Some bowling clubs still operate this way. Some men’s sheds, which the <a href="https://mensshed.org/nsdp/">Australian Government now funds through the National Shed Development Programme</a> precisely because they recognised the <a href="https://sgsep.com.au/publications/insights/reimagining-mens-sheds">health and community value these spaces deliver</a>. A handful of <a href="https://www.brisbane.qld.gov.au/environment-and-water/plants--trees-and-gardening/community-gardening">community gardens</a> with attached social groups like at <a href="https://www.janestgarden.org.au/">West End</a>. But the list is short and getting shorter. The bowling clubs are closing. The RSLs are closing. Churches are emptying. Croquet clubs, for the most part, are still standing. They have clubhouses. They have lawns. They have tea and cake.</p>
+<p>They have a reason for people to arrive and to come together. Croquet is the anchor. People come because they enjoy the game, and while they’re there, connections are formed. Activities creates the gathering. The gathering creates the belonging and enjoying company makes clubs good places to be.</p>
+<hr />
+<h2>Eighty people who are glad to see you</h2>
+<p>A member described how the croquet club as a 4th space impacted her life:</p>
+<p><em>“When I joined, I knew four people. The people in this club I wouldn’t have met, and now I consider them to be really great friends. They’re friends I want to be with. And it’s all through the sport.”</em></p>
+<p>She made a sharper observation about why this matters <em>“Here you’ve got access to 80 wonderful people. We become part of each other’s lives.”</em></p>
+<p>Croquet clubs have many members live alone or would like varied social interactions. The club is their reason to leave the house, to enjoy being around people who are glad to see them.</p>
+<hr />
+<h2>More than mallet storage</h2>
+<p>Most croquet clubs think of themselves as sports clubs. They talk about lawns, competitions, equipment, pennants. The committee meets to discuss hoop placement and session times. The clubhouse is where the mallets are stored.</p>
+<p>This is like a library describing itself as a building that stores books. Technically accurate. Completely missing the point.</p>
+<p>The clubhouse is the community asset. It’s the space where the Fourth Place happens.</p>
+<p>Clubs that have <a href="https://croquetwade.substack.com/p/what-happens-when-your-club-agrees">agreed on what they want to be</a> can see this potential. A club that says “we want to feel like a community that is built around croquet” has told its committee something useful. A club that only thinks about the sport on the lawn is wasting the clubhouse, and everything positive it enables.</p>
+<p>This matters because the clubhouse is what distinguishes a croquet club from a park with hoops in it. Aphysical space where people can be just because they want to.</p>
+<hr />
+<h2>The cubby house for grown-ups</h2>
+<p>When you were twelve, a cubby house was the best thing ever. Your space, your mates, your rules.</p>
+<p><em>This is ours. We built it. We decide what happens here.</em></p>
+<p><img alt="" src="/blog/images/the-spaces-we-lost/3.png" /></p>
+<p>Environmental psychologist David Sobel spent years studying why children do this. In <em><a href="https://www.davidsobelauthor.com/childrens-special-places">Children’s Special Places</a></em>, he documented how kids aged five to twelve seek out or build private spaces where they control the environment and make the rules. Forts, tree houses, cubbies. The need is consistent across cultures and generations. Children are practising ownership, boundary-setting, and social negotiation. They’re figuring out what it feels like to have a place that belongs to their group.</p>
+<p>For older people, having places they can contribute to and own is important. Retirement removes the workplace. Children move away. Neighbours change. Researchers studying <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10809216/">aging in place</a> argue that territorial attachment to spaces matters more as people age, and that losing access to places where they feel ownership contributes directly to social exclusion.</p>
+<p>A croquet clubhouse where members decide what happens, where they enjoy mahjong, start a book or a movie club, have drinks after pennant training, their club is a cubby house for grown-ups.</p>
+<hr />
+<h2>A different door for funding</h2>
+<p>Government health departments and community services departments fund programs for social isolation, falls prevention, and active ageing.</p>
+<p>The evidence that physical activity and social connection reduce health costs is <a href="https://www.cochrane.org/CD012424/EXERCISE_exercise-preventing-falls-older-people-living-community">study</a> after <a href="https://bjsm.bmj.com/content/54/15/885">study</a> after <a href="https://journals.sagepub.com/doi/10.1177/1745691614568352">study</a>. One example: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7418418/">research using Medicare records</a> found physically active older women had 40% lower GP costs than inactive women. Croquet delivers balance, coordination, low-impact exercise, cognitive demand, and social connection in one activity. <a href="https://news.croquetqld.org/health-benefits-croquet-seniors-australia-government/">Croquet Queensland’s policy brief</a> pulls the broader evidence together.</p>
+<p>When croquet clubs apply for funding, they apply as sports clubs. They ask for money for lawns, equipment, and facilities. They make a case about the sport.</p>
+<p><img alt="" src="/blog/images/the-spaces-we-lost/4.png" /></p>
+<p>With the Brisbane 2032 Olympics approaching, Queensland sports funding will increasingly favour Olympic disciplines. A non-Olympic sport like croquet could struggle for funding. The smarter move is to step into a different segment entirely: community health, social isolation, active ageing.</p>
+<p>What if the strongest case a croquet club can make has nothing to do with the sport?</p>
+<p>The stronger case, the one government departments are set up to respond to, is about community. <em>“We’re a community space that keeps people connected, active, and out of the health system. We’re delivering social isolation and falls prevention with volunteers on a shoestring. Every dollar you give us saves multiples in avoided health costs.”</em></p>
+<p>That’s the Fourth Place argument. Not every sport can make it as strongly as croquet. The Men’s Sheds programme is proof that <a href="https://www.health.gov.au/ministers/the-hon-dan-repacholi-mp/media/celebrating-mens-sheds?language=en">government will fund community spaces once the health and social case is made clearly enough</a>.</p>
+<hr />
+<h2>Open the clubhouse</h2>
+<p>Seeing the clubhouse as a Fourth Place changes what’s possible.</p>
+<p>A club that understands it’s a community space can open the clubhouse for activities beyond croquet. Mahjong. Book clubs. Anything. None of these threaten the sport. They bring more enjoyment, more often, for more reasons. They make the clubhouse a place members go, not solely a place for croquet.</p>
+<p>The conversation with government changes too if talking to different deportments. <em>“We’re not asking for money for a sports facility. We’re asking for support for a community hub that serves 80 people a week, most of them over 65, many of them living alone, all of them active, connected, and out of the health system because of their croquet club.”</em></p>
+<p>A Fourth Place without enjoyment is a chore. A Fourth Place without cooperation falls apart.</p>
+      </div>
+    </div>
+    <aside class="subscribe-cta">
+      <h3>Keep reading</h3>
+      <p>Have my posts delivered to your inbox so you can read them there.</p>
+      <iframe src="https://croquetwade.substack.com/embed"
+              width="100%" height="150" frameborder="0" scrolling="no"
+              title="Subscribe to CroquetWade"></iframe>
+    </aside>
+    <div class="blog-footer-link">Originally published on <a href="https://croquetwade.substack.com/p/the-fourth-place" target="_blank" rel="noopener noreferrer">Substack</a>.</div>
+  </main>
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-text">2026 CroquetWade</span>
+        <span class="footer-text">Brisbane, Queensland</span>
+      </div>
+    </div>
+  </footer>
+  <script>
+    // Mobile nav toggle
+    const toggle = document.querySelector('.nav-mobile-toggle');
+    const dropdown = document.querySelector('.nav-dropdown');
+    if (toggle && dropdown) {
+      toggle.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!expanded));
+        dropdown.classList.toggle('open');
+      });
+    }
+  </script>
+</body>
+</html>

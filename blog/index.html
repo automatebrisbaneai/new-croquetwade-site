@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/site.css">
+  <style>
+    /* Blog-specific styles */
+    .blog-nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .blog-nav-back:hover { color: var(--maroon); }
+
+    .blog-header {
+      padding: clamp(3rem, 6vw, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+      border-bottom: var(--border);
+      background: var(--white);
+    }
+
+    .blog-hero-img {
+      width: 100%;
+      max-height: 480px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-2xl);
+      border: var(--border);
+    }
+
+    .blog-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-title {
+      font-size: var(--text-section);
+      font-weight: var(--weight-semi);
+      line-height: var(--lh-tight);
+      letter-spacing: var(--ls-tight);
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+      max-width: 42ch;
+    }
+
+    .blog-subtitle {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      line-height: var(--lh-snug);
+      max-width: 52ch;
+      margin-bottom: 0;
+    }
+
+    /* Reading column */
+    .blog-body {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) clamp(2rem, 5vw, 4rem);
+    }
+
+    .blog-body p {
+      font-size: var(--text-base);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body h2 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-top: var(--space-3xl);
+      margin-bottom: var(--space-md);
+      line-height: var(--lh-tight);
+    }
+
+    .blog-body h3 {
+      font-size: 1.125rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-2xl);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-body h4, .blog-body h5, .blog-body h6 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-xl);
+      margin-bottom: var(--space-xs);
+    }
+
+    .blog-body a {
+      color: var(--maroon);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .blog-body a:hover { color: var(--maroon-light); }
+
+    .blog-body img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-md);
+      margin: var(--space-2xl) 0;
+      border: var(--border);
+    }
+
+    .blog-body blockquote {
+      border-left: 3px solid var(--maroon);
+      padding-left: var(--space-lg);
+      margin: var(--space-2xl) 0;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .blog-body ul, .blog-body ol {
+      padding-left: var(--space-xl);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body li {
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+    }
+
+    .blog-body hr {
+      border: none;
+      border-top: var(--border);
+      margin: var(--space-3xl) 0;
+    }
+
+    .blog-body pre {
+      background: var(--n100);
+      border: var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-md);
+      overflow-x: auto;
+      font-size: 0.875rem;
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body code {
+      font-size: 0.875em;
+      background: var(--n100);
+      padding: 0.125em 0.375em;
+      border-radius: 3px;
+      color: var(--text-primary);
+    }
+
+    .blog-footer-link {
+      display: block;
+      max-width: 680px;
+      margin: 0 auto var(--space-5xl);
+      padding: var(--space-xl) var(--container-pad);
+      border-top: var(--border);
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+    }
+
+    .blog-footer-link a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-footer-link a:hover { text-decoration: underline; }
+
+    /* Listing page */
+    .blog-listing {
+      padding: clamp(3rem, 6vw, 5rem) 0;
+    }
+
+    .blog-listing-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-2xl);
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) 0;
+    }
+
+    @media (min-width: 640px) {
+      .blog-listing-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .blog-card {
+      display: flex;
+      flex-direction: column;
+      border: var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--white);
+      transition: box-shadow var(--dur-fast) var(--ease-out), border-color var(--dur-fast);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .blog-card:hover {
+      border-color: var(--n300);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .blog-card-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      background: var(--n100);
+    }
+
+    .blog-card-thumb-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--n100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .blog-card-body {
+      padding: var(--space-lg);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-card-date {
+      font-size: var(--text-xxs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-title {
+      font-size: 1.0625rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      line-height: var(--lh-snug);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-dek {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      flex: 1;
+    }
+
+    .blog-listing-empty {
+      text-align: center;
+      padding: var(--space-5xl) var(--container-pad);
+      color: var(--text-tertiary);
+    }
+
+    /* Subscribe CTA — article bottom */
+    .subscribe-cta {
+      max-width: 680px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-2xl) var(--container-pad);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+    }
+
+    .subscribe-cta h3 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-tight);
+    }
+
+    .subscribe-cta p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin-bottom: var(--space-md);
+    }
+
+    .subscribe-cta iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* Subscribe hero — listing page */
+    .subscribe-hero {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-2xl) var(--container-pad) 0;
+    }
+
+    .subscribe-hero-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-xl);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+      padding: var(--space-2xl) var(--container-pad);
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-inner {
+        flex-direction: column;
+      }
+    }
+
+    .subscribe-hero-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .subscribe-hero-text h2 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-xs);
+    }
+
+    .subscribe-hero-text p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin: 0;
+    }
+
+    .subscribe-hero-embed {
+      flex: 0 0 320px;
+      min-width: 0;
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-embed {
+        flex: none;
+        width: 100%;
+      }
+    }
+
+    .subscribe-hero-embed iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* RSS link in listing footer */
+    .blog-listing-footer {
+      max-width: 800px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-md) var(--container-pad) var(--space-5xl);
+      border-top: var(--border);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-listing-footer a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-listing-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+  <title>Writing — CroquetWade</title>
+  <meta name="description" content="Articles and essays by Wade Hart on growing Queensland croquet.">
+    <link rel="alternate" type="application/rss+xml" title="CroquetWade — Writing" href="/blog/rss.xml">
+</head>
+<body>
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">CroquetWade</a>
+      <ul class="nav-links">
+        <li><a href="/#systems">Systems</a></li>
+        <li><a href="/#framework">Framework</a></li>
+        <li><a href="/blog/" aria-current="page">Writing</a></li>
+        <li><a href="/#contact">Get in Touch</a></li>
+      </ul>
+      <button class="nav-mobile-toggle" aria-expanded="false" aria-controls="nav-dropdown" aria-label="Toggle navigation">Menu</button>
+    </div>
+    <div class="nav-dropdown" id="nav-dropdown" role="menu">
+      <a href="/#systems" role="menuitem">Systems</a>
+      <a href="/#framework" role="menuitem">Framework</a>
+      <a href="/blog/" role="menuitem">Writing</a>
+      <a href="/#contact" role="menuitem">Get in Touch</a>
+    </div>
+  </nav>
+
+  <header class="blog-header">
+    <div class="container">
+      <span class="eyebrow" style="display:block; margin-bottom:var(--space-md);">CroquetWade</span>
+      <h1 class="section-headline" style="margin-bottom:var(--space-md);">Writing</h1>
+      <p class="section-body" style="max-width:52ch;">Essays and observations on growing croquet in Queensland. Also on <a href="https://croquetwade.substack.com" target="_blank" rel="noopener noreferrer" style="color:var(--maroon);">Substack</a>.</p>
+    </div>
+  </header>
+
+  <main>
+      <div class="subscribe-hero">
+        <div class="subscribe-hero-inner">
+          <div class="subscribe-hero-text">
+            <h2>Get new posts by email</h2>
+            <p>Have my posts delivered to your inbox so you can read them there.</p>
+          </div>
+          <div class="subscribe-hero-embed">
+            <iframe src="https://croquetwade.substack.com/embed"
+                    width="100%" height="150" frameborder="0" scrolling="no"
+                    title="Subscribe to CroquetWade"></iframe>
+          </div>
+        </div>
+      </div>
+    <div class="blog-listing-grid container">
+      <a href="/blog/leisure-in-the-age-of-technology/" class="blog-card">
+        <img src="/blog/images/leisure-in-the-age-of-technology/hero.png" alt="Leisure in the Age of Technology" class="blog-card-thumb" loading="lazy">
+        <div class="blog-card-body">
+          <span class="blog-card-date">25 March 2026</span>
+          <h2 class="blog-card-title">Leisure in the Age of Technology</h2>
+          
+        </div>
+      </a>
+      <a href="/blog/the-problem-not-for-profits-have-is-in-the-name/" class="blog-card">
+        <img src="/blog/images/the-problem-not-for-profits-have-is-in-the-name/hero.jpeg" alt="The problem Not-For-Profits have is in the name" class="blog-card-thumb" loading="lazy">
+        <div class="blog-card-body">
+          <span class="blog-card-date">19 March 2026</span>
+          <h2 class="blog-card-title">The problem Not-For-Profits have is in the name</h2>
+          
+        </div>
+      </a>
+      <a href="/blog/be-the-croquet-club-you-promised-to-be/" class="blog-card">
+        <img src="/blog/images/be-the-croquet-club-you-promised-to-be/hero.png" alt="Be the croquet club you promised to be" class="blog-card-thumb" loading="lazy">
+        <div class="blog-card-body">
+          <span class="blog-card-date">8 March 2026</span>
+          <h2 class="blog-card-title">Be the croquet club you promised to be</h2>
+          
+        </div>
+      </a>
+      <a href="/blog/the-value-in-a-new-member/" class="blog-card">
+        <img src="/blog/images/the-value-in-a-new-member/hero.png" alt="The Value In A New Member" class="blog-card-thumb" loading="lazy">
+        <div class="blog-card-body">
+          <span class="blog-card-date">27 February 2026</span>
+          <h2 class="blog-card-title">The Value In A New Member</h2>
+          
+        </div>
+      </a>
+      <a href="/blog/the-impossible-volunteer/" class="blog-card">
+        <img src="/blog/images/the-impossible-volunteer/hero.png" alt="The Impossible Volunteer" class="blog-card-thumb" loading="lazy">
+        <div class="blog-card-body">
+          <span class="blog-card-date">25 February 2026</span>
+          <h2 class="blog-card-title">The Impossible Volunteer</h2>
+          
+        </div>
+      </a>
+      <a href="/blog/any-rook-is-fine/" class="blog-card">
+        <img src="/blog/images/any-rook-is-fine/hero.png" alt="Any Rook is Fine." class="blog-card-thumb" loading="lazy">
+        <div class="blog-card-body">
+          <span class="blog-card-date">20 February 2026</span>
+          <h2 class="blog-card-title">Any Rook is Fine.</h2>
+          
+        </div>
+      </a>
+      <a href="/blog/the-spaces-we-lost/" class="blog-card">
+        <img src="/blog/images/the-spaces-we-lost/hero.png" alt="The spaces we lost" class="blog-card-thumb" loading="lazy">
+        <div class="blog-card-body">
+          <span class="blog-card-date">16 February 2026</span>
+          <h2 class="blog-card-title">The spaces we lost</h2>
+          
+        </div>
+      </a>
+      <a href="/blog/nice-guys-finish-first/" class="blog-card">
+        <img src="/blog/images/nice-guys-finish-first/hero.png" alt="Nice Guys Finish First" class="blog-card-thumb" loading="lazy">
+        <div class="blog-card-body">
+          <span class="blog-card-date">13 February 2026</span>
+          <h2 class="blog-card-title">Nice Guys Finish First</h2>
+          
+        </div>
+      </a>
+      <a href="/blog/a-scoundrel-within-the-bounds-of-the-law/" class="blog-card">
+        <img src="/blog/images/a-scoundrel-within-the-bounds-of-the-law/hero.png" alt="A Scoundrel Within the Bounds of the Law" class="blog-card-thumb" loading="lazy">
+        <div class="blog-card-body">
+          <span class="blog-card-date">11 February 2026</span>
+          <h2 class="blog-card-title">A Scoundrel Within the Bounds of the Law</h2>
+          
+        </div>
+      </a>
+      <a href="/blog/youre-sold-complexity-as-a-solution/" class="blog-card">
+        <img src="/blog/images/youre-sold-complexity-as-a-solution/hero.png" alt="You&#x27;re Sold Complexity as a Solution" class="blog-card-thumb" loading="lazy">
+        <div class="blog-card-body">
+          <span class="blog-card-date">10 February 2026</span>
+          <h2 class="blog-card-title">You&#x27;re Sold Complexity as a Solution</h2>
+          
+        </div>
+      </a>
+      <a href="/blog/additive-vs-subtractive-thinking/" class="blog-card">
+        <img src="/blog/images/additive-vs-subtractive-thinking/hero.png" alt="Additive vs Subtractive Thinking" class="blog-card-thumb" loading="lazy">
+        <div class="blog-card-body">
+          <span class="blog-card-date">9 February 2026</span>
+          <h2 class="blog-card-title">Additive vs Subtractive Thinking</h2>
+          
+        </div>
+      </a>
+      <a href="/blog/nobody-wants-to-be-treasurer/" class="blog-card">
+        <img src="/blog/images/nobody-wants-to-be-treasurer/hero.jpeg" alt="Nobody Wants to Be Treasurer" class="blog-card-thumb" loading="lazy">
+        <div class="blog-card-body">
+          <span class="blog-card-date">8 February 2026</span>
+          <h2 class="blog-card-title">Nobody Wants to Be Treasurer</h2>
+          
+        </div>
+      </a>
+      <a href="/blog/have-your-club-agree-what-it-wants-to-be/" class="blog-card">
+        <img src="/blog/images/have-your-club-agree-what-it-wants-to-be/hero.png" alt="Have your club agree what it wants to be." class="blog-card-thumb" loading="lazy">
+        <div class="blog-card-body">
+          <span class="blog-card-date">6 February 2026</span>
+          <h2 class="blog-card-title">Have your club agree what it wants to be.</h2>
+          
+        </div>
+      </a>
+      <a href="/blog/usefulness-is-a-specific-equation/" class="blog-card">
+        <img src="/blog/images/usefulness-is-a-specific-equation/hero.jpeg" alt="Usefulness is a specific equation" class="blog-card-thumb" loading="lazy">
+        <div class="blog-card-body">
+          <span class="blog-card-date">27 January 2026</span>
+          <h2 class="blog-card-title">Usefulness is a specific equation</h2>
+          
+        </div>
+      </a>
+      <a href="/blog/permission-based-come-and-try/" class="blog-card">
+        <img src="/blog/images/permission-based-come-and-try/hero.jpeg" alt="Permission-Based Come and Try" class="blog-card-thumb" loading="lazy">
+        <div class="blog-card-body">
+          <span class="blog-card-date">26 January 2026</span>
+          <h2 class="blog-card-title">Permission-Based Come and Try</h2>
+          
+        </div>
+      </a>
+      <a href="/blog/why-releasing-clubhub-is-better-than-launching-it/" class="blog-card">
+        <img src="/blog/images/why-releasing-clubhub-is-better-than-launching-it/hero.jpeg" alt="Why &#x27;releasing&#x27; ClubHub is better than &#x27;launching&#x27; it" class="blog-card-thumb" loading="lazy">
+        <div class="blog-card-body">
+          <span class="blog-card-date">26 January 2026</span>
+          <h2 class="blog-card-title">Why &#x27;releasing&#x27; ClubHub is better than &#x27;launching&#x27; it</h2>
+          
+        </div>
+      </a>
+    </div>
+    <div class="blog-listing-footer container">
+      <span>Also on <a href="https://croquetwade.substack.com" target="_blank" rel="noopener noreferrer">Substack</a></span>
+      <span>&middot;</span>
+      <a href="/blog/rss.xml">RSS</a>
+    </div>
+  </main>
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-text">2026 CroquetWade</span>
+        <span class="footer-text">Brisbane, Queensland</span>
+      </div>
+    </div>
+  </footer>
+  <script>
+    // Mobile nav toggle
+    const toggle = document.querySelector('.nav-mobile-toggle');
+    const dropdown = document.querySelector('.nav-dropdown');
+    if (toggle && dropdown) {
+      toggle.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!expanded));
+        dropdown.classList.toggle('open');
+      });
+    }
+  </script>
+</body>
+</html>

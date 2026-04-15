@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/site.css">
+  <style>
+    /* Blog-specific styles */
+    .blog-nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .blog-nav-back:hover { color: var(--maroon); }
+
+    .blog-header {
+      padding: clamp(3rem, 6vw, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+      border-bottom: var(--border);
+      background: var(--white);
+    }
+
+    .blog-hero-img {
+      width: 100%;
+      max-height: 480px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-2xl);
+      border: var(--border);
+    }
+
+    .blog-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-title {
+      font-size: var(--text-section);
+      font-weight: var(--weight-semi);
+      line-height: var(--lh-tight);
+      letter-spacing: var(--ls-tight);
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+      max-width: 42ch;
+    }
+
+    .blog-subtitle {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      line-height: var(--lh-snug);
+      max-width: 52ch;
+      margin-bottom: 0;
+    }
+
+    /* Reading column */
+    .blog-body {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) clamp(2rem, 5vw, 4rem);
+    }
+
+    .blog-body p {
+      font-size: var(--text-base);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body h2 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-top: var(--space-3xl);
+      margin-bottom: var(--space-md);
+      line-height: var(--lh-tight);
+    }
+
+    .blog-body h3 {
+      font-size: 1.125rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-2xl);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-body h4, .blog-body h5, .blog-body h6 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-xl);
+      margin-bottom: var(--space-xs);
+    }
+
+    .blog-body a {
+      color: var(--maroon);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .blog-body a:hover { color: var(--maroon-light); }
+
+    .blog-body img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-md);
+      margin: var(--space-2xl) 0;
+      border: var(--border);
+    }
+
+    .blog-body blockquote {
+      border-left: 3px solid var(--maroon);
+      padding-left: var(--space-lg);
+      margin: var(--space-2xl) 0;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .blog-body ul, .blog-body ol {
+      padding-left: var(--space-xl);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body li {
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+    }
+
+    .blog-body hr {
+      border: none;
+      border-top: var(--border);
+      margin: var(--space-3xl) 0;
+    }
+
+    .blog-body pre {
+      background: var(--n100);
+      border: var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-md);
+      overflow-x: auto;
+      font-size: 0.875rem;
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body code {
+      font-size: 0.875em;
+      background: var(--n100);
+      padding: 0.125em 0.375em;
+      border-radius: 3px;
+      color: var(--text-primary);
+    }
+
+    .blog-footer-link {
+      display: block;
+      max-width: 680px;
+      margin: 0 auto var(--space-5xl);
+      padding: var(--space-xl) var(--container-pad);
+      border-top: var(--border);
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+    }
+
+    .blog-footer-link a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-footer-link a:hover { text-decoration: underline; }
+
+    /* Listing page */
+    .blog-listing {
+      padding: clamp(3rem, 6vw, 5rem) 0;
+    }
+
+    .blog-listing-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-2xl);
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) 0;
+    }
+
+    @media (min-width: 640px) {
+      .blog-listing-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .blog-card {
+      display: flex;
+      flex-direction: column;
+      border: var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--white);
+      transition: box-shadow var(--dur-fast) var(--ease-out), border-color var(--dur-fast);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .blog-card:hover {
+      border-color: var(--n300);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .blog-card-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      background: var(--n100);
+    }
+
+    .blog-card-thumb-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--n100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .blog-card-body {
+      padding: var(--space-lg);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-card-date {
+      font-size: var(--text-xxs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-title {
+      font-size: 1.0625rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      line-height: var(--lh-snug);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-dek {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      flex: 1;
+    }
+
+    .blog-listing-empty {
+      text-align: center;
+      padding: var(--space-5xl) var(--container-pad);
+      color: var(--text-tertiary);
+    }
+
+    /* Subscribe CTA — article bottom */
+    .subscribe-cta {
+      max-width: 680px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-2xl) var(--container-pad);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+    }
+
+    .subscribe-cta h3 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-tight);
+    }
+
+    .subscribe-cta p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin-bottom: var(--space-md);
+    }
+
+    .subscribe-cta iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* Subscribe hero — listing page */
+    .subscribe-hero {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-2xl) var(--container-pad) 0;
+    }
+
+    .subscribe-hero-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-xl);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+      padding: var(--space-2xl) var(--container-pad);
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-inner {
+        flex-direction: column;
+      }
+    }
+
+    .subscribe-hero-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .subscribe-hero-text h2 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-xs);
+    }
+
+    .subscribe-hero-text p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin: 0;
+    }
+
+    .subscribe-hero-embed {
+      flex: 0 0 320px;
+      min-width: 0;
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-embed {
+        flex: none;
+        width: 100%;
+      }
+    }
+
+    .subscribe-hero-embed iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* RSS link in listing footer */
+    .blog-listing-footer {
+      max-width: 800px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-md) var(--container-pad) var(--space-5xl);
+      border-top: var(--border);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-listing-footer a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-listing-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+  <title>Permission-Based Come and Try — CroquetWade</title>
+  <meta name="description" content="Permission-Based Come and Try">
+    <link rel="alternate" type="application/rss+xml" title="CroquetWade — Writing" href="/blog/rss.xml">
+</head>
+<body>
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">CroquetWade</a>
+      <ul class="nav-links">
+        <li><a href="/#systems">Systems</a></li>
+        <li><a href="/#framework">Framework</a></li>
+        <li><a href="/blog/">Writing</a></li>
+        <li><a href="/#contact">Get in Touch</a></li>
+      </ul>
+      <button class="nav-mobile-toggle" aria-expanded="false" aria-controls="nav-dropdown" aria-label="Toggle navigation">Menu</button>
+    </div>
+    <div class="nav-dropdown" id="nav-dropdown" role="menu">
+      <a href="/#systems" role="menuitem">Systems</a>
+      <a href="/#framework" role="menuitem">Framework</a>
+      <a href="/blog/" role="menuitem">Writing</a>
+      <a href="/#contact" role="menuitem">Get in Touch</a>
+    </div>
+  </nav>
+
+  <header class="blog-header">
+    <div class="container">
+      <a href="/blog/" class="blog-nav-back">&#8592; All writing</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="blog-body">
+      <div class="blog-meta">
+        <span>26 January 2026</span>
+      </div>
+      <h1 class="blog-title">Permission-Based Come and Try</h1>
+      
+      <hr style="margin: var(--space-2xl) 0; border: none; border-top: var(--border);">
+      <div class="blog-body-content">
+        <h2>Why your volunteers hate asking people to join</h2>
+<p>There’s a moment in every Come and Try session that everyone dreads. The new people have been playing for a few weeks. They seem to be enjoying themselves. And now someone has to ask them if they’d like to become a member.</p>
+<p>Nobody wants to do it. The volunteer who drew the short straw hovers around the edge of the group, waiting for the right moment, trying to work out how to bring it up without sounding like a salesperson. The new people, meanwhile, have no idea the conversation is coming. When it arrives, it feels sudden. Some say yes. Some say they’ll think about it and never come back. The whole thing is awkward because it was never set up to be anything else other than awkward.</p>
+<p>This is the problem with treating membership conversion as something that happens at the end of a Come and Try programme. When there’s no structure leading up to it, the ask comes out of nowhere, and your volunteers are left carrying a weight that shouldn’t be theirs.</p>
+<p><img alt="Standing at the edge, wondering how to make the ask. Photo: Pexels" src="/blog/images/permission-based-come-and-try/1.jpeg" title="Standing at the edge, wondering how to make the ask. Photo: Pexels" /></p>
+<p>Standing at the edge, wondering how to make the ask. Photo: Pexels</p>
+<hr />
+<h2>Permission marketing, applied to croquet</h2>
+<p>Seth Godin coined the term “permission marketing” in <a href="https://en.wikipedia.org/wiki/Permission_marketing">his 1999 book of the same name</a>. The core idea is straightforward: before you ask someone for something, you earn the right to ask by getting their agreement at each step along the way. Every interaction builds on the previous one, and nobody is ever surprised by what comes next.</p>
+<p>The opposite is interruption marketing: the cold call, the unsolicited email, the billboard. Most clubs run their Come and Try sessions as interruption marketing without realising it. The new people come, they play, and then one day someone interrupts the fun with a sales pitch they weren’t expecting. It doesn’t matter how politely it’s done. If the person on the receiving end didn’t see it coming, it feels like a pitch.</p>
+<p>Applying permission marketing to a Come and Try programme means building the membership conversation into the structure from the start, so that by the time anyone asks “would you like to join?”, the answer has already been forming in the person’s mind for weeks.</p>
+<p><img alt="Each step leads naturally to the next. Photo: Pexels" src="/blog/images/permission-based-come-and-try/2.jpeg" title="Each step leads naturally to the next. Photo: Pexels" /></p>
+<p>Each step leads naturally to the next. Photo: Pexels</p>
+<hr />
+<h2>How the three weeks work</h2>
+<p>The structure is simple, and that’s the point. Each week ends with a small, clear statement that sets up the next week’s conversation. Nothing is hidden. Nothing is sprung on anyone.</p>
+<p><strong>Week one</strong> is about playing. The only expectation for new participants is to have a go at croquet and see if they enjoy it. At the end of the session, the host says something like: “If you enjoyed today and think being a member is something you might be interested in, come back next week.” That’s it. No forms, no fees, no pressure. The people who didn’t enjoy it filter themselves out, which is exactly what you want. The people who return for week two have given you their first piece of permission: they’re interested enough to come back.</p>
+<p><strong>Week two</strong> shifts slightly. The participants already know they like the game, so the host can start talking about how the club actually runs. What days people play. What the social side looks like. How much membership costs. At the end of the session, the host says: “If you come back next week and you’re still enjoying it, at the end of the day we’ll ask you if you’d like to become a member.” This is the critical moment, and it’s completely invisible to most people watching. By telling participants in advance that the question is coming, you’ve removed the surprise. When they turn up for week three, they’ve already decided they’re comfortable being asked. They gave you permission by showing up.</p>
+<p><strong>Week three</strong> is the easiest conversation any volunteer will ever have. The person came back knowing they’d be asked about membership. They’ve played three sessions. They’ve heard about how the club works. When the host says “would you like to join?”, the answer has been building for three weeks. There’s no cold pitch. There’s no awkwardness. There’s just the natural conclusion to a process that everyone understood from the beginning.</p>
+<hr />
+<h2>Why this is easier for volunteers</h2>
+<p>The reason most volunteers dread the membership conversation is that they’ve been asked to do something socially uncomfortable: approach someone they barely know and try to convince them to spend money. That’s a sales interaction, and most people, especially retired volunteers who joined a croquet club to enjoy their afternoons, don’t want to be salespeople.</p>
+<p>Permission-based Come and Try removes that burden entirely. The host doesn’t need to convince anyone of anything. They don’t need to read the room or find the right moment. The structure does the work for them. All they need to do is say the right sentence at the end of each session. The words are pre-planned, the timing is built in, and the participant has already agreed to hear them.</p>
+<p><a href="https://www.volunteeringaustralia.org/wp-content/uploads/VRP_The-great-volunteer-resignation-An-evidence-based-strategy-for-retaining-volunteers.pdf">Research from Volunteering Australia</a> consistently shows that volunteers disengage when their roles create social discomfort or feel like they extend beyond what they signed up for. Asking someone to play a sales role when they volunteered to help with croquet is a fast way to lose good people. A structured process keeps the volunteer role small and comfortable.</p>
+<p><img alt="Open hands, not a hard sell. Photo: Pexels" src="/blog/images/permission-based-come-and-try/3.jpeg" title="Open hands, not a hard sell. Photo: Pexels" /></p>
+<p>Open hands, not a hard sell. Photo: Pexels</p>
+<hr />
+<h2>The psychology underneath</h2>
+<p>There’s a reason this works beyond just good manners. Robert Cialdini’s work on <a href="https://en.wikipedia.org/wiki/Robert_Cialdini">commitment and consistency</a> shows that when people make small commitments, they’re significantly more likely to follow through with larger ones. Each week of the Come and Try programme is a small commitment. Signing up is a commitment. Showing up is a commitment. Coming back is a commitment. By the time someone reaches week three, they’ve made three successive decisions that all point in the same direction. The membership question aligns with the trajectory they’ve already set for themselves.</p>
+<p>This also explains why the people who leave after week one aren’t a problem. They’re a feature. You want early self-selection because the people who return are genuinely interested, and your hosts’ time is spent on the people most likely to join. Every club has limited volunteer capacity. Spending it on people who’ve already demonstrated interest is a better use of everyone’s afternoon than spending it on people who came once out of curiosity and won’t be back.</p>
+<p><img alt="Small commitments, stacked one on top of another. Photo: Pexels" src="/blog/images/permission-based-come-and-try/4.jpeg" title="Small commitments, stacked one on top of another. Photo: Pexels" /></p>
+<p>Small commitments, stacked one on top of another. Photo: Pexels</p>
+<hr />
+<h2>What changes when you adopt this</h2>
+<p>Think about your club’s current Come and Try process. How does the membership conversation happen? Is there a defined moment for it, or does it depend on whoever happens to be around that day? Do the new people know it’s coming, or does it land without warning?</p>
+<p>When you move to a permission-based structure, several things change at once. The conversion rate goes up because people aren’t blindsided. The volunteer stress goes down because the conversation is scripted into the programme. The people who don’t want to join leave earlier, which means your volunteers spend less time on people who were never going to convert. And the overall tone of the Come and Try shifts from “we hope you’ll join” to “here’s how this works,” which feels more confident and more welcoming at the same time.</p>
+<p>The whole process becomes a series of small, agreeable steps that build on each other. The invitation leads to the game. The game leads to returning. Returning leads to joining. By the time anyone signs, everyone reached that point together. You’re not selling. You’re following through on what everyone already agreed to.</p>
+<hr />
+<hr />
+      </div>
+    </div>
+    <aside class="subscribe-cta">
+      <h3>Keep reading</h3>
+      <p>Have my posts delivered to your inbox so you can read them there.</p>
+      <iframe src="https://croquetwade.substack.com/embed"
+              width="100%" height="150" frameborder="0" scrolling="no"
+              title="Subscribe to CroquetWade"></iframe>
+    </aside>
+    <div class="blog-footer-link">Originally published on <a href="https://croquetwade.substack.com/p/permission-based-come-and-try" target="_blank" rel="noopener noreferrer">Substack</a>.</div>
+  </main>
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-text">2026 CroquetWade</span>
+        <span class="footer-text">Brisbane, Queensland</span>
+      </div>
+    </div>
+  </footer>
+  <script>
+    // Mobile nav toggle
+    const toggle = document.querySelector('.nav-mobile-toggle');
+    const dropdown = document.querySelector('.nav-dropdown');
+    if (toggle && dropdown) {
+      toggle.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!expanded));
+        dropdown.classList.toggle('open');
+      });
+    }
+  </script>
+</body>
+</html>

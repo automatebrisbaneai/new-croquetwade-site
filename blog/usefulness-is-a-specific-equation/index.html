@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/site.css">
+  <style>
+    /* Blog-specific styles */
+    .blog-nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .blog-nav-back:hover { color: var(--maroon); }
+
+    .blog-header {
+      padding: clamp(3rem, 6vw, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+      border-bottom: var(--border);
+      background: var(--white);
+    }
+
+    .blog-hero-img {
+      width: 100%;
+      max-height: 480px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-2xl);
+      border: var(--border);
+    }
+
+    .blog-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-title {
+      font-size: var(--text-section);
+      font-weight: var(--weight-semi);
+      line-height: var(--lh-tight);
+      letter-spacing: var(--ls-tight);
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+      max-width: 42ch;
+    }
+
+    .blog-subtitle {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      line-height: var(--lh-snug);
+      max-width: 52ch;
+      margin-bottom: 0;
+    }
+
+    /* Reading column */
+    .blog-body {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) clamp(2rem, 5vw, 4rem);
+    }
+
+    .blog-body p {
+      font-size: var(--text-base);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body h2 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-top: var(--space-3xl);
+      margin-bottom: var(--space-md);
+      line-height: var(--lh-tight);
+    }
+
+    .blog-body h3 {
+      font-size: 1.125rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-2xl);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-body h4, .blog-body h5, .blog-body h6 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-xl);
+      margin-bottom: var(--space-xs);
+    }
+
+    .blog-body a {
+      color: var(--maroon);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .blog-body a:hover { color: var(--maroon-light); }
+
+    .blog-body img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-md);
+      margin: var(--space-2xl) 0;
+      border: var(--border);
+    }
+
+    .blog-body blockquote {
+      border-left: 3px solid var(--maroon);
+      padding-left: var(--space-lg);
+      margin: var(--space-2xl) 0;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .blog-body ul, .blog-body ol {
+      padding-left: var(--space-xl);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body li {
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+    }
+
+    .blog-body hr {
+      border: none;
+      border-top: var(--border);
+      margin: var(--space-3xl) 0;
+    }
+
+    .blog-body pre {
+      background: var(--n100);
+      border: var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-md);
+      overflow-x: auto;
+      font-size: 0.875rem;
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body code {
+      font-size: 0.875em;
+      background: var(--n100);
+      padding: 0.125em 0.375em;
+      border-radius: 3px;
+      color: var(--text-primary);
+    }
+
+    .blog-footer-link {
+      display: block;
+      max-width: 680px;
+      margin: 0 auto var(--space-5xl);
+      padding: var(--space-xl) var(--container-pad);
+      border-top: var(--border);
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+    }
+
+    .blog-footer-link a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-footer-link a:hover { text-decoration: underline; }
+
+    /* Listing page */
+    .blog-listing {
+      padding: clamp(3rem, 6vw, 5rem) 0;
+    }
+
+    .blog-listing-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-2xl);
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) 0;
+    }
+
+    @media (min-width: 640px) {
+      .blog-listing-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .blog-card {
+      display: flex;
+      flex-direction: column;
+      border: var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--white);
+      transition: box-shadow var(--dur-fast) var(--ease-out), border-color var(--dur-fast);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .blog-card:hover {
+      border-color: var(--n300);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .blog-card-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      background: var(--n100);
+    }
+
+    .blog-card-thumb-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--n100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .blog-card-body {
+      padding: var(--space-lg);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-card-date {
+      font-size: var(--text-xxs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-title {
+      font-size: 1.0625rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      line-height: var(--lh-snug);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-dek {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      flex: 1;
+    }
+
+    .blog-listing-empty {
+      text-align: center;
+      padding: var(--space-5xl) var(--container-pad);
+      color: var(--text-tertiary);
+    }
+
+    /* Subscribe CTA — article bottom */
+    .subscribe-cta {
+      max-width: 680px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-2xl) var(--container-pad);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+    }
+
+    .subscribe-cta h3 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-tight);
+    }
+
+    .subscribe-cta p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin-bottom: var(--space-md);
+    }
+
+    .subscribe-cta iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* Subscribe hero — listing page */
+    .subscribe-hero {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-2xl) var(--container-pad) 0;
+    }
+
+    .subscribe-hero-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-xl);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+      padding: var(--space-2xl) var(--container-pad);
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-inner {
+        flex-direction: column;
+      }
+    }
+
+    .subscribe-hero-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .subscribe-hero-text h2 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-xs);
+    }
+
+    .subscribe-hero-text p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin: 0;
+    }
+
+    .subscribe-hero-embed {
+      flex: 0 0 320px;
+      min-width: 0;
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-embed {
+        flex: none;
+        width: 100%;
+      }
+    }
+
+    .subscribe-hero-embed iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* RSS link in listing footer */
+    .blog-listing-footer {
+      max-width: 800px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-md) var(--container-pad) var(--space-5xl);
+      border-top: var(--border);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-listing-footer a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-listing-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+  <title>Usefulness is a specific equation — CroquetWade</title>
+  <meta name="description" content="Usefulness is a specific equation">
+    <link rel="alternate" type="application/rss+xml" title="CroquetWade — Writing" href="/blog/rss.xml">
+</head>
+<body>
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">CroquetWade</a>
+      <ul class="nav-links">
+        <li><a href="/#systems">Systems</a></li>
+        <li><a href="/#framework">Framework</a></li>
+        <li><a href="/blog/">Writing</a></li>
+        <li><a href="/#contact">Get in Touch</a></li>
+      </ul>
+      <button class="nav-mobile-toggle" aria-expanded="false" aria-controls="nav-dropdown" aria-label="Toggle navigation">Menu</button>
+    </div>
+    <div class="nav-dropdown" id="nav-dropdown" role="menu">
+      <a href="/#systems" role="menuitem">Systems</a>
+      <a href="/#framework" role="menuitem">Framework</a>
+      <a href="/blog/" role="menuitem">Writing</a>
+      <a href="/#contact" role="menuitem">Get in Touch</a>
+    </div>
+  </nav>
+
+  <header class="blog-header">
+    <div class="container">
+      <a href="/blog/" class="blog-nav-back">&#8592; All writing</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="blog-body">
+      <div class="blog-meta">
+        <span>27 January 2026</span>
+      </div>
+      <h1 class="blog-title">Usefulness is a specific equation</h1>
+      
+      <hr style="margin: var(--space-2xl) 0; border: none; border-top: var(--border);">
+      <div class="blog-body-content">
+        <h2>The system nobody uses</h2>
+<p>A few years ago, a national sporting body rolled out a new membership management platform to its state associations. It could do many things. On paper, it was the answer to every administrative problem the sport had ever had.</p>
+<p>One problem: the volunteers who were supposed to use it couldn’t navigate it. The interface was confusing, the training requirements were significant, and the ongoing support was a hassle. Clubs that had been managing their memberships perfectly well with spreadsheets were now being asked to adopt a system that made their admin lives harder, not easier. Login rates were negligible. The data sitting inside the platform was incomplete because it is getting entered haphazardly.</p>
+<p><img alt="All the function in the world, gathering dust. Photo: Pexels" src="/blog/images/usefulness-is-a-specific-equation/1.jpeg" title="All the function in the world, gathering dust. Photo: Pexels" /></p>
+<p>All the function in the world, gathering dust. Photo: Pexels</p>
+<p>The platform had enormous function. But it is hard to use. And that means it has significantly reduced value.</p>
+<hr />
+<h2>The equation</h2>
+<p>This is something I keep coming back to in my work with clubs. Usefulness isn’t a vague quality. It’s not a feeling. It’s closer to a formula:</p>
+<p><strong>Function x Usage = Value</strong></p>
+<p>Function is what something does. Usage is how often people actually use it. Value is what you get when you multiply the two together. The multiplication matters, because if either side is zero, the whole thing is zero. A tool that does everything but sits untouched is worth exactly as much as a tool that does nothing.</p>
+<p><a href="https://hbs.edu/faculty/Pages/item.aspx?num=62369">Clayton Christensen’s “jobs to be done” framework</a> makes a similar point from the demand side. People don’t adopt tools because of what the tools can do. They adopt tools because they have a job that needs doing, and the tool fits that job in their actual life. The function is only relevant to the extent that someone has a reason to use the thing.</p>
+<hr />
+<h2>The noticeboard principle</h2>
+<p>Consider the club noticeboard.</p>
+<p>A handwritten note pinned to a corkboard has almost no function in the modern sense. It can’t search. It can’t automate. It can’t sync across devices or send reminders. It’s a piece of paper with a thumbtack through it.</p>
+<p>But if every member stops and reads it on the way to the lawns, its usage is high. And that usage makes it valuable. People know what’s happening this week, who’s away, what time the pennant team leaves on Saturday. The information flows because the delivery method fits the audience perfectly. Low function, high usage, high value.</p>
+<p>Now compare that to the digital platform that can do everything but nobody logs into. It’s technically superior in every way. It can generate reports the noticeboard could never dream of. But if the login rate is zero, the value is zero. It’s expensive digital dust. High function, low usage, low value.</p>
+<p>Usage is the multiplier. And usage only comes from one place: demand.</p>
+<hr />
+<h2>The supply trap</h2>
+<p>This is where most projects in volunteer organisations go wrong, and I’ve watched it happen repeatedly across croquet clubs in Queensland.</p>
+<p>Someone gets excited about a solution. A new website platform, a booking system, a digital communication tool. They build it or buy it, configure it carefully, maybe spend months getting it right. Then they launch it and go looking for the problems it might solve. “Now that we have this, we should use it for X, Y and Z.” The logic runs backwards, from supply to demand, and it creates a predictable pattern. The people who built it love it. The people who are supposed to use it don’t, because they never asked for it in the first place.</p>
+<p>Forcing usage is exhausting. It requires constant reminders, training sessions, complaints about adoption rates, and eventually guilt. Research on <a href="https://volunteeringaustralia.org/wp-content/uploads/VRP_The-great-volunteer-resignation-An-evidence-based-strategy-for-retaining-volunteers.pdf">technology adoption in volunteer organisations</a> consistently finds that tools imposed without demand create resentment and contribute to burnout. Volunteers already feel stretched. Asking them to learn a new system they didn’t want is a reliable way to lose them.</p>
+<p>That said, function obviously matters. You can’t run a membership program on a noticeboard alone. The point is that function without usage is wasted investment, and the way to get usage is to start with the demand, what people want.</p>
+<p><img alt="When nobody asked for it, every push feels like rolling a boulder uphill. Photo: Pexels" src="/blog/images/usefulness-is-a-specific-equation/2.jpeg" title="When nobody asked for it, every push feels like rolling a boulder uphill. Photo: Pexels" /></p>
+<p>When nobody asked for it, every push feels like rolling a boulder uphill. Photo: Pexels</p>
+<hr />
+<h2>Recognised demand</h2>
+<p>Instead of building a solution and hunting for problems, identify the problems that people are already feeling. The ones they talk about at committee meetings, the ones that keep coming up in conversations after a game, the ones that make volunteers sigh and say “there has to be a better way.” When the demand is already there, recognised and felt, the solution doesn’t need selling. The gap between “where I am” and “where I want to be” is already established. People are waiting for the bridge.</p>
+<p><img alt="People are waiting for the bridge. Build the one they're looking for. Photo: Pexels" src="/blog/images/usefulness-is-a-specific-equation/3.jpeg" title="People are waiting for the bridge. Build the one they're looking for. Photo: Pexels" /></p>
+<p>People are waiting for the bridge. Build the one they’re looking for. Photo: Pexels</p>
+<p>At Southport Croquet Club, the committee didn't start with a technology wishlist. They started with a specific frustration: collecting money for lawn fees was a nightmare of envelopes and IOUs. The demand was there because they wanted the problem solved. So when they introduced a simple card reader, adoption was instant. No training sessions needed, no guilt campaigns about using it. The tool solved a problem the club already had, and they used it immediately because they wanted to.</p>
+<p>How many tools or systems has your club adopted in the last few years? How many of them were responses to problems people were already feeling, and how many were solutions looking for a problem?</p>
+<hr />
+<h2>Starting with demand</h2>
+<p>The strategy is simple to state and requires discipline to follow: don’t launch supply to find demand. Identify the demand to justify the supply.</p>
+<p>Before committing volunteer hours and club funds to any new system, tool, or process, the first question should be: who’s asking for this? If the answer is <em>“nobody yet, but they will once they see it,”</em> that’s a warning sign. If the answer is <em>“the treasurer has been complaining about this for six months and three committee members have independently suggested we fix it,”</em> that’s demand. That’s where usage comes from. Usage proves its value.</p>
+<p>There’s a second benefit to starting with demand that’s easy to miss. When people ask for something and then get it, the whole relationship with whoever builds it changes. They’re not being sold to. They’re working together. The supplier knows what’s needed because the users have said so, and the users are invested in making it work because it’s solving their problem. That’s cooperation, not compliance. Nobody needs to be convinced, trained, or guilted into using it. They want to, because the tool is theirs, because it solves their problem.</p>
+<p>Supply is only a fraction of what’s needed to create usefulness. What’s crucial is demand. When something is demanded, it becomes useful because it’s used. When it’s merely supplied, it becomes one more thing volunteers have to be convinced to do. And in a world where volunteer time is the scarcest resource a club has, that’s a cost most clubs can’t pay.</p>
+<p><img alt="Demand turns the relationship from compliance into cooperation. Photo: Pexels" src="/blog/images/usefulness-is-a-specific-equation/4.jpeg" title="Demand turns the relationship from compliance into cooperation. Photo: Pexels" /></p>
+<p>Demand turns the relationship from compliance into cooperation. Photo: Pexels</p>
+      </div>
+    </div>
+    <aside class="subscribe-cta">
+      <h3>Keep reading</h3>
+      <p>Have my posts delivered to your inbox so you can read them there.</p>
+      <iframe src="https://croquetwade.substack.com/embed"
+              width="100%" height="150" frameborder="0" scrolling="no"
+              title="Subscribe to CroquetWade"></iframe>
+    </aside>
+    <div class="blog-footer-link">Originally published on <a href="https://croquetwade.substack.com/p/usefulness-is-a-specific-equation" target="_blank" rel="noopener noreferrer">Substack</a>.</div>
+  </main>
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-text">2026 CroquetWade</span>
+        <span class="footer-text">Brisbane, Queensland</span>
+      </div>
+    </div>
+  </footer>
+  <script>
+    // Mobile nav toggle
+    const toggle = document.querySelector('.nav-mobile-toggle');
+    const dropdown = document.querySelector('.nav-dropdown');
+    if (toggle && dropdown) {
+      toggle.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!expanded));
+        dropdown.classList.toggle('open');
+      });
+    }
+  </script>
+</body>
+</html>

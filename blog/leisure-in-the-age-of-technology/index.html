@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/site.css">
+  <style>
+    /* Blog-specific styles */
+    .blog-nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .blog-nav-back:hover { color: var(--maroon); }
+
+    .blog-header {
+      padding: clamp(3rem, 6vw, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+      border-bottom: var(--border);
+      background: var(--white);
+    }
+
+    .blog-hero-img {
+      width: 100%;
+      max-height: 480px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-2xl);
+      border: var(--border);
+    }
+
+    .blog-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-title {
+      font-size: var(--text-section);
+      font-weight: var(--weight-semi);
+      line-height: var(--lh-tight);
+      letter-spacing: var(--ls-tight);
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+      max-width: 42ch;
+    }
+
+    .blog-subtitle {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      line-height: var(--lh-snug);
+      max-width: 52ch;
+      margin-bottom: 0;
+    }
+
+    /* Reading column */
+    .blog-body {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) clamp(2rem, 5vw, 4rem);
+    }
+
+    .blog-body p {
+      font-size: var(--text-base);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body h2 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-top: var(--space-3xl);
+      margin-bottom: var(--space-md);
+      line-height: var(--lh-tight);
+    }
+
+    .blog-body h3 {
+      font-size: 1.125rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-2xl);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-body h4, .blog-body h5, .blog-body h6 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-xl);
+      margin-bottom: var(--space-xs);
+    }
+
+    .blog-body a {
+      color: var(--maroon);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .blog-body a:hover { color: var(--maroon-light); }
+
+    .blog-body img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-md);
+      margin: var(--space-2xl) 0;
+      border: var(--border);
+    }
+
+    .blog-body blockquote {
+      border-left: 3px solid var(--maroon);
+      padding-left: var(--space-lg);
+      margin: var(--space-2xl) 0;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .blog-body ul, .blog-body ol {
+      padding-left: var(--space-xl);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body li {
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+    }
+
+    .blog-body hr {
+      border: none;
+      border-top: var(--border);
+      margin: var(--space-3xl) 0;
+    }
+
+    .blog-body pre {
+      background: var(--n100);
+      border: var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-md);
+      overflow-x: auto;
+      font-size: 0.875rem;
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body code {
+      font-size: 0.875em;
+      background: var(--n100);
+      padding: 0.125em 0.375em;
+      border-radius: 3px;
+      color: var(--text-primary);
+    }
+
+    .blog-footer-link {
+      display: block;
+      max-width: 680px;
+      margin: 0 auto var(--space-5xl);
+      padding: var(--space-xl) var(--container-pad);
+      border-top: var(--border);
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+    }
+
+    .blog-footer-link a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-footer-link a:hover { text-decoration: underline; }
+
+    /* Listing page */
+    .blog-listing {
+      padding: clamp(3rem, 6vw, 5rem) 0;
+    }
+
+    .blog-listing-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-2xl);
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) 0;
+    }
+
+    @media (min-width: 640px) {
+      .blog-listing-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .blog-card {
+      display: flex;
+      flex-direction: column;
+      border: var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--white);
+      transition: box-shadow var(--dur-fast) var(--ease-out), border-color var(--dur-fast);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .blog-card:hover {
+      border-color: var(--n300);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .blog-card-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      background: var(--n100);
+    }
+
+    .blog-card-thumb-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--n100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .blog-card-body {
+      padding: var(--space-lg);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-card-date {
+      font-size: var(--text-xxs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-title {
+      font-size: 1.0625rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      line-height: var(--lh-snug);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-dek {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      flex: 1;
+    }
+
+    .blog-listing-empty {
+      text-align: center;
+      padding: var(--space-5xl) var(--container-pad);
+      color: var(--text-tertiary);
+    }
+
+    /* Subscribe CTA — article bottom */
+    .subscribe-cta {
+      max-width: 680px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-2xl) var(--container-pad);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+    }
+
+    .subscribe-cta h3 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-tight);
+    }
+
+    .subscribe-cta p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin-bottom: var(--space-md);
+    }
+
+    .subscribe-cta iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* Subscribe hero — listing page */
+    .subscribe-hero {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-2xl) var(--container-pad) 0;
+    }
+
+    .subscribe-hero-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-xl);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+      padding: var(--space-2xl) var(--container-pad);
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-inner {
+        flex-direction: column;
+      }
+    }
+
+    .subscribe-hero-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .subscribe-hero-text h2 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-xs);
+    }
+
+    .subscribe-hero-text p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin: 0;
+    }
+
+    .subscribe-hero-embed {
+      flex: 0 0 320px;
+      min-width: 0;
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-embed {
+        flex: none;
+        width: 100%;
+      }
+    }
+
+    .subscribe-hero-embed iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* RSS link in listing footer */
+    .blog-listing-footer {
+      max-width: 800px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-md) var(--container-pad) var(--space-5xl);
+      border-top: var(--border);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-listing-footer a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-listing-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+  <title>Leisure in the Age of Technology — CroquetWade</title>
+  <meta name="description" content="Leisure in the Age of Technology">
+    <link rel="alternate" type="application/rss+xml" title="CroquetWade — Writing" href="/blog/rss.xml">
+</head>
+<body>
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">CroquetWade</a>
+      <ul class="nav-links">
+        <li><a href="/#systems">Systems</a></li>
+        <li><a href="/#framework">Framework</a></li>
+        <li><a href="/blog/">Writing</a></li>
+        <li><a href="/#contact">Get in Touch</a></li>
+      </ul>
+      <button class="nav-mobile-toggle" aria-expanded="false" aria-controls="nav-dropdown" aria-label="Toggle navigation">Menu</button>
+    </div>
+    <div class="nav-dropdown" id="nav-dropdown" role="menu">
+      <a href="/#systems" role="menuitem">Systems</a>
+      <a href="/#framework" role="menuitem">Framework</a>
+      <a href="/blog/" role="menuitem">Writing</a>
+      <a href="/#contact" role="menuitem">Get in Touch</a>
+    </div>
+  </nav>
+
+  <header class="blog-header">
+    <div class="container">
+      <a href="/blog/" class="blog-nav-back">&#8592; All writing</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="blog-body">
+      <div class="blog-meta">
+        <span>25 March 2026</span>
+      </div>
+      <h1 class="blog-title">Leisure in the Age of Technology</h1>
+      
+      <hr style="margin: var(--space-2xl) 0; border: none; border-top: var(--border);">
+      <div class="blog-body-content">
+        <p><img alt="" src="/blog/images/leisure-in-the-age-of-technology/1.png" /></p>
+<p>Leisure in the Age of Technology</p>
+<p>I was nine years old and a computer had just found me a friend.</p>
+<p>This was 1988, at World Expo in Brisbane, and the computer in question was one of the Telecom touchscreens I remember were scattered around the site. I don’t remember what I typed. I remember that it matched me with a girl from somewhere in Scandinavia, Sweden or Norway, my memory can’t be sure, and that within a few weeks we were writing actual letters to each other. Pen on paper, stamps, more than one on a letter! We kept it up for a couple of years.</p>
+<p>I’d completely forgotten about her until I started thinking about this blog.</p>
+<p>The reason I mention this is that it had a slogan I was thinking about. Expo 88’s official theme was <strong>“Leisure in the Age of Technology.”</strong> Not productivity. Not efficiency. Not innovation, disruption, synergy, or any of the words we’d use now. <strong>Leisure</strong>. The organisers of a world exposition in 1988 looked at the arc of technology and concluded that what it would give us, above everything else, was more time to enjoy ourselves.</p>
+<p>Brisbane in 1988 was not the city it is now. People who were there will tell you it was dead after five o’clock. You could fire a cannon down Queen Street on a weeknight and hit nothing but nocturnal pigeons. Expo changed that. Eighteen million visits in six months. The monorail. Laser shows over the river every night. A Japanese pavilion with 3D films. The whole city suddenly discovering it could stay up past dark and have a good time. For a nine-year-old, it was the future arriving all at once, and it was spectacular.</p>
+<p><img alt="" src="/blog/images/leisure-in-the-age-of-technology/2.jpeg" /></p>
+<p>I touched a screen and it responded. This was, I should point out, before anyone had seen or used a touchscreen. I flew a fighter jet in a simulator. I conversed with a car that could talk. I rode a monorail. Every single one of these things promised the slogan: technology was going to make life more fun.</p>
+<p>And then I went home and wrote letters to a girl I’d never met, on the other side of the world, because a machine had decided we might get along. She liked skiing and I liked swimming. Sports beginning with S. Perfect match.</p>
+<p>That, right there, is the promise working perfectly. A computer doing something a nine-year-old couldn’t do for himself, connecting two people across oceans, and then getting out of the way. The technology did its job and the humans did theirs.</p>
+<hr />
+<p>I keep turning this over. We got everything Expo 88 promised. Every single exhibit I saw that day, I now carry in my pocket. The touchscreen. The simulator. The talking car, more or less. The 3D films. I can video-call someone in Scandinavia right now, for free, in high definition, without leaving my chair.</p>
+<p>John Maynard Keynes <em>(my second favourite economist- yes I have a ranked list)</em>, writing in 1930, predicted that by 2030 his grandchildren would work fifteen-hour weeks. The technology would be so productive, he reasoned, that the main challenge would be figuring out what to do with all the free time. He wasn’t wrong about the technology. He was wrong about humans.</p>
+<p><img alt="" src="/blog/images/leisure-in-the-age-of-technology/3.jpeg" /></p>
+<p>By most measures, leisure time in developed countries hasn’t meaningfully increased since the 1980s. We have machines that can write our emails, manage our calendars, file our taxes, and order our groceries. We work the same hours. We commute longer. We spend our evenings answering messages from the office on the same device we use to watch films. The technology arrived. Where’s the leisure?</p>
+<p>Nine-year-old me would find this baffling. He’d look at the phone in my hand, with more processing power than everything at the whole Expo site combined, and ask one question: “So you’ve got all this... and you’re busier?”</p>
+<p>Fair question, kid.</p>
+<p><img alt="" src="/blog/images/leisure-in-the-age-of-technology/4.jpeg" /></p>
+<hr />
+<p>Old me works with croquet clubs. Volunteer-run, mostly older membership, often operating on committee structures that haven’t changed much since the clubs were founded 100 odd years ago. Good people, whole-heartedly committed, giving their time because they love the sport.</p>
+<p>Here is what a lot of that time goes to: bookkeeping. Bank reconciliation. Typing up meeting minutes at eleven o’clock at night. Writing agendas. Distributing agendas. Chasing responses to agendas. Filing receipts. Updating spreadsheets. Renewing registrations. Formatting newsletters. None of it is croquet.</p>
+<p>A treasurer spends hours a week on the books. A secretary types minutes on Sunday mornings when she’d rather be doing almost anything else. These are retired people who joined a croquet club to play croquet, and a meaningful portion of their volunteer hours goes to tasks that a computer could handle, or at least reduce to a few minutes of oversight.</p>
+<p><img alt="" src="/blog/images/leisure-in-the-age-of-technology/5.jpeg" /></p>
+<p>This is where I come back to the slogan. <strong>“Leisure in the Age of Technology.”</strong> What would it actually look like if we took that seriously? Not as a nostalgic idea from a world fair, but as a design principle for running a sporting club/organisation in 2026?</p>
+<p>Imagine the minutes just... happened. Someone records the meeting, the transcript gets structured, the action items get pulled out, the document appears in the shared folder. Sunday morning croquet instead.</p>
+<p>The books balance themselves overnight. Transactions matched, reports generated, the treasurer reviews a summary instead of reconciling line by line. She checks it with her coffee on Monday. Four hours a week becomes ten minutes.</p>
+<p>A new person in the area who fancies a hit finds the nearest club, sees when they play, and books themselves in. No committee member receives a phone call. No organisation needed, the person turns up with a smile, a hat and a pair of flat shoes.</p>
+<p>This is 2026 and it isn’t science fiction anymore. The technology exists. The gap isn’t capability of the machines. It’s the gap Keynes missed- having the tools is not the same as making the decision to use them for leisure.</p>
+<hr />
+<p>I don’t know if my pen pal remembers me. I don’t even know her name anymore, which is a strange thing to admit about someone I wrote to for about two years as a kid. The letters stopped at some point, the way things do when you’re eleven and the world keeps moving.</p>
+<p>But that’s the version of technology I want for croquet clubs. The version that handles the minutes so the secretary can play on Monday morning, and connects a curious person with a club near their house, and then disappears. Technology that does its job and leaves.</p>
+<p>The slogan said “Leisure in the Age of Technology.” Not technology in the age of technology. The leisure was supposed to be the point. Are we missing that?</p>
+      </div>
+    </div>
+    <aside class="subscribe-cta">
+      <h3>Keep reading</h3>
+      <p>Have my posts delivered to your inbox so you can read them there.</p>
+      <iframe src="https://croquetwade.substack.com/embed"
+              width="100%" height="150" frameborder="0" scrolling="no"
+              title="Subscribe to CroquetWade"></iframe>
+    </aside>
+    <div class="blog-footer-link">Originally published on <a href="https://croquetwade.substack.com/p/leisure-in-the-age-of-technology" target="_blank" rel="noopener noreferrer">Substack</a>.</div>
+  </main>
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-text">2026 CroquetWade</span>
+        <span class="footer-text">Brisbane, Queensland</span>
+      </div>
+    </div>
+  </footer>
+  <script>
+    // Mobile nav toggle
+    const toggle = document.querySelector('.nav-mobile-toggle');
+    const dropdown = document.querySelector('.nav-dropdown');
+    if (toggle && dropdown) {
+      toggle.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!expanded));
+        dropdown.classList.toggle('open');
+      });
+    }
+  </script>
+</body>
+</html>

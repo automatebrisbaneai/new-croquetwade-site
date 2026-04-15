@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/site.css">
+  <style>
+    /* Blog-specific styles */
+    .blog-nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .blog-nav-back:hover { color: var(--maroon); }
+
+    .blog-header {
+      padding: clamp(3rem, 6vw, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+      border-bottom: var(--border);
+      background: var(--white);
+    }
+
+    .blog-hero-img {
+      width: 100%;
+      max-height: 480px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-2xl);
+      border: var(--border);
+    }
+
+    .blog-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-title {
+      font-size: var(--text-section);
+      font-weight: var(--weight-semi);
+      line-height: var(--lh-tight);
+      letter-spacing: var(--ls-tight);
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+      max-width: 42ch;
+    }
+
+    .blog-subtitle {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      line-height: var(--lh-snug);
+      max-width: 52ch;
+      margin-bottom: 0;
+    }
+
+    /* Reading column */
+    .blog-body {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) clamp(2rem, 5vw, 4rem);
+    }
+
+    .blog-body p {
+      font-size: var(--text-base);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body h2 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-top: var(--space-3xl);
+      margin-bottom: var(--space-md);
+      line-height: var(--lh-tight);
+    }
+
+    .blog-body h3 {
+      font-size: 1.125rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-2xl);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-body h4, .blog-body h5, .blog-body h6 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-xl);
+      margin-bottom: var(--space-xs);
+    }
+
+    .blog-body a {
+      color: var(--maroon);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .blog-body a:hover { color: var(--maroon-light); }
+
+    .blog-body img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-md);
+      margin: var(--space-2xl) 0;
+      border: var(--border);
+    }
+
+    .blog-body blockquote {
+      border-left: 3px solid var(--maroon);
+      padding-left: var(--space-lg);
+      margin: var(--space-2xl) 0;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .blog-body ul, .blog-body ol {
+      padding-left: var(--space-xl);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body li {
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+    }
+
+    .blog-body hr {
+      border: none;
+      border-top: var(--border);
+      margin: var(--space-3xl) 0;
+    }
+
+    .blog-body pre {
+      background: var(--n100);
+      border: var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-md);
+      overflow-x: auto;
+      font-size: 0.875rem;
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body code {
+      font-size: 0.875em;
+      background: var(--n100);
+      padding: 0.125em 0.375em;
+      border-radius: 3px;
+      color: var(--text-primary);
+    }
+
+    .blog-footer-link {
+      display: block;
+      max-width: 680px;
+      margin: 0 auto var(--space-5xl);
+      padding: var(--space-xl) var(--container-pad);
+      border-top: var(--border);
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+    }
+
+    .blog-footer-link a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-footer-link a:hover { text-decoration: underline; }
+
+    /* Listing page */
+    .blog-listing {
+      padding: clamp(3rem, 6vw, 5rem) 0;
+    }
+
+    .blog-listing-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-2xl);
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) 0;
+    }
+
+    @media (min-width: 640px) {
+      .blog-listing-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .blog-card {
+      display: flex;
+      flex-direction: column;
+      border: var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--white);
+      transition: box-shadow var(--dur-fast) var(--ease-out), border-color var(--dur-fast);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .blog-card:hover {
+      border-color: var(--n300);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .blog-card-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      background: var(--n100);
+    }
+
+    .blog-card-thumb-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--n100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .blog-card-body {
+      padding: var(--space-lg);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-card-date {
+      font-size: var(--text-xxs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-title {
+      font-size: 1.0625rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      line-height: var(--lh-snug);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-dek {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      flex: 1;
+    }
+
+    .blog-listing-empty {
+      text-align: center;
+      padding: var(--space-5xl) var(--container-pad);
+      color: var(--text-tertiary);
+    }
+
+    /* Subscribe CTA — article bottom */
+    .subscribe-cta {
+      max-width: 680px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-2xl) var(--container-pad);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+    }
+
+    .subscribe-cta h3 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-tight);
+    }
+
+    .subscribe-cta p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin-bottom: var(--space-md);
+    }
+
+    .subscribe-cta iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* Subscribe hero — listing page */
+    .subscribe-hero {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-2xl) var(--container-pad) 0;
+    }
+
+    .subscribe-hero-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-xl);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+      padding: var(--space-2xl) var(--container-pad);
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-inner {
+        flex-direction: column;
+      }
+    }
+
+    .subscribe-hero-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .subscribe-hero-text h2 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-xs);
+    }
+
+    .subscribe-hero-text p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin: 0;
+    }
+
+    .subscribe-hero-embed {
+      flex: 0 0 320px;
+      min-width: 0;
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-embed {
+        flex: none;
+        width: 100%;
+      }
+    }
+
+    .subscribe-hero-embed iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* RSS link in listing footer */
+    .blog-listing-footer {
+      max-width: 800px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-md) var(--container-pad) var(--space-5xl);
+      border-top: var(--border);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-listing-footer a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-listing-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+  <title>The Impossible Volunteer — CroquetWade</title>
+  <meta name="description" content="The Impossible Volunteer">
+    <link rel="alternate" type="application/rss+xml" title="CroquetWade — Writing" href="/blog/rss.xml">
+</head>
+<body>
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">CroquetWade</a>
+      <ul class="nav-links">
+        <li><a href="/#systems">Systems</a></li>
+        <li><a href="/#framework">Framework</a></li>
+        <li><a href="/blog/">Writing</a></li>
+        <li><a href="/#contact">Get in Touch</a></li>
+      </ul>
+      <button class="nav-mobile-toggle" aria-expanded="false" aria-controls="nav-dropdown" aria-label="Toggle navigation">Menu</button>
+    </div>
+    <div class="nav-dropdown" id="nav-dropdown" role="menu">
+      <a href="/#systems" role="menuitem">Systems</a>
+      <a href="/#framework" role="menuitem">Framework</a>
+      <a href="/blog/" role="menuitem">Writing</a>
+      <a href="/#contact" role="menuitem">Get in Touch</a>
+    </div>
+  </nav>
+
+  <header class="blog-header">
+    <div class="container">
+      <a href="/blog/" class="blog-nav-back">&#8592; All writing</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="blog-body">
+      <div class="blog-meta">
+        <span>25 February 2026</span>
+      </div>
+      <h1 class="blog-title">The Impossible Volunteer</h1>
+      
+      <hr style="margin: var(--space-2xl) 0; border: none; border-top: var(--border);">
+      <div class="blog-body-content">
+        <p>Say 40% of people in a group can do a particular task. A healthy number.</p>
+<p>Now say 30% can do a second, unrelated task. Also a healthy percentage of the whole population.</p>
+<p>And 20% are available at a specific time. Reasonable.</p>
+<p>How many people in the group can match all three requirements?</p>
+<p>Multiply. 0.4 × 0.3 × 0.2 = 0.024.</p>
+<p>2.4%</p>
+<p><img alt="" src="/blog/images/the-impossible-volunteer/1.png" /></p>
+<p>.</p>
+<p>Three perfectly reasonable requirements that aren’t too hard to meet individually. Because the skills are independent of each other, their chances multiply when combined. Each new requirement doesn’t subtract from the pool. It divides it.</p>
+<p>This is the multiplication rule for independent events, and it has a consistent, uncomfortable consequence: stacking unrelated requirements onto a single position compresses the eligible pool exponentially.</p>
+<h3>AND vs OR</h3>
+<p>The compression happens because of how the requirements are joined.</p>
+<p>When a job description says you need Skill A AND Skill B AND availability on Tuesdays, it’s running a Boolean AND operation. AND is restrictive. Each condition filters out everyone who doesn’t meet it, and the filters compound.</p>
+<p><img alt="" src="/blog/images/the-impossible-volunteer/2.png" /></p>
+<p>The alternative is OR. Instead of one role that demands all three skills, create three roles that each need one. The Excel role draws from 40 people. The phone role draws from 30. The time restriction draws from 20. Some of those people overlap. The person comfortable with Excel might also be available on tournament days. That’s fine if they want to nominate for both roles. Each role only needs to be filled once, and each one independently draws from the base instead of demanding all three traits from the same individual.</p>
+<p>Same work with the same volunteers but different grouping. One way has 2 or 3 potential volunteers, the other 90.</p>
+<h3>The compression curve</h3>
+<p>The effect accelerates as requirements stack.</p>
+<p><img alt="" src="/blog/images/the-impossible-volunteer/3.png" /></p>
+<p>By the time something carries four or five different requirements, the pool that can fill them is tiny.</p>
+<p>The US Air Force learned this the hard way. In 1950, planes were crashing at an alarming rate and nobody could explain why. Lieutenant Gilbert Daniels <a href="https://www.thestar.com/news/insight/when-u-s-air-force-discovered-the-flaw-of-averages/article_e3231734-e5da-5bf5-9496-a34e52d60bd9.html">measured 4,063 pilots</a> across ten physical measurements used to design the cockpit: height, chest circumference, arm length, and so on. The cockpit had been built for the “average” pilot on all ten measurements. Daniels checked how many of the 4,063 actually fell within the average range on all ten measurements. Zero. The average pilot didn’t exist. The United States was making a cockpit that not a single pilot could fit.</p>
+<p><img alt="" src="/blog/images/the-impossible-volunteer/4.png" /></p>
+<p>The Air Force’s fix wasn’t to find better proportioned pilots to fit the cockpits. It was adjustable seats, adjustable pedals, adjustable helmet straps. They made the planes fit the pilots because no single pilot can fit the plane.</p>
+<h3>What actually correlates</h3>
+<p>The multiplication rule only applies when skills are independent. If two skills are strongly correlated, asking for both barely affects the pool. So the question is: which skills actually go together in real people?</p>
+<p>Personality psychology gives this biological grounding. The <a href="https://en.wikipedia.org/wiki/Big_Five_personality_traits">Big Five model</a> describes five broad, largely independent trait dimensions. Conscientiousness (detail orientation, systematic thinking, comfort with structured work) and Extraversion (social energy, comfort with strangers, persuasive communication) are separate dimensions. They don’t predict each other. A person high in one is no more likely to be high in the other.</p>
+<p>This matters because when a role bundles spreadsheet work (which draws on conscientiousness) with club liaison (which draws on extraversion), it’s stacking tasks that recruit from statistically independent personality pools. The multiplication rule applies in full.</p>
+<p>When a role bundles spreadsheet work with calendar planning, both draw on conscientiousness and systematic thinking. Those skills correlate. The pool stays wide.</p>
+<p>The grouping determines whether the maths works for you or against you. Bundle tasks that draw from the same personality trait into one role and the pool barely shrinks. Split tasks that draw from different traits into separate roles and each one fills from its own pool. Correlated skills go together. Independent skills go apart.</p>
+<hr />
+<h3>Now look at your org chart</h3>
+<p>Here’s a typical event coordinator role :</p>
+<ul>
+<li>calendar planning,</li>
+<li>tournament draw creation in Excel,</li>
+<li>club liaison by phone,</li>
+<li>referee coordination,</li>
+<li>conditions of play drafting, and</li>
+<li>on-site venue management.</li>
+</ul>
+<p>Read that list through the lens of the maths above.</p>
+<p>Calendar planning and draw creation correlate. Both are structured, systematic, solo tasks. Bundling them costs almost nothing in pool compression.</p>
+<p>Club liaison and referee coordination correlate. Both are interpersonal, reactive, social tasks. Bundling those also costs little.</p>
+<p>But bundling the first pair with the second pair stacks independent traits. Conscientiousness AND extraversion. The pool compresses. Add on-site availability on specific days, a third independent requirement, and the maths delivers its verdict: 2.4%.</p>
+<p>The organisation hasn’t asked for anything unreasonable. Every individual task is doable. The combination is what makes the role impossible.</p>
+<p>So why does every committee design roles this way?</p>
+<h3>The filing cabinet</h3>
+<p>Because the brain groups by topic, not by skill.</p>
+<p><img alt="" src="/blog/images/the-impossible-volunteer/5.png" /></p>
+<p>The <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3739997/">categorisation heuristic</a> makes us group things in particular ways subconsciously. We want to group things by topic because feels complete and logical. Unfortunately its the wrong organising principle for matching humans to work.</p>
+<p>Organisational psychologists call this <a href="https://en.wikipedia.org/wiki/Functional_fixedness">functional fixedness</a>: the inability to see a container as anything other than its traditional form. The work gets shaped to fit the same old box, instead of the box being shaped to fit the work needed.</p>
+<p>Mel Conway observed the same pattern in software engineering in 1967. <a href="https://en.wikipedia.org/wiki/Conway%27s_law">Conway’s Law</a> states that organisations design systems that mirror their own communication structures. Four person teams produce a four-module system, regardless of whether four modules is the right architecture. The shape of the organisation determines the shape of the output. The problem doesn’t get a say.</p>
+<p>And there’s an aesthetic bias reinforcing all of it. A clean org chart with four symmetric roles looks right. Breaking one into four smaller, skill-based roles makes the chart look messy. Fewer roles feels simpler. In practice, a tidy chart with one impossible role is far harder to operate than an awkward chart with four roles people can actually do.</p>
+<h3>What this does to people</h3>
+<p>Volunteers run on a psychological contract: the unspoken agreement about what they’ll give and what they’ll get in return.</p>
+<p>Someone puts their hand up for event coordinator thinking: <em>I’ll contribute my spreadsheet skills, and I’ll get the satisfaction of doing something useful.</em> Three months in, they’re on the phone to a club president explaining a venue change, mediating between referees, and carrying equipment at 7am. None of that was the deal. Most of it isn’t enjoyable for this single person who much prefers dealing with spreadsheets not drama.</p>
+<p>Hackman and Oldham’s <a href="https://en.wikipedia.org/wiki/Job_characteristics_theory">Job Characteristics Model</a> saw Task Identity as a core driver of satisfaction: the ability to complete a whole, identifiable piece of work from start to finish. A volunteer who can build the draw but can’t manage the venue never achieves Task Identity. They can see the part they’re good at and the part that’s keeping them down. Researchers <a href="https://doi.org/10.1023/A:1024607915977">validated this specifically for volunteers</a>: deliberately designed tasks led to higher motivation, higher satisfaction, and significantly lower intent to quit.</p>
+<p><a href="https://www.volunteeringaustralia.org/">Volunteering Australia’s research</a> found that autonomy and productive contribution are the strongest predictors of whether a volunteer stays.</p>
+<p>Bundled roles destroy both.</p>
+<p>Juggling unrelated tasks leaves no room for autonomy, and lacking skills for half the role makes it impossible to feel effective.</p>
+<p>More than half of Australians who stop volunteering cite “lack of time.” The ABS data says something more specific. They can’t fit around a role that demands the schedule of a part-time employee. Someone tasked with organising the draw working for two hours on a Tuesday night has a very different time commitment from an event coordinator expected to be available across all five functions of the role. The expectation is for an impossible volunteer.</p>
+<p>The cost organisations never measure is exclusion because of design. People don’t put their hand up for roles even when they’re perfect for the core task. They opt out of the bundle. The organisation never sees this volunteer.</p>
+<p><img alt="" src="/blog/images/the-impossible-volunteer/6.png" /></p>
+<h3>Bus factor: one</h3>
+<p>In software engineering, the <a href="https://en.wikipedia.org/wiki/Bus_factor">bus factor</a> measures how many people need to disappear before a project stalls. Bundle all tasks into one role and the answer is one. One person and that’s it.</p>
+<p>The hero volunteer who knows the passwords, the undocumented processes, which is the best way; is a <a href="https://croquetwade.substack.com/7403616339992445000">single point of failure</a>. Think of it as an inverted <a href="https://en.wikipedia.org/wiki/Swiss_cheese_model">Swiss Cheese Model</a>. In risk management, you stack multiple defensive layers so no single failure can pass through all of them. Bundling collapses those multiple protecting layers into one. Every hole aligns. When the hero burns out, the entire system fails at once.</p>
+<p>Split the role into four and the bus factor goes from one to four. If the draw coordinator leaves, the tournament still has a calendar, a manager, and a venue coordinator. One skill set to replace, not five.</p>
+<p>Unbundled roles also force hand-offs. The draw coordinator sends the draw to the tournament manager. That transaction creates documentation. Institutional memory that outlasts any single volunteer, because the structure made it inevitable.</p>
+<p>The expectation is for an impossible volunteer. Only hero volunteers are wanted.</p>
+<h3>The fix</h3>
+<p><img alt="" src="/blog/images/the-impossible-volunteer/7.png" /></p>
+<p>One role: <strong>Event Coordinator.</strong> Calendar planning, player rankings, draw creation, club liaison, referee coordination, conditions of play, on-site management.</p>
+<p>Bit much don’t you think?</p>
+<p>Really it is four tasks:</p>
+<ul>
+<li><strong>Season Planner.</strong> Plans the season calendar and tournament dates. Needs organisational thinking. Works from home.</li>
+<li><strong>Draw Creator.</strong> Builds tournament draws and manages rankings in Excel. Needs spreadsheet skills. Works from home, on their own schedule.</li>
+<li><strong>Tournament Manager.</strong> Handles club liaison, referee coordination, conditions of play. Needs communication skills and confidence with people. Works by phone and email.</li>
+<li><strong>Venue Manager.</strong> On-the-day logistics at the host club. Needs to be present and practical. Works on tournament days only.</li>
+</ul>
+<p>Each role matches a different skill profile. Each has a contained, flexible time commitment. The system isn’t relying on a single person. People can commit to smaller, well defined roles.</p>
+<p>Organisational psychologists call it <a href="https://en.wikipedia.org/wiki/Job_crafting">job crafting</a>: allowing people to shape their role around their actual strengths rather than squeezing themselves into a predetermined container. <a href="https://www.kokkonuts.org/wp-content/uploads/CooperWest_2018.pdf">Evolutionary models</a> confirm it from the other direction: generalists only thrive when the cost of each task is very low. As work becomes complex, systems favour specialisation.</p>
+<p>Adam Smith figured this out in a pin factory in 1776. One worker doing all eighteen steps to make a pin would make two pins a day. Divide the steps by skill and the same number of workers produce <a href="https://en.wikipedia.org/wiki/Division_of_labour">tens of thousands</a> across a factory.</p>
+<h3>Start with the tasks</h3>
+<p>The old question is “who can we find to do all this?” That question starts with the role and goes looking for a person to fill it. The maths shows it’s a fool’s errand.</p>
+<p>The better question starts from the other end. List the tasks. Group the ones that draw on the same skills. Then ask who can do each group.</p>
+<p>Season planning and draw creation go together. Club liaison and referee coordination go together. On-site logistics stands alone. Three groups, three skill profiles, three separate (t)asks. Each one is a task that a single person can say yes to because it is bounded to the area they want to volunteer in.</p>
+<p>That’s the whole fix. Stop grouping tasks that need different skills into one role. Start designing tasks that can then be grouped into matching skills.</p>
+      </div>
+    </div>
+    <aside class="subscribe-cta">
+      <h3>Keep reading</h3>
+      <p>Have my posts delivered to your inbox so you can read them there.</p>
+      <iframe src="https://croquetwade.substack.com/embed"
+              width="100%" height="150" frameborder="0" scrolling="no"
+              title="Subscribe to CroquetWade"></iframe>
+    </aside>
+    <div class="blog-footer-link">Originally published on <a href="https://croquetwade.substack.com/p/the-impossible-volunteer" target="_blank" rel="noopener noreferrer">Substack</a>.</div>
+  </main>
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-text">2026 CroquetWade</span>
+        <span class="footer-text">Brisbane, Queensland</span>
+      </div>
+    </div>
+  </footer>
+  <script>
+    // Mobile nav toggle
+    const toggle = document.querySelector('.nav-mobile-toggle');
+    const dropdown = document.querySelector('.nav-dropdown');
+    if (toggle && dropdown) {
+      toggle.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!expanded));
+        dropdown.classList.toggle('open');
+      });
+    }
+  </script>
+</body>
+</html>

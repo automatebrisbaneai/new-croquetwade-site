@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/site.css">
+  <style>
+    /* Blog-specific styles */
+    .blog-nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .blog-nav-back:hover { color: var(--maroon); }
+
+    .blog-header {
+      padding: clamp(3rem, 6vw, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+      border-bottom: var(--border);
+      background: var(--white);
+    }
+
+    .blog-hero-img {
+      width: 100%;
+      max-height: 480px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-2xl);
+      border: var(--border);
+    }
+
+    .blog-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-title {
+      font-size: var(--text-section);
+      font-weight: var(--weight-semi);
+      line-height: var(--lh-tight);
+      letter-spacing: var(--ls-tight);
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+      max-width: 42ch;
+    }
+
+    .blog-subtitle {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      line-height: var(--lh-snug);
+      max-width: 52ch;
+      margin-bottom: 0;
+    }
+
+    /* Reading column */
+    .blog-body {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) clamp(2rem, 5vw, 4rem);
+    }
+
+    .blog-body p {
+      font-size: var(--text-base);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body h2 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-top: var(--space-3xl);
+      margin-bottom: var(--space-md);
+      line-height: var(--lh-tight);
+    }
+
+    .blog-body h3 {
+      font-size: 1.125rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-2xl);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-body h4, .blog-body h5, .blog-body h6 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-xl);
+      margin-bottom: var(--space-xs);
+    }
+
+    .blog-body a {
+      color: var(--maroon);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .blog-body a:hover { color: var(--maroon-light); }
+
+    .blog-body img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-md);
+      margin: var(--space-2xl) 0;
+      border: var(--border);
+    }
+
+    .blog-body blockquote {
+      border-left: 3px solid var(--maroon);
+      padding-left: var(--space-lg);
+      margin: var(--space-2xl) 0;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .blog-body ul, .blog-body ol {
+      padding-left: var(--space-xl);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body li {
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+    }
+
+    .blog-body hr {
+      border: none;
+      border-top: var(--border);
+      margin: var(--space-3xl) 0;
+    }
+
+    .blog-body pre {
+      background: var(--n100);
+      border: var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-md);
+      overflow-x: auto;
+      font-size: 0.875rem;
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body code {
+      font-size: 0.875em;
+      background: var(--n100);
+      padding: 0.125em 0.375em;
+      border-radius: 3px;
+      color: var(--text-primary);
+    }
+
+    .blog-footer-link {
+      display: block;
+      max-width: 680px;
+      margin: 0 auto var(--space-5xl);
+      padding: var(--space-xl) var(--container-pad);
+      border-top: var(--border);
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+    }
+
+    .blog-footer-link a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-footer-link a:hover { text-decoration: underline; }
+
+    /* Listing page */
+    .blog-listing {
+      padding: clamp(3rem, 6vw, 5rem) 0;
+    }
+
+    .blog-listing-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-2xl);
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) 0;
+    }
+
+    @media (min-width: 640px) {
+      .blog-listing-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .blog-card {
+      display: flex;
+      flex-direction: column;
+      border: var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--white);
+      transition: box-shadow var(--dur-fast) var(--ease-out), border-color var(--dur-fast);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .blog-card:hover {
+      border-color: var(--n300);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .blog-card-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      background: var(--n100);
+    }
+
+    .blog-card-thumb-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--n100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .blog-card-body {
+      padding: var(--space-lg);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-card-date {
+      font-size: var(--text-xxs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-title {
+      font-size: 1.0625rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      line-height: var(--lh-snug);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-dek {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      flex: 1;
+    }
+
+    .blog-listing-empty {
+      text-align: center;
+      padding: var(--space-5xl) var(--container-pad);
+      color: var(--text-tertiary);
+    }
+
+    /* Subscribe CTA — article bottom */
+    .subscribe-cta {
+      max-width: 680px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-2xl) var(--container-pad);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+    }
+
+    .subscribe-cta h3 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-tight);
+    }
+
+    .subscribe-cta p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin-bottom: var(--space-md);
+    }
+
+    .subscribe-cta iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* Subscribe hero — listing page */
+    .subscribe-hero {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-2xl) var(--container-pad) 0;
+    }
+
+    .subscribe-hero-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-xl);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+      padding: var(--space-2xl) var(--container-pad);
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-inner {
+        flex-direction: column;
+      }
+    }
+
+    .subscribe-hero-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .subscribe-hero-text h2 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-xs);
+    }
+
+    .subscribe-hero-text p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin: 0;
+    }
+
+    .subscribe-hero-embed {
+      flex: 0 0 320px;
+      min-width: 0;
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-embed {
+        flex: none;
+        width: 100%;
+      }
+    }
+
+    .subscribe-hero-embed iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* RSS link in listing footer */
+    .blog-listing-footer {
+      max-width: 800px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-md) var(--container-pad) var(--space-5xl);
+      border-top: var(--border);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-listing-footer a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-listing-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+  <title>Have your club agree what it wants to be. — CroquetWade</title>
+  <meta name="description" content="Have your club agree what it wants to be.">
+    <link rel="alternate" type="application/rss+xml" title="CroquetWade — Writing" href="/blog/rss.xml">
+</head>
+<body>
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">CroquetWade</a>
+      <ul class="nav-links">
+        <li><a href="/#systems">Systems</a></li>
+        <li><a href="/#framework">Framework</a></li>
+        <li><a href="/blog/">Writing</a></li>
+        <li><a href="/#contact">Get in Touch</a></li>
+      </ul>
+      <button class="nav-mobile-toggle" aria-expanded="false" aria-controls="nav-dropdown" aria-label="Toggle navigation">Menu</button>
+    </div>
+    <div class="nav-dropdown" id="nav-dropdown" role="menu">
+      <a href="/#systems" role="menuitem">Systems</a>
+      <a href="/#framework" role="menuitem">Framework</a>
+      <a href="/blog/" role="menuitem">Writing</a>
+      <a href="/#contact" role="menuitem">Get in Touch</a>
+    </div>
+  </nav>
+
+  <header class="blog-header">
+    <div class="container">
+      <a href="/blog/" class="blog-nav-back">&#8592; All writing</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="blog-body">
+      <div class="blog-meta">
+        <span>6 February 2026</span>
+      </div>
+      <h1 class="blog-title">Have your club agree what it wants to be.</h1>
+      
+      <hr style="margin: var(--space-2xl) 0; border: none; border-top: var(--border);">
+      <div class="blog-body-content">
+        <h2>The problem every committee knows</h2>
+<p><img alt="" src="/blog/images/have-your-club-agree-what-it-wants-to-be/1.png" /></p>
+<p>Permission provides the compass to guide committees.</p>
+<p>I see the same pattern across croquet clubs in Queensland. The committee wants to do something, buy a TV for the clubhouse, change the session times, spend money on advertising, and they hesitate. Someone will say <em>“What if members don’t like it?”</em> or <em>“We should probably ask everyone first.”</em> The idea stalls, or worse, the committee pushes ahead and then spends months defending itself against a handful of people who feel they weren’t consulted.</p>
+<p>This happens in volunteer organisations everywhere. Committee members cite fear of member backlash as a primary reason for inaction. The problem is rarely that committees lack good ideas or the ability to execute them. The problem is they’re making decisions alone, without a clear sense of what the membership actually wants the club to be.</p>
+<p>That clarity is what I call <strong>permission</strong>.</p>
+<hr />
+<h2>What permission actually is</h2>
+<p>Permission is the membership saying, out loud and agreeing together: <strong>“This is what we want our club to be.”</strong></p>
+<p>Once that’s defined, every committee decision gets simpler because now they have permission to do things from the membership. Does this move us toward what the club wants to be? Do it. Does it not? Don’t. The committee works from a mandate to pursue a direction, and individual decisions don’t need individual approval.</p>
+<p>I think of it as a <strong>casual constitution</strong>. A shared agreement about what "right" looks like for this club, what kind of place it is, what kind of people enjoy it here, what the vibe should feel like when someone walks through the gate. The word "casual" matters. People remember it because they helped create it, and it evolves as the club does. When the members change what they want their club to be, the club changes with them.</p>
+<p>There’s a useful parallel in how cooperatives operate. <a href="https://ica.coop/en/media/library/research-and-reviews/guidance-notes-cooperative-principles">The International Co-operative Alliance’s guidance on member participation</a> emphasises that the strongest co-ops are the ones where members have defined the organisation’s identity together, and the board’s job is to pursue that identity with confidence. Volunteer-run sports clubs work the same way. The committee’s job gets easier when everyone has already agreed on the destination.</p>
+<hr />
+<h2>Where the IDEALS fit in</h2>
+<p>For CAQ, there are four IDEALS that describe how everyone in croquet should behave. I’ll write about them in more detail separately, but they’re part of this story because the permission meeting is where a club first encounters them.</p>
+<ul>
+<li><strong>Enjoy Croquet.</strong> We’re all here to enjoy this, whether you’re playing, helping out, or organising. If someone stops enjoying their involvement, something needs to change.</li>
+<li><strong>Keep It Simple.</strong> The simplest approach that actually works. Less admin, more croquet. Croquet people doing croquet things.</li>
+<li><strong>Hit Our Aims.</strong> Spend your energy on things that actually make the club better.</li>
+<li><strong>Co-operate for Croquet.</strong> Work together, communicate openly, tolerate differences, and forgive honest mistakes. When things go wrong, address the issue, learn from it, and go again.</li>
+</ul>
+<p>The two that matter most for members are <strong>Enjoy Croquet</strong> and <strong>Co-operate for Croquet</strong>, with a dash of <strong>Keep It Simple</strong>.</p>
+<p>A club where everyone agrees they’re here to enjoy the game, that cooperation takes effort and tolerance, and that simple means more time on the lawns is a club people want to belong to.</p>
+<p><img alt="" src="/blog/images/have-your-club-agree-what-it-wants-to-be/2.png" /></p>
+<p>Shared ideals bring everyone together.</p>
+<p>Permission defines <em>what</em> a club wants to be. The IDEALS describe <em>how</em> everyone behaves while getting there. Growing a club from 20 to 40 members needs both. Without a clear identity, growth feels chaotic. Without a healthy culture, even a clear identity can be pursued badly. A club that has permission and operates by the IDEALS grows in a way that's sustainable and enjoyable for everyone involved.</p>
+<hr />
+<h2>How the club identity meeting works</h2>
+<p>The meeting is a standalone session, separate from play days. Nobody should be convinced to come. The people who make the effort are the ones whose input matters, and self-selection is a feature, not a flaw. Robert Putnam’s research on civic engagement in <em>Bowling Alone</em> found that the people who show up to voluntary community sessions are overwhelmingly the ones who care most about outcomes. Apathy is fine. Apathy plus complaints is not.</p>
+<p>The questions focus on identity rather than action:</p>
+<ul>
+<li><em>What type of people would enjoy being at our club?</em></li>
+<li><em>What’s our vibe?</em></li>
+<li><em>When we have 40 members instead of 20, what does that look like?</em></li>
+<li><em>How do we want people to feel when they walk through the gate?</em></li>
+<li><em>What would make someone tell a friend they should come along?</em></li>
+</ul>
+<p>These questions sound simple, and they are. But they produce surprisingly specific answers. A club that says “we want people who enjoy a competitive game and a good morning tea” has told its committee something useful. A club that says “we want to feel like a member’s club that happens to have croquet lawns” has told its committee something different. Both are valid. The point is that the members have defined it together, and now every decision the committee makes can be measured against that definition.</p>
+<p><img alt="" src="/blog/images/have-your-club-agree-what-it-wants-to-be/3.png" /></p>
+<p>Putting the pieces together: a shared agreement solves the puzzle.</p>
+<p>By the end of the session, the agreement becomes the ‘casual constitution’ mandate from the club members. The committee takes it from there.</p>
+<hr />
+<h2>Two-way permission</h2>
+<p>Permission flows both ways, and that’s what makes it more than a one-way governance exercise.</p>
+<p>In one direction, members tell the committee: <em>“We’ve told you what we want the club to be. Now you have permission to make decisions that get us there.”</em> In the other, the committee tells members: <em>“You have permission to own this club. If you want to start a herb garden, do it. If you want to organise a movie night, do it. This is your club, we are here to help co-ordinate.”</em></p>
+<p>Volunteer management research consistently shows that people contribute more when they feel ownership rather than obligation. Committees that hold all decision-making authority end up overwhelmed and resented. Members who feel like visitors rather than owners stop volunteering. The permission meeting creates club ownership on both sides.</p>
+<p>At one of the clubs I work with, a member mentioned she missed her garden after moving into the area. She wanted to do some gardening around the club. In a traditional club structure, this would go to committee, get discussed, maybe get approved, maybe not. Six months later, nothing would have happened. In a permission-based club, the response is: <em>“You’re in charge of that. What’s the plan?”</em> She just needs to know that contributing is welcomed and <em>expected</em>. The herb garden happens because the committee welcome co-operation.</p>
+<p><img alt="" src="/blog/images/have-your-club-agree-what-it-wants-to-be/4.png" /></p>
+<p>When members feel ownership they grow the club themselves.</p>
+<hr />
+<h2>The complaint shield</h2>
+<p>One of the most practical benefits is how it changes the way committees handle complaints.</p>
+<p>Someone says: <em>“Why did you buy a TV? That’s a waste of money.”</em> Without a casual constitution, the committee is on the back foot: <em>“Well, we thought it would be nice, and the committee voted, and...”</em> Defensive. Weak. With a casual constitution , the response changes entirely: <em>“The club decided we want to use the clubhouse more for social gatherings. The TV supports that. If you’d like to put on a classic movie night, you’re welcome to organise one.”</em></p>
+<p>The difference is that you’re pointing to a shared agreement rather than defending a committee decision. And you’re inviting participation rather than just fielding criticism. The complaint becomes a non-event because the complainer is arguing with something the membership decided together, and they’re being offered a way to contribute instead of just object.</p>
+<p>This matters because complaint-handling is one of the biggest energy drains in volunteer committees. Research on <a href="https://www.volunteeringaustralia.org/wp-content/uploads/VRP_The-great-volunteer-resignation-An-evidence-based-strategy-for-retaining-volunteers.pdf">the great volunteer resignation</a> notes that burnout is a primary driver of turnover, often exacerbated by organisational conflict. A casual constitution doesn't eliminate complaints, but it gives committees something to stand on when they come.</p>
+<hr />
+<h2>What changes when a club has this</h2>
+<p>From the outside, the club looks the same.</p>
+<p>But the committee can make decisions with confidence because they know their direction matches what people want. Members help out more, or act independently to improve the club, because they know what fits. The person who loves gardening does the gardens. The person who’s great with people greets the newcomers. The person who just wants to play croquet plays croquet, and that’s fine too. Everyone finds their space more easily.</p>
+<p><img alt="" src="/blog/images/have-your-club-agree-what-it-wants-to-be/5.png" /></p>
+<p>When the direction is clear, everything works like clockwork.</p>
+<p>Cooperation happens more naturally when there’s a shared agreement on what the club “is.” You’re not pulling in different directions. You’re not arguing about whether the club should be social or competitive, because you’ve already agreed it can be both. The energy that used to go into internal debates now goes into actually running the club.</p>
+<p>How much of your committee’s time currently goes to managing disagreements about what the club should be doing? What would change if that question was already answered?</p>
+<hr />
+<h2>What’s coming next: Toombul, next Wednesday</h2>
+<p>Next Wednesday, I’m sitting down with Toombul Croquet Club to run exactly this kind of session.</p>
+<p>Toombul has 20 members, a new committee full of energy, and four lawns that could support 80 members long-term. The immediate goal is to double to 40. But before we start marketing and running Come and Try sessions, we need to know what Toombul wants to be. The club has a fantastic clubhouse that’s underused, and my sense is that it’s the kind of place that could appeal to people from the local library and the sports club alike, social and competitive, with room for both. But that’s my read. What matters is what the members say.</p>
+<p>Members who care about the club’s future will come together and answer those questions. What kind of people would thrive here? What does the club look like with 40 members? How should someone feel when they walk through the gate? Once they’ve agreed, the committee has its mandate, and we can start building the membership program around what Toombul actually wants to be.</p>
+<p>I’ll be writing about what happens. Stay tuned.</p>
+      </div>
+    </div>
+    <aside class="subscribe-cta">
+      <h3>Keep reading</h3>
+      <p>Have my posts delivered to your inbox so you can read them there.</p>
+      <iframe src="https://croquetwade.substack.com/embed"
+              width="100%" height="150" frameborder="0" scrolling="no"
+              title="Subscribe to CroquetWade"></iframe>
+    </aside>
+    <div class="blog-footer-link">Originally published on <a href="https://croquetwade.substack.com/p/what-happens-when-your-club-agrees" target="_blank" rel="noopener noreferrer">Substack</a>.</div>
+  </main>
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-text">2026 CroquetWade</span>
+        <span class="footer-text">Brisbane, Queensland</span>
+      </div>
+    </div>
+  </footer>
+  <script>
+    // Mobile nav toggle
+    const toggle = document.querySelector('.nav-mobile-toggle');
+    const dropdown = document.querySelector('.nav-dropdown');
+    if (toggle && dropdown) {
+      toggle.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!expanded));
+        dropdown.classList.toggle('open');
+      });
+    }
+  </script>
+</body>
+</html>

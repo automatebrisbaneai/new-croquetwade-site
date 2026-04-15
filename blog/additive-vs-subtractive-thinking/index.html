@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/site.css">
+  <style>
+    /* Blog-specific styles */
+    .blog-nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+    .blog-nav-back:hover { color: var(--maroon); }
+
+    .blog-header {
+      padding: clamp(3rem, 6vw, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+      border-bottom: var(--border);
+      background: var(--white);
+    }
+
+    .blog-hero-img {
+      width: 100%;
+      max-height: 480px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-2xl);
+      border: var(--border);
+    }
+
+    .blog-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-title {
+      font-size: var(--text-section);
+      font-weight: var(--weight-semi);
+      line-height: var(--lh-tight);
+      letter-spacing: var(--ls-tight);
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+      max-width: 42ch;
+    }
+
+    .blog-subtitle {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      line-height: var(--lh-snug);
+      max-width: 52ch;
+      margin-bottom: 0;
+    }
+
+    /* Reading column */
+    .blog-body {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) clamp(2rem, 5vw, 4rem);
+    }
+
+    .blog-body p {
+      font-size: var(--text-base);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body h2 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-top: var(--space-3xl);
+      margin-bottom: var(--space-md);
+      line-height: var(--lh-tight);
+    }
+
+    .blog-body h3 {
+      font-size: 1.125rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-2xl);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-body h4, .blog-body h5, .blog-body h6 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      margin-top: var(--space-xl);
+      margin-bottom: var(--space-xs);
+    }
+
+    .blog-body a {
+      color: var(--maroon);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .blog-body a:hover { color: var(--maroon-light); }
+
+    .blog-body img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-md);
+      margin: var(--space-2xl) 0;
+      border: var(--border);
+    }
+
+    .blog-body blockquote {
+      border-left: 3px solid var(--maroon);
+      padding-left: var(--space-lg);
+      margin: var(--space-2xl) 0;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .blog-body ul, .blog-body ol {
+      padding-left: var(--space-xl);
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body li {
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-relaxed);
+      color: var(--text-secondary);
+    }
+
+    .blog-body hr {
+      border: none;
+      border-top: var(--border);
+      margin: var(--space-3xl) 0;
+    }
+
+    .blog-body pre {
+      background: var(--n100);
+      border: var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-md);
+      overflow-x: auto;
+      font-size: 0.875rem;
+      margin-bottom: var(--space-lg);
+    }
+
+    .blog-body code {
+      font-size: 0.875em;
+      background: var(--n100);
+      padding: 0.125em 0.375em;
+      border-radius: 3px;
+      color: var(--text-primary);
+    }
+
+    .blog-footer-link {
+      display: block;
+      max-width: 680px;
+      margin: 0 auto var(--space-5xl);
+      padding: var(--space-xl) var(--container-pad);
+      border-top: var(--border);
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+    }
+
+    .blog-footer-link a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-footer-link a:hover { text-decoration: underline; }
+
+    /* Listing page */
+    .blog-listing {
+      padding: clamp(3rem, 6vw, 5rem) 0;
+    }
+
+    .blog-listing-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-2xl);
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--container-pad) 0;
+    }
+
+    @media (min-width: 640px) {
+      .blog-listing-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .blog-card {
+      display: flex;
+      flex-direction: column;
+      border: var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--white);
+      transition: box-shadow var(--dur-fast) var(--ease-out), border-color var(--dur-fast);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .blog-card:hover {
+      border-color: var(--n300);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .blog-card-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      background: var(--n100);
+    }
+
+    .blog-card-thumb-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--n100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .blog-card-body {
+      padding: var(--space-lg);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-card-date {
+      font-size: var(--text-xxs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-title {
+      font-size: 1.0625rem;
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      line-height: var(--lh-snug);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+    }
+
+    .blog-card-dek {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      flex: 1;
+    }
+
+    .blog-listing-empty {
+      text-align: center;
+      padding: var(--space-5xl) var(--container-pad);
+      color: var(--text-tertiary);
+    }
+
+    /* Subscribe CTA — article bottom */
+    .subscribe-cta {
+      max-width: 680px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-2xl) var(--container-pad);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+    }
+
+    .subscribe-cta h3 {
+      font-size: var(--text-sub);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-sm);
+      line-height: var(--lh-tight);
+    }
+
+    .subscribe-cta p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin-bottom: var(--space-md);
+    }
+
+    .subscribe-cta iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* Subscribe hero — listing page */
+    .subscribe-hero {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-2xl) var(--container-pad) 0;
+    }
+
+    .subscribe-hero-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-xl);
+      background: #fef9ef;
+      border: 1px solid var(--n200);
+      border-radius: var(--radius-sm);
+      padding: var(--space-2xl) var(--container-pad);
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-inner {
+        flex-direction: column;
+      }
+    }
+
+    .subscribe-hero-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .subscribe-hero-text h2 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semi);
+      color: var(--text-primary);
+      letter-spacing: var(--ls-tight);
+      margin-bottom: var(--space-xs);
+    }
+
+    .subscribe-hero-text p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-normal);
+      margin: 0;
+    }
+
+    .subscribe-hero-embed {
+      flex: 0 0 320px;
+      min-width: 0;
+    }
+
+    @media (max-width: 639px) {
+      .subscribe-hero-embed {
+        flex: none;
+        width: 100%;
+      }
+    }
+
+    .subscribe-hero-embed iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+    }
+
+    /* RSS link in listing footer */
+    .blog-listing-footer {
+      max-width: 800px;
+      margin: var(--space-3xl) auto 0;
+      padding: var(--space-md) var(--container-pad) var(--space-5xl);
+      border-top: var(--border);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .blog-listing-footer a {
+      color: var(--maroon);
+      text-decoration: none;
+    }
+
+    .blog-listing-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+  <title>Additive vs Subtractive Thinking — CroquetWade</title>
+  <meta name="description" content="Additive vs Subtractive Thinking">
+    <link rel="alternate" type="application/rss+xml" title="CroquetWade — Writing" href="/blog/rss.xml">
+</head>
+<body>
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">CroquetWade</a>
+      <ul class="nav-links">
+        <li><a href="/#systems">Systems</a></li>
+        <li><a href="/#framework">Framework</a></li>
+        <li><a href="/blog/">Writing</a></li>
+        <li><a href="/#contact">Get in Touch</a></li>
+      </ul>
+      <button class="nav-mobile-toggle" aria-expanded="false" aria-controls="nav-dropdown" aria-label="Toggle navigation">Menu</button>
+    </div>
+    <div class="nav-dropdown" id="nav-dropdown" role="menu">
+      <a href="/#systems" role="menuitem">Systems</a>
+      <a href="/#framework" role="menuitem">Framework</a>
+      <a href="/blog/" role="menuitem">Writing</a>
+      <a href="/#contact" role="menuitem">Get in Touch</a>
+    </div>
+  </nav>
+
+  <header class="blog-header">
+    <div class="container">
+      <a href="/blog/" class="blog-nav-back">&#8592; All writing</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="blog-body">
+      <div class="blog-meta">
+        <span>9 February 2026</span>
+      </div>
+      <h1 class="blog-title">Additive vs Subtractive Thinking</h1>
+      
+      <hr style="margin: var(--space-2xl) 0; border: none; border-top: var(--border);">
+      <div class="blog-body-content">
+        <h1>The Painter and the Sculptor</h1>
+<hr />
+<p>A painter has a blank canvas. Nothing exists until the artist puts it there. Colour by colour, layer by layer, the image appears. Paint added to the canvas.</p>
+<p>A sculptor has a block of marble. Everything that will make the sculpture is already inside the block. The job is to remove what doesn’t belong. Chip, carve, take away until what’s left is the artwork.</p>
+<p><img alt="" src="/blog/images/additive-vs-subtractive-thinking/1.png" /></p>
+<p>The sculptor removes what doesn’t belong.</p>
+<p>Two ways to make something. Two completely different questions. The painter asks: <em>what should I add next?</em> The sculptor asks: <em>what should I remove?</em></p>
+<p>Most of us, when we’re thinking through a problem or making a decision, default to painting. We brainstorm. We gather options. We pile up information, ideas, possibilities. We add until we hope something takes shape. It feels productive because stuff is accumulating.</p>
+<p>But there’s another way. And getting comfortable with it is one of the most useful things you can do for the quality of your thinking.</p>
+<hr />
+<h2>Train your thinking</h2>
+<p>We accept that physical health takes work. Nobody expects a healthy body to just happen. It takes considered effort.</p>
+<p>Thinking is the same. Good decisions, clear priorities, the ability to cut through noise and find what matters: these are skills. They improve with practice and they deteriorate without it. The quality of your thinking shapes everything, from how you scroll your phone to how your meetings are spent.</p>
+<p>One of the most useful exercises for your thinking is learning to subtract. Not because adding is wrong, but because almost everyone defaults to it without realising. Practising another method of thinking doubles potential solutions.</p>
+<hr />
+<h2>Experiments into subtractive thinking</h2>
+<p>Leidy Klotz is an engineering professor at the University of Virginia. A few years ago, he watched his toddler son playing with Lego. The boy needed to level a bridge between two uneven columns, one tall, one short.</p>
+<p>Klotz expected Ezra to add a block to the short column. That’s what every adult in the room would have done.</p>
+<p>Instead, Ezra removed a block from the tall one.</p>
+<p><img alt="" src="/blog/images/additive-vs-subtractive-thinking/2.png" /></p>
+<p>Adults instinctively want to add a block.</p>
+<p>Klotz took this observation to his colleague Gabrielle Adams, a psychologist. Her response was the same as every other adult’s: she would have added. What would others do?</p>
+<p>They designed <a href="https://www.nature.com/articles/s41586-021-03380-y">a series of experiments, published as a cover story in</a> <em><a href="https://www.nature.com/articles/s41586-021-03380-y">Nature</a></em> <a href="https://www.nature.com/articles/s41586-021-03380-y">in 2021</a>. Across eight different tasks, stabilising Lego structures, improving essays, optimising travel plans, participants overwhelmingly chose to add rather than remove. Even when subtraction was objectively simpler, cheaper, and more effective.</p>
+<p>One experiment demonstrates this clearly. Participants had to stabilise a Lego structure so it could support a heavy brick. Adding pieces cost money. Removing pieces was free. The most efficient solution was to remove one unstable block. Nearly 60% of people paid to add blocks instead.</p>
+<p>The reason is straightforward. Adding is a one-step mental process: think of something, add it. Subtracting takes two steps: think of something, then inhibit the impulse to add, then consider what to remove instead. People can subtract perfectly well. The additive idea just arrives first, feels good enough, and the brain moves on before the subtractive option gets consideration.</p>
+<p>Klotz puts it well: “Subtraction is the act of getting less to do, but it is not the same as achieving less.”</p>
+<hr />
+<h2>The accumulation of complexity</h2>
+<p>Think about how committees work. Someone raises a problem, and the instinct is to add: a new subcommittee, a new policy, a new process, another agenda item. Each addition makes sense in isolation. Over years, they accumulate into a tangle of complexity that nobody designed and nobody can easily undo.</p>
+<p><img alt="" src="/blog/images/additive-vs-subtractive-thinking/3.png" /></p>
+<p>Each addition makes sense in isolation. Together they become a tangle noone designed.</p>
+<p>The subtractive question is different. Instead of “what should we add to fix this?” it’s “what could we remove to fix this?” Which rule is creating more problems than it solves? Which process exists because someone added it five years ago and nobody’s questioned it since? Which meeting could disappear without anyone noticing?</p>
+<p>Nassim Taleb, the risk researcher and author of <em>Antifragile</em>, calls this approach <a href="https://coffeeandjunk.com/via-negativa/">Via Negativa</a>: the principle that we know what’s wrong with more clarity than what’s right, and that knowledge grows by subtraction. You might not know the perfect solution to add, but you can often see what’s causing the problem and remove it.</p>
+<p>Naval Ravikant, the entrepreneur and investor, applies the same idea to decisions: <em>“I don’t believe I have the ability to say what is going to work. Rather, I try to eliminate what’s not going to work.”</em></p>
+<p>Chopin applied subtractive thinking to music: <em>“Simplicity is the highest goal, achievable when you have overcome all difficulties. After one has played a vast quantity of notes and more notes, it is simplicity that emerges as the crowning reward of art.”</em></p>
+<p>Removing the wrong things is often more effective than adding the right things. Dropping a confusing rule might get more benefit than adding three new clarifications.</p>
+<hr />
+<h2>What could be removed?</h2>
+<p>The most useful finding from the Klotz research is also simple to implement..</p>
+<p>When they prompted participants “removing pieces is free,” the number of people choosing subtraction increased 50%. A simple prompt, reminding people that subtraction is an option, was enough.</p>
+<p>You don’t need to rewire your brain. remember to consider the subtractive thinking possibilities too.</p>
+<p><img alt="" src="/blog/images/additive-vs-subtractive-thinking/4.png" /></p>
+<p>Sometimes the most useful thing is to trim something back.</p>
+<p>Gardeners already know this. Prune a fruit tree back hard and it comes back healthier, with more fruit. The act of cutting away produces growth. The same principle applies to organisations, calendars, and decisions. One good question is the pruning shears.</p>
+<p><strong>“Have we considered removing something?”</strong></p>
+<p>Ask it at a committee meeting. Ask it when you’re planning an event. Ask it when your on your phone scrolling. Ask it when a problem seems complicated and the proposed solutions all involve more.</p>
+<p>Some community organisations have started building this into their process: a standing agenda item that requires the team to identify one thing to stop doing before any new project gets approved. It sounds small. The research says it works. It is also a good way to manage a wardrobe- one item in, one item out.</p>
+<p>Sometimes the right answer is to add. But if you never ask the subtractive question, you’ll never know what you’re missing. And the research is clear: left to our own devices, most of us never ask.</p>
+<hr />
+<h2>What’s left when you stop adding</h2>
+<p>There’s a famous line attributed to Michelangelo about sculpting David: <em>“I saw the angel in the marble and carved until I set him free.”</em></p>
+<p>It’s probably not his exact words. Quotation scholars classify it as widely attributed but unverified, one of those lines that’s been polished by centuries of retelling. But Michelangelo wrote in his letters that the sculptor arrives at the finished work <em>“by taking away what is superfluous.”</em></p>
+<p><img alt="Everything that wasn't the sculpture has been taken away. Photo: Pexels" src="/blog/images/additive-vs-subtractive-thinking/5.jpeg" title="Everything that wasn't the sculpture has been taken away. Photo: Pexels" /></p>
+<p>It isn’t what is added, its what is taken away that makes a sculpture. Photo: Pexels</p>
+<p>One of CAQ’s four IDEALS is <strong>Keep It Simple and Play Croquet</strong>: use the simplest solution that works, outcomes over complexity, croquet people doing croquet things.</p>
+<p>Subtractive thinking is ‘the sculptor’s question’.</p>
+<p>The next time you’re buried in options, not just in croquet but life, try the sculptor’s approach. What could be removed? What’s superfluous? What would be left if everything that wasn’t needed was carved away.</p>
+      </div>
+    </div>
+    <aside class="subscribe-cta">
+      <h3>Keep reading</h3>
+      <p>Have my posts delivered to your inbox so you can read them there.</p>
+      <iframe src="https://croquetwade.substack.com/embed"
+              width="100%" height="150" frameborder="0" scrolling="no"
+              title="Subscribe to CroquetWade"></iframe>
+    </aside>
+    <div class="blog-footer-link">Originally published on <a href="https://croquetwade.substack.com/p/additive-vs-subtractive-thinking" target="_blank" rel="noopener noreferrer">Substack</a>.</div>
+  </main>
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-text">2026 CroquetWade</span>
+        <span class="footer-text">Brisbane, Queensland</span>
+      </div>
+    </div>
+  </footer>
+  <script>
+    // Mobile nav toggle
+    const toggle = document.querySelector('.nav-mobile-toggle');
+    const dropdown = document.querySelector('.nav-dropdown');
+    if (toggle && dropdown) {
+      toggle.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!expanded));
+        dropdown.classList.toggle('open');
+      });
+    }
+  </script>
+</body>
+</html>
