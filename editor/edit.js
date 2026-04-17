@@ -151,6 +151,15 @@
                     block.blur();
                 }
             });
+
+            // Stop click bubbling so editors inside <button>/clickable parents
+            // don't trigger the parent action (e.g. accordion toggle on FAQ items)
+            block.addEventListener('click', function (e) {
+                e.stopPropagation();
+            });
+            block.addEventListener('mousedown', function (e) {
+                e.stopPropagation();
+            });
         });
 
         setStatus('Click any highlighted text to edit.', 'idle');
