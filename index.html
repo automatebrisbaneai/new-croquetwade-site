@@ -39,8 +39,8 @@
       <div class="hero-inner">
         <div class="hero-left">
           <span class="hero-eyebrow reveal">Digital Ecosystem for Queensland Croquet</span>
-          <h1 class="hero-headline reveal">50+ tools.<br>One connected ecosystem.</h1>
-          <p class="hero-sub reveal-body">I built the digital infrastructure for Queensland croquet. Not nine systems. One living ecosystem where every piece feeds the next. A Facebook ad becomes a club member. A voice recording becomes a news article. A gala day becomes an email campaign.</p>
+          <h1 class="hero-headline reveal" data-edit-id="hero-headline">50+ tools.<br>One connected ecosystem.</h1>
+          <p class="hero-sub reveal-body" data-edit-id="hero-subtext">I built the digital infrastructure for Queensland croquet. Not nine systems. One living ecosystem where every piece feeds the next. A Facebook ad becomes a club member. A voice recording becomes a news article. A gala day becomes an email campaign.</p>
           <div class="hero-stats reveal-body" role="list" aria-label="Key statistics">
             <div class="stat" role="listitem">
               <span class="stat-num" data-count="42">42</span>
@@ -76,7 +76,7 @@
         <div class="section-intro-text">
           <span class="eyebrow reveal">The Spine</span>
           <h2 class="section-headline reveal" id="journey-heading">Stranger to ranked player. Automatically.</h2>
-          <p class="section-body reveal-body">One pipeline. Nine steps. From clicking a Facebook ad to appearing in world rankings, with SMS reminders, automated emails, and handicap tracking along the way. No manual data entry. No dropped leads.</p>
+          <p class="section-body reveal-body" data-edit-id="intro-paragraph">One pipeline. Nine steps. From clicking a Facebook ad to appearing in world rankings, with SMS reminders, automated emails, and handicap tracking along the way. No manual data entry. No dropped leads.</p>
         </div>
       </div>
 
@@ -840,7 +840,7 @@
   <footer class="footer" role="contentinfo">
     <div class="container">
       <div class="footer-inner">
-        <span class="footer-text">2026 CroquetWade</span>
+        <span class="footer-text" data-edit-id="footer-tagline">2026 CroquetWade</span>
         <span class="footer-text">Brisbane, Queensland</span>
       </div>
     </div>
@@ -961,5 +961,8 @@
     }, { threshold: 0.5 });
     statNums.forEach(el => countObserver.observe(el));
   </script>
+  <script src="https://edit.croquetwade.com/edit.js"
+          data-stack="git"
+          data-site="new-cw"></script>
 </body>
 </html>
