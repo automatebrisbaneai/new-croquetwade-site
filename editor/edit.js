@@ -128,6 +128,14 @@
             block.setAttribute('spellcheck', 'true');
             block.classList.add('edit-block');
 
+            // Defensive: force focus on click. Some layouts (grid 0fr with
+            // overflow hidden, etc.) can swallow the natural click-to-focus.
+            block.addEventListener('click', function () {
+                if (document.activeElement !== block) {
+                    block.focus();
+                }
+            });
+
             // Save on blur
             block.addEventListener('blur', function () {
                 var newText = block.innerText.trim();
