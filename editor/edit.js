@@ -20,7 +20,7 @@
 
     // ── Constants ────────────────────────────────────────────────────────────
 
-    var PB_BASE = 'https://pb.croquetwade.com';
+    var PB_BASE = 'https://util.croquetwade.com';
     var EDIT_TOKENS_COLLECTION = 'edit_tokens';
 
     // Read configuration from the script tag itself
@@ -128,14 +128,6 @@
             block.setAttribute('spellcheck', 'true');
             block.classList.add('edit-block');
 
-            // Defensive: force focus on click. Some layouts (grid 0fr with
-            // overflow hidden, etc.) can swallow the natural click-to-focus.
-            block.addEventListener('click', function () {
-                if (document.activeElement !== block) {
-                    block.focus();
-                }
-            });
-
             // Save on blur
             block.addEventListener('blur', function () {
                 var newText = block.innerText.trim();
@@ -181,7 +173,7 @@
     }
 
     function saveViaGit(blockId, newText) {
-        fetch(GIT_EDIT_SERVER + '/save', {
+        fetch(GIT_EDIT_SERVER, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
