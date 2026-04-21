@@ -173,7 +173,7 @@
     }
 
     function saveViaGit(blockId, newText) {
-        fetch(GIT_EDIT_SERVER, {
+        fetch(GIT_EDIT_SERVER + '/save', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
