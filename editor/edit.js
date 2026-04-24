@@ -43,6 +43,31 @@
         return;
     }
 
+    // ── Desktop-Only Gate ────────────────────────────────────────────────────
+    // Editor UX (small click targets, inline contenteditable, ENTER-to-accept)
+    // is a desktop interaction. On touch/phone show a friendly banner and
+    // exit before token validation (no PocketBase hit).
+
+    var desktopOK = window.matchMedia &&
+        window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    if (!desktopOK) {
+        var banner = document.createElement('div');
+        banner.id = 'edit-desktop-only-banner';
+        banner.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:99999;padding:12px 16px;background:#1a1a1a;color:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:13px;line-height:1.4;border-top:2px solid #f5a623;box-shadow:0 -4px 16px rgba(0,0,0,0.4);display:flex;gap:12px;align-items:flex-start';
+        banner.innerHTML =
+            '<div style="flex:1">' +
+                '<strong style="color:#f5a623">Edit mode is desktop only.</strong> ' +
+                'Please reopen this link on a desktop or laptop browser with a mouse or trackpad.' +
+            '</div>' +
+            '<button type="button" aria-label="Dismiss" style="background:transparent;border:1px solid #555;color:#aaa;padding:2px 10px;border-radius:4px;cursor:pointer;font-size:16px;line-height:1">&times;</button>';
+        document.body.appendChild(banner);
+        banner.querySelector('button').addEventListener('click', function () {
+            banner.remove();
+        });
+        return;
+    }
+
     // ── Token Validation ─────────────────────────────────────────────────────
 
     var _validatedToken = null;
