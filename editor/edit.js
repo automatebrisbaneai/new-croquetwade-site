@@ -254,7 +254,7 @@
             return res.json();
         })
         .then(function (data) {
-            setStatus('Saved. Publishing your change now.', 'deploying');
+            setStatus('Saved. Publishing now — you can close this tab.', 'deploying');
             showSavedBadge(blockId);
             startDeployCheck(data.deploy_id, blockId);
         })
