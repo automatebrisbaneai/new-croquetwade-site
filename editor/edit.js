@@ -31,6 +31,8 @@
     var GIT_EDIT_SERVER = scriptTag
         ? (scriptTag.getAttribute('data-server') || 'https://edit.croquetwade.com')
         : 'https://edit.croquetwade.com';
+    // data-html-file tells the server which file to edit (for subdirectory pages)
+    var HTML_FILE = scriptTag ? (scriptTag.getAttribute('data-html-file') || 'index.html') : 'index.html';
 
     // ── URL Param Detection ──────────────────────────────────────────────────
 
@@ -119,6 +121,10 @@
         document.body.appendChild(bar);
 
         document.getElementById('edit-exit-btn').addEventListener('click', function () {
+            var state = bar.getAttribute('data-state');
+            if (state === 'saving' || state === 'deploying') {
+                if (!window.confirm('A change is still publishing. Leave anyway?')) return;
+            }
             // Remove ?edit&t= from URL and reload
             var url = new URL(window.location.href);
             url.searchParams.delete('edit');
@@ -169,16 +175,20 @@
                 block.classList.remove('edit-block--active');
             });
 
-            // Prevent Enter from creating <div> in contenteditable
+            // Enter = accept + save · Escape = cancel (revert to last-saved)
             block.addEventListener('keydown', function (e) {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
+                    block.blur();
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    block.innerText = _pendingBlocks[blockId].current;
                     block.blur();
                 }
             });
         });
 
-        setStatus('Click any highlighted text to edit.', 'idle');
+        setStatus('Hover over any text and click to edit it.', 'idle');
     }
 
     // ── Save Logic ───────────────────────────────────────────────────────────
@@ -187,8 +197,34 @@
     var _deployCheckCount = 0;
     var DEPLOY_CHECK_MAX = 24; // 24 * 5s = 120s max
 
+    function blockEl(blockId) {
+        var sel = window.CSS && CSS.escape ? CSS.escape(blockId) : blockId;
+        return document.querySelector('[data-edit-id="' + sel + '"]');
+    }
+
+    function setPending(blockId, on) {
+        var el = blockEl(blockId);
+        if (!el) return;
+        el.classList.toggle('edit-block--pending', !!on);
+    }
+
+    function showSavedBadge(blockId) {
+        var el = blockEl(blockId);
+        if (!el) return;
+        var existing = el.querySelector('.edit-block__saved-badge');
+        if (existing) existing.remove();
+        var badge = document.createElement('span');
+        badge.className = 'edit-block__saved-badge';
+        badge.textContent = '✓ Saved';
+        el.appendChild(badge);
+        setTimeout(function () {
+            if (badge.parentNode) badge.remove();
+        }, 3000);
+    }
+
     function saveBlock(blockId, newText) {
-        setStatus('Saving...', 'saving');
+        setStatus('Saving your change…', 'saving');
+        setPending(blockId, true);
 
         if (STACK === 'git') {
             saveViaGit(blockId, newText);
@@ -205,7 +241,8 @@
                 token: tokenValue,
                 site: SITE,
                 block_id: blockId,
-                new_text: newText
+                new_text: newText,
+                html_file: HTML_FILE
             })
         })
         .then(function (res) {
@@ -217,12 +254,14 @@
             return res.json();
         })
         .then(function (data) {
-            setStatus('Deploying... (~60s)', 'deploying');
-            startDeployCheck(data.deploy_id);
+            setStatus('Saved. Publishing your change now.', 'deploying');
+            showSavedBadge(blockId);
+            startDeployCheck(data.deploy_id, blockId);
         })
         .catch(function (err) {
             console.error('[edit.js] Save error:', err);
-            setStatus('Save failed. Check console.', 'error');
+            setStatus('Couldn\'t save — please try again, or reload if it keeps failing.', 'error');
+            setPending(blockId, false);
         });
     }
 
@@ -230,9 +269,10 @@
         // Phase 2 — not implemented in phase 1
         console.warn('[edit.js] DB stack not implemented in phase 1');
         setStatus('DB stack not available.', 'error');
+        setPending(blockId, false);
     }
 
-    function startDeployCheck(deployId) {
+    function startDeployCheck(deployId, blockId) {
         _deployCheckCount = 0;
         clearInterval(_deployCheckInterval);
 
@@ -240,7 +280,10 @@
             _deployCheckCount++;
             if (_deployCheckCount > DEPLOY_CHECK_MAX) {
                 clearInterval(_deployCheckInterval);
-                setStatus('Deploy check timed out. Try reloading.', 'error');
+                // Save is already committed + pushed; we just couldn't confirm
+                // the redeploy finished in 2 minutes. Keep state blue (not red).
+                setStatus('Saved. Still publishing — it should appear within a minute.', 'deploying');
+                setPending(blockId, false);
                 return;
             }
 
@@ -250,10 +293,12 @@
                 .then(function (data) {
                     if (data.status === 'live') {
                         clearInterval(_deployCheckInterval);
-                        setStatus('Live! Reload to see change.', 'live');
+                        setStatus('Published.', 'live');
+                        setPending(blockId, false);
                     } else if (data.status === 'error') {
                         clearInterval(_deployCheckInterval);
-                        setStatus('Deploy failed: ' + (data.message || 'unknown error'), 'error');
+                        setStatus('Publish failed: ' + (data.message || 'unknown error'), 'error');
+                        setPending(blockId, false);
                     }
                     // Still deploying — continue polling
                 })
