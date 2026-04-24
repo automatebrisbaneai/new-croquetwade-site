@@ -50,12 +50,11 @@
     // is a desktop interaction. On touch/phone show a friendly banner and
     // exit before token validation (no PocketBase hit).
 
-    var desktopOK = window.matchMedia &&
-        window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-    if (!desktopOK) {
+    function showDesktopOnlyBanner() {
+        if (document.getElementById('edit-desktop-only-banner')) return; // idempotent
         var banner = document.createElement('div');
         banner.id = 'edit-desktop-only-banner';
+        banner.setAttribute('role', 'alert');
         banner.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:99999;padding:12px 16px;background:#1a1a1a;color:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:13px;line-height:1.4;border-top:2px solid #f5a623;box-shadow:0 -4px 16px rgba(0,0,0,0.4);display:flex;gap:12px;align-items:flex-start';
         banner.innerHTML =
             '<div style="flex:1">' +
@@ -67,7 +66,28 @@
         banner.querySelector('button').addEventListener('click', function () {
             banner.remove();
         });
+    }
+
+    var desktopMQ = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)');
+    var desktopOK = desktopMQ && desktopMQ.matches;
+
+    if (!desktopOK) {
+        showDesktopOnlyBanner();
         return;
+    }
+
+    // Re-evaluate if input device changes mid-session (e.g. iPad trackpad
+    // unplugged, or window dragged between touch + non-touch monitors).
+    if (desktopMQ && desktopMQ.addEventListener) {
+        desktopMQ.addEventListener('change', function (e) {
+            if (!e.matches) {
+                // Lock every editable block and show the banner.
+                document.querySelectorAll('.edit-block').forEach(function (b) {
+                    b.setAttribute('contenteditable', 'false');
+                });
+                showDesktopOnlyBanner();
+            }
+        });
     }
 
     // ── Token Validation ─────────────────────────────────────────────────────
@@ -114,6 +134,7 @@
         var bar = document.createElement('div');
         bar.id = 'edit-status-bar';
         bar.setAttribute('aria-live', 'polite');
+        bar.setAttribute('role', 'status');
         bar.innerHTML =
             '<span id="edit-mode-label">Edit mode</span>' +
             '<span id="edit-status-text"></span>' +
@@ -151,6 +172,11 @@
     function activateBlocks() {
         var blocks = document.querySelectorAll('[data-edit-id]');
         blocks.forEach(function (block) {
+            // Skip blocks with nested markup — text-only editor would destroy
+            // inline <a>/<strong>/<em> on save. Tier-3 (inline preservation)
+            // is a separate plan; until then, non-leaf blocks are not editable.
+            if (block.children.length > 0) return;
+
             var blockId = block.getAttribute('data-edit-id');
             var original = block.innerText;
             _pendingBlocks[blockId] = { original: original, current: original };
@@ -159,11 +185,12 @@
             block.setAttribute('spellcheck', 'true');
             block.classList.add('edit-block');
 
-            // Save on blur
+            // Save on blur. Do NOT promote `.current` here — only on 2xx from
+            // the server. Optimistic promotion here would desync on a failed
+            // save: retry-on-blur silently no-ops because "no change".
             block.addEventListener('blur', function () {
                 var newText = block.innerText.trim();
                 if (newText === _pendingBlocks[blockId].current) return;
-                _pendingBlocks[blockId].current = newText;
                 saveBlock(blockId, newText);
             });
 
@@ -193,9 +220,14 @@
 
     // ── Save Logic ───────────────────────────────────────────────────────────
 
-    var _deployCheckInterval = null;
-    var _deployCheckCount = 0;
-    var DEPLOY_CHECK_MAX = 24; // 24 * 5s = 120s max
+    // Per-deploy poll state. Rapid edits used to clobber each other's polls
+    // (single global interval). Now each deploy_id gets its own watch so
+    // block A's outline clears when A's deploy goes live even if B has fired.
+    var _deployWatches = {}; // deployId -> { intervalId, count, blockId, newText, networkFails, savedShown }
+    var DEPLOY_POLL_INTERVAL = 5000;   // 5s
+    var DEPLOY_CHECK_MAX = 24;          // 24 * 5s = 120s fast window
+    var MAX_CONCURRENT_WATCHES = 5;
+    var NETWORK_FAIL_THRESHOLD = 3;
 
     function blockEl(blockId) {
         var sel = window.CSS && CSS.escape ? CSS.escape(blockId) : blockId;
@@ -206,6 +238,10 @@
         var el = blockEl(blockId);
         if (!el) return;
         el.classList.toggle('edit-block--pending', !!on);
+        // Lock the block while its save is in flight. Prevents the Escape-
+        // during-save race (where Escape would revert DOM while server has
+        // accepted the intermediate text).
+        el.setAttribute('contenteditable', on ? 'false' : 'true');
     }
 
     function showSavedBadge(blockId) {
@@ -216,6 +252,13 @@
         var badge = document.createElement('span');
         badge.className = 'edit-block__saved-badge';
         badge.textContent = '✓ Saved';
+        badge.setAttribute('aria-hidden', 'true');
+        // Position: flip to bottom if block is near the top of the viewport,
+        // otherwise hero/h1 badges clip off-screen.
+        if (el.getBoundingClientRect().top < 40) {
+            badge.style.top = 'auto';
+            badge.style.bottom = '-28px';
+        }
         el.appendChild(badge);
         setTimeout(function () {
             if (badge.parentNode) badge.remove();
@@ -254,9 +297,10 @@
             return res.json();
         })
         .then(function (data) {
-            setStatus('Saved — you can close this tab.', 'deploying');
-            showSavedBadge(blockId);
-            startDeployCheck(data.deploy_id, blockId);
+            // Don't promote to "Saved" yet — 202 means queued, not yet
+            // committed+pushed. Bar stays orange ("Saving your change…")
+            // until the first poll reports status `deploying` (post-push).
+            startDeployCheck(data.deploy_id, blockId, newText);
         })
         .catch(function (err) {
             console.error('[edit.js] Save error:', err);
@@ -272,40 +316,95 @@
         setPending(blockId, false);
     }
 
-    function startDeployCheck(deployId, blockId) {
-        _deployCheckCount = 0;
-        clearInterval(_deployCheckInterval);
+    function stopDeployWatch(deployId) {
+        var watch = _deployWatches[deployId];
+        if (!watch) return;
+        clearInterval(watch.intervalId);
+        delete _deployWatches[deployId];
+    }
 
-        _deployCheckInterval = setInterval(function () {
-            _deployCheckCount++;
-            if (_deployCheckCount > DEPLOY_CHECK_MAX) {
-                clearInterval(_deployCheckInterval);
-                // Save is already committed + pushed; we just couldn't confirm
-                // the redeploy finished in 2 minutes. Keep state blue (not red).
-                setStatus('Saved. Still publishing — it should appear within a minute.', 'deploying');
-                setPending(blockId, false);
+    function startDeployCheck(deployId, blockId, newText) {
+        // Evict the oldest watch if we're at capacity (defensive — caps
+        // runaway click scenarios from spinning up unbounded polls).
+        var ids = Object.keys(_deployWatches);
+        if (ids.length >= MAX_CONCURRENT_WATCHES) {
+            stopDeployWatch(ids[0]);
+        }
+
+        var watch = {
+            intervalId: null,
+            count: 0,
+            blockId: blockId,
+            newText: newText,
+            networkFails: 0,
+            savedShown: false
+        };
+        _deployWatches[deployId] = watch;
+
+        watch.intervalId = setInterval(function () {
+            watch.count++;
+
+            if (watch.count > DEPLOY_CHECK_MAX) {
+                // 120s fast-poll window elapsed. Clear the pending outline
+                // (so the block isn't stuck amber forever). Keep the status
+                // green + honest: change may still be publishing server-side.
+                stopDeployWatch(deployId);
+                setPending(watch.blockId, false);
+                if (!watch.savedShown) {
+                    // Server never confirmed commit+push within 2 min.
+                    setStatus('Your change is taking longer than usual. Try again if it doesn\'t appear soon.', 'error');
+                } else {
+                    setStatus('Saved. Still publishing — check back in a minute.', 'deploying');
+                }
                 return;
             }
 
-            // Poll git-edit-server for deploy status
             fetch(GIT_EDIT_SERVER + '/status?deploy_id=' + encodeURIComponent(deployId || ''))
                 .then(function (res) { return res.json(); })
                 .then(function (data) {
-                    if (data.status === 'live') {
-                        clearInterval(_deployCheckInterval);
-                        setStatus('Deployed — LIVE.', 'live');
-                        setPending(blockId, false);
-                    } else if (data.status === 'error') {
-                        clearInterval(_deployCheckInterval);
+                    watch.networkFails = 0;
+                    var status = data.status;
+
+                    if (status === 'live') {
+                        stopDeployWatch(deployId);
+                        // If we skipped straight from queued to live (very
+                        // fast deploy), promote state + show badge now.
+                        if (!watch.savedShown) {
+                            _pendingBlocks[watch.blockId].current = watch.newText;
+                            showSavedBadge(watch.blockId);
+                            watch.savedShown = true;
+                        }
+                        // Only show LIVE status if no other deploys are still
+                        // in flight — otherwise their "Saved" message wins.
+                        if (Object.keys(_deployWatches).length === 0) {
+                            setStatus('Deployed — LIVE.', 'live');
+                        }
+                        setPending(watch.blockId, false);
+                    } else if (status === 'error') {
+                        stopDeployWatch(deployId);
                         setStatus('Publish failed: ' + (data.message || 'unknown error'), 'error');
-                        setPending(blockId, false);
+                        setPending(watch.blockId, false);
+                    } else if (status === 'deploying' && !watch.savedShown) {
+                        // First confirmation that commit+push succeeded.
+                        // NOW it's honest to claim "Saved".
+                        watch.savedShown = true;
+                        _pendingBlocks[watch.blockId].current = watch.newText;
+                        showSavedBadge(watch.blockId);
+                        setStatus('Saved — you can close this tab.', 'deploying');
                     }
-                    // Still deploying — continue polling
+                    // queued/cloning/editing/committing → keep polling,
+                    // bar stays orange ("Saving your change…")
                 })
                 .catch(function () {
-                    // Network error during poll — just continue
+                    watch.networkFails++;
+                    if (watch.networkFails >= NETWORK_FAIL_THRESHOLD) {
+                        stopDeployWatch(deployId);
+                        setStatus('You look offline — your change was sent. Reload when you\'re back online to verify.', 'error');
+                        // Leave pending outline ON — we genuinely don't know
+                        // server-side status. Reload is the right recovery.
+                    }
                 });
-        }, 5000);
+        }, DEPLOY_POLL_INTERVAL);
     }
 
     // ── Initialisation ────────────────────────────────────────────────────────

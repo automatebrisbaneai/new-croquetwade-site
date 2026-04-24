@@ -155,7 +155,7 @@
     100% { opacity: 0; transform: translateY(-4px); }
 }
 
-/* Keep body from being obscured by status bar */
+/* Keep body from being obscured by status bar (allow for wrap on narrow windows) */
 body {
-    padding-bottom: 48px !important;
+    padding-bottom: 64px !important;
 }
