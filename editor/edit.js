@@ -254,7 +254,7 @@
             return res.json();
         })
         .then(function (data) {
-            setStatus('Saved. Publishing now — you can close this tab.', 'deploying');
+            setStatus('Saved — you can close this tab.', 'deploying');
             showSavedBadge(blockId);
             startDeployCheck(data.deploy_id, blockId);
         })
@@ -293,7 +293,7 @@
                 .then(function (data) {
                     if (data.status === 'live') {
                         clearInterval(_deployCheckInterval);
-                        setStatus('Published.', 'live');
+                        setStatus('Deployed — LIVE.', 'live');
                         setPending(blockId, false);
                     } else if (data.status === 'error') {
                         clearInterval(_deployCheckInterval);

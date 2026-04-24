@@ -47,18 +47,20 @@
     color: #f5a623;
 }
 
+/* deploying = saved (server has it). Green = safe/done-enough. */
 #edit-status-bar[data-state="deploying"] {
-    border-top-color: #4a9eff;
-}
-#edit-status-bar[data-state="deploying"] #edit-status-text {
-    color: #4a9eff;
-}
-
-#edit-status-bar[data-state="live"] {
     border-top-color: #4caf50;
 }
-#edit-status-bar[data-state="live"] #edit-status-text {
+#edit-status-bar[data-state="deploying"] #edit-status-text {
     color: #4caf50;
+}
+
+/* live = deployed + verified. Blue = extra confirmation beyond Saved. */
+#edit-status-bar[data-state="live"] {
+    border-top-color: #4a9eff;
+}
+#edit-status-bar[data-state="live"] #edit-status-text {
+    color: #4a9eff;
 }
 
 #edit-status-bar[data-state="error"] {
