@@ -43,6 +43,21 @@
         return;
     }
 
+    // ── HTML File Resolution ────────────────────────────────────────────────
+    // Derive the server-side html_file from the current URL pathname so the
+    // git-edit-server knows which file to patch. Without this, the server
+    // defaults to the site's root index.html.
+
+    function pathnameToHtmlFile(p) {
+        var s = (p || '/').replace(/^\/+/, '');
+        if (s === '' || s.endsWith('/')) {
+            s += 'index.html';
+        }
+        return s;
+    }
+
+    var HTML_FILE = pathnameToHtmlFile(window.location.pathname);
+
     // ── Token Validation ─────────────────────────────────────────────────────
 
     var _validatedToken = null;
@@ -180,7 +195,8 @@
                 token: tokenValue,
                 site: SITE,
                 block_id: blockId,
-                new_text: newText
+                new_text: newText,
+                html_file: HTML_FILE
             })
         })
         .then(function (res) {
@@ -240,6 +256,21 @@
 
     // ── Initialisation ────────────────────────────────────────────────────────
 
+    function detectEditSourceWarning() {
+        // If the page declares <meta name="edit-source" content="markdown">,
+        // edits here will be overwritten on the next markdown rebuild.
+        var meta = document.querySelector('meta[name="edit-source"]');
+        if (!meta) return null;
+        var src = meta.getAttribute('content') || '';
+        var path = meta.getAttribute('data-source-path') || '';
+        if (src === 'markdown') {
+            return path
+                ? 'Edits temporary — source is ' + path + '. Edit the markdown for permanent changes.'
+                : 'Edits temporary — page is generated from markdown. Edit the markdown for permanent changes.';
+        }
+        return null;
+    }
+
     function init() {
         validateToken(tokenValue).then(function (record) {
             if (!record) {
@@ -252,6 +283,11 @@
             injectStyles();
             createStatusBar();
             activateBlocks();
+
+            var warning = detectEditSourceWarning();
+            if (warning) {
+                setStatus(warning, 'warning');
+            }
         });
     }
 
