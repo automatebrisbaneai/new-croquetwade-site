@@ -47,20 +47,18 @@
     color: #f5a623;
 }
 
-/* deploying = saved (server has it). Green = safe/done-enough. */
 #edit-status-bar[data-state="deploying"] {
-    border-top-color: #4caf50;
-}
-#edit-status-bar[data-state="deploying"] #edit-status-text {
-    color: #4caf50;
-}
-
-/* live = deployed + verified. Blue = extra confirmation beyond Saved. */
-#edit-status-bar[data-state="live"] {
     border-top-color: #4a9eff;
 }
-#edit-status-bar[data-state="live"] #edit-status-text {
+#edit-status-bar[data-state="deploying"] #edit-status-text {
     color: #4a9eff;
+}
+
+#edit-status-bar[data-state="live"] {
+    border-top-color: #4caf50;
+}
+#edit-status-bar[data-state="live"] #edit-status-text {
+    color: #4caf50;
 }
 
 #edit-status-bar[data-state="error"] {
@@ -126,36 +124,7 @@
     z-index: 10000;
 }
 
-/* Per-block pending outline — while save+publish is in flight */
-.edit-block--pending {
-    box-shadow: 0 0 0 2px rgba(245, 166, 35, 0.7) !important;
-    background: rgba(245, 166, 35, 0.08) !important;
-}
-
-/* Per-block saved badge — ✓ Saved pill that fades after 3s */
-.edit-block__saved-badge {
-    position: absolute;
-    top: -28px;
-    right: 0;
-    background: #4caf50;
-    color: #ffffff;
-    font-family: 'IBM Plex Mono', 'Courier New', monospace;
-    font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 4px;
-    white-space: nowrap;
-    pointer-events: none;
-    z-index: 10001;
-    animation: edit-badge-fade 3s ease-out forwards;
-}
-@keyframes edit-badge-fade {
-    0%   { opacity: 0; transform: translateY(4px); }
-    15%  { opacity: 1; transform: translateY(0); }
-    75%  { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(-4px); }
-}
-
-/* Keep body from being obscured by status bar (allow for wrap on narrow windows) */
+/* Keep body from being obscured by status bar */
 body {
-    padding-bottom: 64px !important;
+    padding-bottom: 48px !important;
 }
