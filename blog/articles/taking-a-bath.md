@@ -6,6 +6,7 @@ subtitle: Why a new committee should announce the mess before fixing it
 title: Taking a Bath
 ---
 
+![Claw-foot bathtub](/blog/images/taking-a-bath/hero.png)
 
 March 1996. Howard's Coalition had just turned Keating's Labor government out, and Peter Costello walked into Treasury for his first briefings as the new Treasurer. He came back out with a number. The books didn't balance the way Labor had said they did. Underlying deficit, eight to nine billion dollars, hidden in the seams.
 
@@ -37,6 +38,8 @@ Then there's trust. Simple mechanics. Leaders who name uncomfortable truths earl
 
 ## Not blame. Stocktake.
 
+![Filing drawer with index cards](/blog/images/taking-a-bath/filing-drawer.png)
+
 The word "blame" makes the bath sound uglier than it is.
 
 Most outgoing committees aren't villains. They're tired. They left problems because they ran out of steam, or because the work had grown beyond what anyone could reasonably carry. Half of what they left was probably inherited from the committee before them. So where does the blame go? Back and back and back. That's why you don't use the word.
@@ -46,6 +49,8 @@ The bath is a stocktake. It examines the situation that was left behind. The con
 ---
 
 ## What happens when the bath gets skipped
+
+![Muddy boots](/blog/images/taking-a-bath/muddy-blundstones.png)
 
 A new committee that walks in talking about vision, and doesn't publish the ledger, is setting itself up to carry every inherited problem as though it created the problem.
 
@@ -66,5 +71,7 @@ What goes in it? The contents are simple. Here is what we inherited. Here is wha
 The committee that does this starts from a shared understanding of where the organisation actually is. The committee that skips it starts from whatever story the members were already telling themselves, and spends the next year arguing about the story instead of fixing the ledger.
 
 ---
+
+![Hand opening drawer](/blog/images/taking-a-bath/hand-opening-drawer.png)
 
 Open the cupboards. Write down what's in there. Tell the members.
