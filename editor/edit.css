@@ -54,11 +54,18 @@
     color: #4a9eff;
 }
 
-#edit-status-bar[data-state="live"] {
+#edit-status-bar[data-state="saved"] {
     border-top-color: #4caf50;
 }
-#edit-status-bar[data-state="live"] #edit-status-text {
+#edit-status-bar[data-state="saved"] #edit-status-text {
     color: #4caf50;
+}
+
+#edit-status-bar[data-state="live"] {
+    border-top-color: #4a9eff;
+}
+#edit-status-bar[data-state="live"] #edit-status-text {
+    color: #4a9eff;
 }
 
 #edit-status-bar[data-state="error"] {

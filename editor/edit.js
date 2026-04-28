@@ -208,7 +208,7 @@
             return res.json();
         })
         .then(function (data) {
-            setStatus('Deploying... (~60s)', 'deploying');
+            setStatus('Saved — safe to close the browser. Live in ~60s.', 'saved');
             startDeployCheck(data.deploy_id);
         })
         .catch(function (err) {
