@@ -32,15 +32,7 @@
         ? (scriptTag.getAttribute('data-server') || 'https://edit.croquetwade.com')
         : 'https://edit.croquetwade.com';
     // data-html-file tells the server which file to edit (for subdirectory pages)
-    function pathnameToHtmlFile(p) {
-        var s = (p || '/').replace(/^\/+/, '');
-        if (s === '' || s.endsWith('/')) s += 'index.html';
-        return s;
-    }
-    // data-html-file overrides; otherwise derive from URL pathname so multi-page
-    // sites (e.g. a blog) don't need a per-page attribute on every page.
-    var HTML_FILE = (scriptTag && scriptTag.getAttribute('data-html-file'))
-        || pathnameToHtmlFile(window.location.pathname);
+    var HTML_FILE = scriptTag ? (scriptTag.getAttribute('data-html-file') || 'index.html') : 'index.html';
 
     // ── URL Param Detection ──────────────────────────────────────────────────
 
@@ -138,6 +130,25 @@
         document.head.appendChild(link);
     }
 
+    // Tracks the most recent successful save (for the Undo button).
+    // Cleared after Undo fires, replaced after each new save.
+    var _lastSavedBlock = null;
+
+    function refreshActionButtons() {
+        var undoBtn = document.getElementById('edit-undo-btn');
+        var resetBtn = document.getElementById('edit-reset-all-btn');
+        if (undoBtn) {
+            undoBtn.hidden = !_lastSavedBlock;
+        }
+        if (resetBtn) {
+            // Reset-all visible while any block diverges from its original.
+            var anyEdited = Object.keys(_pendingBlocks).some(function (id) {
+                return _pendingBlocks[id].current !== _pendingBlocks[id].original;
+            });
+            resetBtn.hidden = !anyEdited;
+        }
+    }
+
     function createStatusBar() {
         var bar = document.createElement('div');
         bar.id = 'edit-status-bar';
@@ -146,8 +157,39 @@
         bar.innerHTML =
             '<span id="edit-mode-label">Edit mode</span>' +
             '<span id="edit-status-text"></span>' +
+            '<button id="edit-undo-btn" title="Revert the last save back to its original text" hidden>Undo</button>' +
+            '<button id="edit-reset-all-btn" title="Revert every edit made this session back to original" hidden>Reset all</button>' +
             '<button id="edit-exit-btn" title="Exit edit mode">Exit</button>';
         document.body.appendChild(bar);
+
+        document.getElementById('edit-undo-btn').addEventListener('click', function () {
+            if (!_lastSavedBlock) return;
+            var bid = _lastSavedBlock.blockId;
+            var originalText = _lastSavedBlock.originalText;
+            var el = blockEl(bid);
+            if (el) el.innerText = originalText;
+            // Clear the marker so the next save replaces it (and so the
+            // Undo button hides until the next successful save).
+            _lastSavedBlock = null;
+            refreshActionButtons();
+            saveBlock(bid, originalText);
+        });
+
+        document.getElementById('edit-reset-all-btn').addEventListener('click', function () {
+            var dirty = Object.keys(_pendingBlocks).filter(function (id) {
+                return _pendingBlocks[id].current !== _pendingBlocks[id].original;
+            });
+            if (!dirty.length) return;
+            if (!window.confirm('Revert all ' + dirty.length + ' edit' + (dirty.length === 1 ? '' : 's') + ' from this session back to original?')) return;
+            _lastSavedBlock = null;
+            refreshActionButtons();
+            dirty.forEach(function (bid) {
+                var el = blockEl(bid);
+                var originalText = _pendingBlocks[bid].original;
+                if (el) el.innerText = originalText;
+                saveBlock(bid, originalText);
+            });
+        });
 
         document.getElementById('edit-exit-btn').addEventListener('click', function () {
             var state = bar.getAttribute('data-state');
@@ -378,12 +420,27 @@
 
                     if (status === 'live') {
                         stopDeployWatch(deployId);
-                        // If we skipped straight from queued to live (very
-                        // fast deploy), promote state + show badge now.
+                        // If we skipped straight from queued to live (very fast
+                        // deploy), the green "Saved" success message hadn't shown
+                        // yet — flash it briefly before the LIVE message lands so
+                        // the user always sees an explicit success state.
                         if (!watch.savedShown) {
+                            var originalText = _pendingBlocks[watch.blockId].original;
                             _pendingBlocks[watch.blockId].current = watch.newText;
                             showSavedBadge(watch.blockId);
                             watch.savedShown = true;
+                            _lastSavedBlock = { blockId: watch.blockId, originalText: originalText };
+                            refreshActionButtons();
+                            setPending(watch.blockId, false);
+                            if (Object.keys(_deployWatches).length === 0) {
+                                setStatus('Saved — you can close this tab.', 'deploying');
+                                setTimeout(function () {
+                                    if (Object.keys(_deployWatches).length === 0) {
+                                        setStatus('Deployed — LIVE.', 'live');
+                                    }
+                                }, 1500);
+                            }
+                            return;
                         }
                         // Only show LIVE status if no other deploys are still
                         // in flight — otherwise their "Saved" message wins.
@@ -397,12 +454,13 @@
                         setPending(watch.blockId, false);
                     } else if (status === 'deploying' && !watch.savedShown) {
                         // First confirmation that commit+push succeeded.
-                        // NOW it's honest to claim "Saved" and unlock the block
-                        // for re-editing — the change is durably committed; the
-                        // remaining wait is just public-deploy time.
+                        // NOW it's honest to claim "Saved".
                         watch.savedShown = true;
+                        var origText = _pendingBlocks[watch.blockId].original;
                         _pendingBlocks[watch.blockId].current = watch.newText;
                         showSavedBadge(watch.blockId);
+                        _lastSavedBlock = { blockId: watch.blockId, originalText: origText };
+                        refreshActionButtons();
                         setPending(watch.blockId, false);
                         setStatus('Saved — you can close this tab.', 'deploying');
                     }
@@ -435,16 +493,6 @@
             injectStyles();
             createStatusBar();
             activateBlocks();
-
-            // If this page was generated from a markdown source, warn that
-            // in-browser edits are temporary until next rebuild from source.
-            var srcMeta = document.querySelector('meta[name="edit-source"]');
-            if (srcMeta && srcMeta.getAttribute('content') === 'markdown') {
-                var srcPath = srcMeta.getAttribute('data-source-path') || '';
-                console.warn('[edit.js] Page generated from markdown' +
-                             (srcPath ? ' (' + srcPath + ')' : '') +
-                             '. In-browser edits will be overwritten on the next rebuild.');
-            }
         });
     }
 
