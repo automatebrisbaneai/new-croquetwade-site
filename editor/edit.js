@@ -397,10 +397,13 @@
                         setPending(watch.blockId, false);
                     } else if (status === 'deploying' && !watch.savedShown) {
                         // First confirmation that commit+push succeeded.
-                        // NOW it's honest to claim "Saved".
+                        // NOW it's honest to claim "Saved" and unlock the block
+                        // for re-editing — the change is durably committed; the
+                        // remaining wait is just public-deploy time.
                         watch.savedShown = true;
                         _pendingBlocks[watch.blockId].current = watch.newText;
                         showSavedBadge(watch.blockId);
+                        setPending(watch.blockId, false);
                         setStatus('Saved — you can close this tab.', 'deploying');
                     }
                     // queued/cloning/editing/committing → keep polling,

@@ -126,6 +126,14 @@
     z-index: 10000;
 }
 
+/* Override the tooltip while the block is locked mid-save — don't say
+   "Click to edit" when the block isn't accepting input yet. */
+.edit-block.edit-block--pending:hover::after {
+    content: 'Saving — please wait';
+    background: #f5a623;
+    color: #1a1a1a;
+}
+
 /* Per-block pending outline — while save+publish is in flight */
 .edit-block--pending {
     box-shadow: 0 0 0 2px rgba(245, 166, 35, 0.7) !important;
